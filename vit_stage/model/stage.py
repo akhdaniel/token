@@ -5,54 +5,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 class stage(models.Model):
-	"""
-	{
-	"data":[
-	  {
-	    "name": "Draft",
-	    "sequence": 10,
-	    "draft": true,
-	    "done": false,
-	    "open": false,
-	    "fold": false,
-	    "active": true,
-	    "allow_confirm": true,
-	    "allow_cancel": false,
-	    "execute_enter": "",
-	    "confirmation": "",
-	    "model_id":"vit.property_unit"
-	  },
-	  {
-	    "name": "Verification",
-	    "sequence": 20,
-	    "draft": false,
-	    "done": false,
-	    "open": true,
-	    "fold": false,
-	    "active": true,
-	    "allow_confirm": true,
-	    "allow_cancel": true,
-	    "execute_enter": "",
-	    "confirmation": "",
-	    "model_id":"vit.property_unit"
-	  },
-	  {
-	    "name": "Publish",
-	    "sequence": 30,
-	    "draft": false,
-	    "done": false,
-	    "open": true,
-	    "fold": false,
-	    "active": true,
-	    "allow_confirm": true,
-	    "allow_cancel": true,
-	    "execute_enter": "",
-	    "confirmation": "",
-	    "model_id":"vit.property_unit"
-	  }
-	]
-	}
-	"""
 
 	_name = "vit.stage"
 	_description = "vit.stage"
