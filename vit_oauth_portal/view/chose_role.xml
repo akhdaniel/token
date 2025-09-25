@@ -1,0 +1,58 @@
+<odoo>
+	<template id="choose_role_template" name="Choose Role Single Choice">
+		<t t-call="portal.portal_layout">
+			<div class="container my-5">
+				<div class="row justify-content-center">
+					<div class="col-lg-6 col-md-8">
+						<!-- Card Wrapper -->
+						<div class="card shadow-lg border-0 rounded">
+							<div class="card-header bg-primary text-white text-center py-4">
+								<h3 class="mb-0 fw-bold">
+									<i class="fa fa-building me-2"></i>Pilih Peran Anda
+								</h3>
+								<p class="mb-0 small">
+				  					Tentukan peran utama Anda dalam investasi properti.
+								</p>
+							</div>
+
+							<div class="card-body p-4">
+								<form action="/choose-role/submit" method="post" class="needs-validation">
+									<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+									<div class="mb-4">
+										<!-- Radio: Owner -->
+										<div class="form-check d-flex align-items-start p-3 border rounded-3 hover-shadow-sm mb-3">
+											<input class="form-check-input mt-1 me-3" type="radio" name="role" id="role_owner" value="owner" />
+											<label class="form-check-label w-100" for="role_owner">
+												<span class="fw-semibold fs-5 text-dark">Owner</span>
+												<p class="text-muted small mb-0">
+													Saya adalah pemilik properti yang ingin mengelola dan memantau investasi.
+												</p>
+											</label>
+										</div>
+
+										<!-- Radio: Investor -->
+										<div class="form-check d-flex align-items-start p-3 border rounded-3 hover-shadow-sm">
+											<input class="form-check-input mt-1 me-3" type="radio" name="role" id="role_investor" value="investor" />
+											<label class="form-check-label w-100" for="role_investor">
+												<span class="fw-semibold fs-5 text-dark">Investor</span>
+												<p class="text-muted small mb-0">
+													Saya tertarik menanam modal dan memantau perkembangan portofolio investasi.
+												</p>
+											</label>
+										</div>
+									</div>
+
+									<div class="d-grid">
+										<button type="submit" class="btn btn-primary btn-lg shadow-sm">
+											<i class="fa fa-save me-2"></i>Simpan Pilihan
+										</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</t>
+	</template>
+</odoo>

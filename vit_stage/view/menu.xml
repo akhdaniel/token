@@ -1,0 +1,7 @@
+<odoo>
+	<data>
+		<menuitem id="vit_stage_top_menu" name="Dynamic Stage" sequence="20" web_icon="vit_stage,static/description/icon.png" />
+		<menuitem id="vit_stage_sub_menu" name="Operations" sequence="40" parent="vit_stage_top_menu" />
+		<menuitem id="vit_stage_config_menu" name="Configurations" sequence="1000" parent="vit_stage_top_menu" />
+	</data>
+</odoo>

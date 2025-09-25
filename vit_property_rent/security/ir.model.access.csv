@@ -1,0 +1,7 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_user_vit_rent_transaction,access_user_vit_rent_transaction,model_vit_rent_transaction,vit_property_rent.group_property_rent_user,1,0,0,0
+access_manager_vit_rent_transaction,access_manager_vit_rent_transaction,model_vit_rent_transaction,vit_property_rent.group_property_rent_manager,1,1,1,1
+access_admin_vit_rent_transaction,access_admin_vit_rent_transaction,model_vit_rent_transaction,base.group_system,1,1,1,1
+access_user_vit_rent_type,access_user_vit_rent_type,model_vit_rent_type,vit_property_rent.group_property_rent_user,1,0,0,0
+access_manager_vit_rent_type,access_manager_vit_rent_type,model_vit_rent_type,vit_property_rent.group_property_rent_manager,1,1,1,1
+access_admin_vit_rent_type,access_admin_vit_rent_type,model_vit_rent_type,base.group_system,1,1,1,1

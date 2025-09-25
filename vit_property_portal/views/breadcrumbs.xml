@@ -1,0 +1,14 @@
+<odoo>
+	<template id="portal_breadcrumbs_inherit" inherit_id="portal.portal_breadcrumbs" name="Portal Breadcrumbs Inherit">
+		<xpath expr="//ol" position="inside">
+			<t t-foreach="breadcrumbs or []" t-as="bc">
+				<li class="breadcrumb-item" t-if="bc[1]">
+                    <a t-att-href="bc[1]">
+                        <t t-esc="bc[0]"/>
+                    </a>
+                </li>
+				<li class="breadcrumb-item active" t-else=""><t t-esc="bc[0]"/></li>
+			</t>
+		</xpath>
+	</template>
+</odoo>

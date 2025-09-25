@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<record id="view_vit_order_token_tree" model="ir.ui.view">
+			<field name="name">vit_order_token_tree</field>
+			<field name="model">vit.order_token</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<list string="Order Token">
+					<field name="name" /> <!-- 100-->
+					<field name="property_unit_id" /> <!-- 100-->
+					<field name="qty_token" /> <!-- 101-->
+					<field name="sale_order_id" /> <!-- 101-->
+					<field name="total_amount" /> <!-- 102-->
+					<field name="to_partner_id" /> <!-- 102-->
+					<field name="date" /> <!-- 103-->
+					<field name="stage_id" /> <!-- 103-->
+					<field name="status" /> <!-- 104-->
+					<field name="from_partner_id" /> <!-- 104-->
+				</list>
+			</field>
+		</record>
+		<!-- pivot view -->
+		<record id="view_vit_order_token_pivot" model="ir.ui.view">
+			<field name="name">vit_order_token_tree</field>
+			<field name="model">vit.order_token</field>
+			<field name="type">pivot</field>
+			<field name="arch" type="xml">
+				<pivot string="Order Token">
+					<field name="property_unit_id" type="row"/>
+					<field name="sale_order_id" type="row"/>
+					<field name="to_partner_id" type="row"/>
+					<field name="stage_id" type="row"/>
+					<field name="from_partner_id" type="row"/>
+				</pivot>
+			</field>
+		</record>
+		<!-- form view -->
+		<record id="view_vit_order_token_form" model="ir.ui.view">
+			<field name="name">vit_order_token_form</field>
+			<field name="model">vit.order_token</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form string="Order Token">
+					<header>
+						<button string="Confirm" type="object" name="action_confirm" invisible="allow_confirm==False" class="oe_highlight" icon="fa-check-circle" />
+						<button string="Cancel" type="object" name="action_cancel" invisible="allow_cancel==False" icon="fa-times-circle"/>
+						<field name="stage_id" widget="statusbar" options="{'fold_field':'fold'}" />
+						<button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+								<!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+								<!--field name="detail_ids" invisible="1"/-->
+							<!--/button-->
+						</div>
+						<div class="oe_title">
+							<label for="name" class="oe_edit_only" string="Order Token Name"/>
+							<h1><field name="name" /></h1>
+						</div>
+						<group>
+							<group> <!-- left -->
+								<field name="stage_is_draft" invisible="True" />
+								<field name="stage_is_done" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="allow_confirm" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="allow_cancel" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="stage_name" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="qty_token"  readonly="stage_is_draft==False"/>
+								<field name="total_amount"  readonly="stage_is_draft==False"/>
+								<field name="date"  readonly="stage_is_draft==False"/>
+								<field name="status"  readonly="stage_is_draft==False"/>
+							</group>
+							<group> <!-- right -->
+								<field name="property_unit_id"  readonly="stage_is_draft==False"/>
+								<field name="sale_order_id"  readonly="stage_is_draft==False"/>
+								<field name="to_partner_id"  readonly="stage_is_draft==False"/>
+								<field name="from_partner_id"  readonly="stage_is_draft==False"/>
+							</group>
+						</group>
+						<notebook>
+						</notebook>
+						<group name="note_group" col="6" class="mt-2 mt-md-0">
+							<group colspan="4">
+							</group>
+							<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+							</group>
+							<div class="clearfix"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<!-- search -->
+		<record id="view_vit_order_token_search" model="ir.ui.view">
+			<field name="name">vit_order_token</field>
+			<field name="model">vit.order_token</field>
+			<field name="arch" type="xml">
+				<search string="Order Token">
+
+					<filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+					<filter string="Qty Token" name="filter_by_qty_token" domain="[('qty_token','=','')]" />
+					<filter string="Total Amount" name="filter_by_total_amount" domain="[('total_amount','=','')]" />
+					<filter string="Date" name="filter_by_date" domain="[('date','=','')]" />
+					<filter string="Status" name="filter_by_status" domain="[('status','=','')]" />
+					<filter string="Stage Is Draft" name="filter_by_stage_is_draft" domain="[('stage_is_draft','=','')]" />
+					<filter string="Stage Is Done" name="filter_by_stage_is_done" domain="[('stage_is_done','=','')]" />
+					<filter string="Allow Confirm" name="filter_by_allow_confirm" domain="[('allow_confirm','=','')]" />
+					<filter string="Allow Cancel" name="filter_by_allow_cancel" domain="[('allow_cancel','=','')]" />
+					<filter string="Stage Name" name="filter_by_stage_name" domain="[('stage_name','=','')]" />
+					<field name="name" select="True"/>
+					<field name="qty_token" select="True"/>
+					<field name="total_amount" select="True"/>
+					<field name="date" select="True"/>
+					<field name="status" select="True"/>
+					<field name="stage_is_draft" select="True"/>
+					<field name="stage_is_done" select="True"/>
+					<field name="allow_confirm" select="True"/>
+					<field name="allow_cancel" select="True"/>
+					<field name="stage_name" select="True"/>
+					<field name="property_unit_id" select="True"/>
+					<field name="sale_order_id" select="True"/>
+					<field name="to_partner_id" select="True"/>
+					<field name="stage_id" select="True"/>
+					<field name="from_partner_id" select="True"/>
+					<group string="Group By..">
+						<filter string="Property Unit" domain="[]" name="group_by_property_unit_id" context="{'group_by':'property_unit_id'}"/>
+						<filter string="Sale Order" domain="[]" name="group_by_sale_order_id" context="{'group_by':'sale_order_id'}"/>
+						<filter string="To Partner" domain="[]" name="group_by_to_partner_id" context="{'group_by':'to_partner_id'}"/>
+						<filter string="Stage" domain="[]" name="group_by_stage_id" context="{'group_by':'stage_id'}"/>
+						<filter string="From Partner" domain="[]" name="group_by_from_partner_id" context="{'group_by':'from_partner_id'}"/>
+						<filter string="Status" domain="[]" name="group_by_status" context="{'group_by':'status'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		<!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+		<record id="view_vit_order_token_kanban" model="ir.ui.view" >
+			<field name="name">vit_order_token</field>
+			<field name="model">vit.order_token</field>
+			<field name="arch" type="xml">
+				<kanban version="7.0">
+					<field name="id" />
+					<templates>
+						<t t-name="card" class="flex-row">
+							<main class="p-2">
+								<h4>
+									<a type="open"><field name="name"/></a>
+								</h4>
+								<span class="text-muted">Date</span> <field name="date"></field>
+							</main>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+		<!-- calendar if a date field exists -->
+		<record id="view_vit_order_token_cal" model="ir.ui.view">
+			<field name="name">vit_order_token_cal</field>
+			<field name="model">vit.order_token</field>
+			<field name="arch" type="xml">
+				<calendar string="Order Token" date_start="date">
+					<field name="name" />
+				</calendar>
+			</field>
+		</record>
+		<!-- graph -->
+		<record id="view_vit_order_token_graph" model="ir.ui.view">
+			<field name="name">vit_order_token</field>
+			<field name="model">vit.order_token</field>
+			<field name="arch" type="xml">
+				<graph string="Order Token" type="bar">
+					<field name="property_unit_id"/>
+				</graph>
+			</field>
+		</record>
+		<!-- action window -->
+		<record id="action_order_token" model="ir.actions.act_window">
+			<field name="name">Order Token</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.order_token</field>
+			<field name="view_mode">list,form,kanban,pivot,calendar,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Order Token
+				</p><p>
+
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_order_token" name="Order Token" parent="vit_property_sub_menu" action="action_order_token" sequence="120"/>
+	</data>
+</odoo>

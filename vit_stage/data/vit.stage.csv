@@ -1,0 +1,4 @@
+id,name,sequence,draft,done,fold,active,allow_confirm,allow_cancel,execute_enter,confirmation,model_id
+stage_1,Draft,10,true,false,false,true,true,false,,,vit.property_unit
+stage_2,Verification,20,false,false,false,true,true,true,,,vit.property_unit
+stage_3,Publish,30,false,false,false,true,true,true,,,vit.property_unit

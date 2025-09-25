@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_property_profit_share_form_inherit_rent" model="ir.ui.view">
+        <field name="name">property.profit.share.form.inherit.rent</field>
+        <field name="model">vit.property_profit_share</field>
+        <field name="inherit_id" ref="vit_property.view_vit_property_profit_share_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='property_unit_id']" position="before">
+                <field name="rent_transaction_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

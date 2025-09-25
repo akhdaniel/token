@@ -1,0 +1,11 @@
+/* body main .o_portal_wrap {
+    background-color: #e3e6ea !important;   
+} */
+
+.goro-section .card {
+    transition: transform .2s ease-in-out, box-shadow .2s;
+}
+.goro-section .card.hover-scale:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}

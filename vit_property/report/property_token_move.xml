@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- report qweb view -->
+		<record id="action_report_vit_property_token_move" model="ir.actions.report">
+			<field name="name">Property Token Move</field>
+			<field name="model">vit.property_token_move</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">vit_property.vit_property_token_move_report</field>
+			<field name="report_file">vit_property.vit_property_token_move_report</field>
+			<field name="print_report_name">object.name</field>
+			<field name="binding_model_id" ref="vit_property.model_vit_property_token_move"/>
+			<field name="binding_type">report</field>
+		</record>
+		<!-- document template -->
+		<template id="vit_property.vit_property_token_move_report_document" >
+			<t t-call="web.external_layout">
+				<t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+				<div class="page">
+					<h2>
+						Property Token Move: <span t-field="doc.name"/>
+					</h2>
+					<div class="row mt32 mb32">
+						<div class="col-auto mw-100 mb-2">
+							<strong>Reference</strong>
+							<p class="m-0" t-field="doc.reference" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Date</strong>
+							<p class="m-0" t-field="doc.date" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Token</strong>
+							<p class="m-0" t-field="doc.token_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>From Partner</strong>
+							<p class="m-0" t-field="doc.from_partner_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>To Partner</strong>
+							<p class="m-0" t-field="doc.to_partner_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Account Move</strong>
+							<p class="m-0" t-field="doc.account_move_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Order Token</strong>
+							<p class="m-0" t-field="doc.order_token_id"/>
+						</div>
+					</div>
+				</div>
+				<div class="oe_structure"/>
+			</t>
+		</template>
+
+		<!-- main template -->
+		<template id="vit_property.vit_property_token_move_report">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-set="lang" t-value="doc.create_uid.lang"/>
+					<t t-call="vit_property.vit_property_token_move_report_document" />
+				</t>
+			</t>
+		</template>
+
+	</data>
+</odoo>

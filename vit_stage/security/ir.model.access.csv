@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_user_vit_stage,access_user_vit_stage,model_vit_stage,vit_stage.group_dynamic_stage_user,1,0,0,0
+access_manager_vit_stage,access_manager_vit_stage,model_vit_stage,vit_stage.group_dynamic_stage_manager,1,1,1,1
+access_admin_vit_stage,access_admin_vit_stage,model_vit_stage,base.group_system,1,1,1,1

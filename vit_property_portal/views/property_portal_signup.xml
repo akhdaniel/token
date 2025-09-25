@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="signup_form_inherit" name="Auth Signup Inherit" inherit_id="auth_signup.fields">
+		<xpath expr="//div[hasclass('field-confirm_password')]" position="after">
+			<div class="form-group">
+				<label class="form-label">Saya ingin mendaftar sebagai:</label>
+				<div class="d-flex flex-column gap-2">
+					<div class="form-check">
+						<input type="radio" class="form-check-input" name="role_type" value="is_owner" />
+						<label class="form-check-label">
+							<span class="fw-bold">Owner</span>
+							<br/>
+							<small class="text-muted">Untuk mendaftarkan dan mengelola properti Anda.</small>
+						</label>
+					</div>
+					<div class="form-check">
+						<input type="radio" class="form-check-input" name="role_type" value="is_investor"/>
+						<label class="form-check-label">
+							<span class="fw-bold">Investor</span>
+							<br/>
+							<small class="text-muted">Untuk melakukan investasi pada properti.</small>
+						</label>
+					</div>
+				</div>
+			</div>
+		</xpath>
+	</template>
+</odoo>

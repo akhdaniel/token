@@ -1,0 +1,8 @@
+<odoo>
+	<data>
+		<menuitem id="vit_property_top_menu" name="Property" sequence="20" web_icon="vit_property,static/description/icon.png" />
+		<menuitem id="vit_property_menu_1" name="Properties" sequence="1" parent="vit_property_top_menu" />
+		<menuitem id="vit_property_sub_menu" name="Operations" sequence="40" parent="vit_property_top_menu" />
+		<menuitem id="vit_property_config_menu" name="Configurations" sequence="1000" parent="vit_property_top_menu" />
+	</data>
+</odoo>

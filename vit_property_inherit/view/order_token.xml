@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<!--record id="view_order_token_tree" model="ir.ui.view">
+			<field name="name">order_token_tree</field>
+			<field name="model">vit.order_token</field>
+			<field name="inherit_id" ref="vit_property.view_vit_order_token_tree"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- form view -->
+		<record id="view_order_token_form" model="ir.ui.view">
+			<field name="name">order_token_form</field>
+			<field name="model">vit.order_token</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="vit_property.view_vit_order_token_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//notebook" position="inside">
+					<page string="Order Token Lines">
+						<field name="order_token_line_ids">
+							<list string="Order Token Lines">
+								<field name="product_id" />
+								<field name="product_uom_qty" />
+								<field name="price_unit" />
+								<field name="price_subtotal" />
+							</list>
+						</field>
+					</page>
+				</xpath>
+			</field>
+		</record>
+		<!-- search -->
+		<!--record id="view_order_token_search" model="ir.ui.view">
+			<field name="name">order_token</field>
+			<field name="model">vit.order_token</field>
+			<field name="inherit_id" ref="vit_property.view_vit_order_token_search"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- action window -->
+		<!--record id="vit_property.action_order_token" model="ir.actions.act_window">
+			<field name="name">Order Token</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.order_token</field>
+			<field name="view_mode">list,form,kanban,pivot,calendar,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Order Token
+				</p><p>
+
+				</p>
+			</field>
+		</record-->
+
+		<!-- <menuitem id="menu_order_token" name="Order Token" parent="vit_property_menu_2" action="action_order_token" sequence="120"/> -->
+	</data>
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<!--record id="view_product_template_tree" model="ir.ui.view">
+			<field name="name">product_template_tree</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_tree_view"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- form view -->
+		<record id="view_product_template_form_inherit" model="ir.ui.view">
+			<field name="name">product_template_form</field>
+			<field name="model">product.template</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="product.product_template_only_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='standard_price']" position="after">
+					<field name="total_tokens" string="Total Tokens" />
+				</xpath>
+			</field>
+		</record>
+		<!-- search -->
+		<!--record id="view_product_template_search" model="ir.ui.view">
+			<field name="name">product_template</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_search_form_view_stock"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- action window -->
+		<!--record id="vit_property.action_product_template" model="ir.actions.act_window">
+			<field name="name">Product Template</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">product.template</field>
+			<field name="view_mode">list,form</field>
+			<field name="context">{"default_is_property":1}</field>
+			<field name="domain">[("is_property","=",True)]</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Product Template
+				</p><p>
+
+				</p>
+			</field>
+		</record-->
+
+		<!-- <menuitem id="menu_product_template" name="Product Template" parent="vit_property_config_menu" action="action_product_template" sequence="30"/> -->
+	</data>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<!--record id="view_rent_transaction_tree" model="ir.ui.view">
+			<field name="name">rent_transaction_tree</field>
+			<field name="model">vit.rent_transaction</field>
+			<field name="inherit_id" ref="vit_property_rent.view_vit_rent_transaction_tree"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- form view -->
+		<record id="view_rent_transaction_form" model="ir.ui.view">
+			<field name="name">rent_transaction_form</field>
+			<field name="model">vit.rent_transaction</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="vit_property_rent.view_vit_rent_transaction_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='end_date']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='rent_price_per_month']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='amount_total_rent']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='rent_type_id']" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</xpath>
+			</field>
+		</record>
+		<!-- search -->
+		<!--record id="view_rent_transaction_search" model="ir.ui.view">
+			<field name="name">rent_transaction</field>
+			<field name="model">vit.rent_transaction</field>
+			<field name="inherit_id" ref="vit_property_rent.view_vit_rent_transaction_search"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- action window -->
+		<!--record id="vit_property_rent.action_rent_transaction" model="ir.actions.act_window">
+			<field name="name">Rent Transaction</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.rent_transaction</field>
+			<field name="view_mode">list,form,kanban,pivot,calendar,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Rent Transaction
+				</p><p>
+
+				</p>
+			</field>
+		</record-->
+
+		<!-- <menuitem id="menu_rent_transaction" name="Rent Transaction" parent="vit_property_rent_sub_menu" action="action_rent_transaction" sequence="40"/> -->
+	</data>
+</odoo>

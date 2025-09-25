@@ -1,0 +1,74 @@
+<odoo>
+	<template id="kalkulator_imbal_hasil" inherit_id="website.homepage" name="Kalkulator Imbal Hasil">
+		<xpath expr="//div[@id='wrap']" position="inside">
+			<section class="container bg-light my-5 p-4 rounded-3 simulasi-wrapper">
+				<h3 class="text-center mb-4">Kalkulator Imbal Hasil</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="mb-3">
+							<label>Property</label>
+							<select id="property_id" class="form-select mb-3">
+								<option value="">Pilih Property</option>
+							</select>
+						</div>
+						<div class="mb-3">
+							<label class="form-label d-block">Jenis Investasi</label>
+							<div class="btn-group d-flex" role="group" aria-label="Jenis Investasi">
+								<input type="radio"
+									class="btn-check"
+									name="invest_type"
+									id="invest_once"
+									value="once"
+									autocomplete="off"
+									checked="checked"/>
+								<label class="btn btn-outline-primary w-50" for="invest_once">
+									Investasi Sekali
+								</label>
+
+								<input type="radio"
+									class="btn-check"
+									name="invest_type"
+									id="invest_monthly"
+									value="monthly"
+									autocomplete="off"/>
+								<label class="btn btn-outline-primary w-50" for="invest_monthly">
+									Setiap Bulan
+								</label>
+							</div>
+						</div>
+						<div class="mb-3">
+							<label>Nominal Investasi (IDR)</label>
+							<input type="text" id="monthly_invest" class="form-control" value="0"/>
+						</div>
+						<div class="mb-3">
+							<label>Jangka Waktu (tahun) : <span id="years_value">0</span></label>
+							<input type="range" id="years" class="form-range custom-range-progress" min="1" max="10" value="0"/>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="card">
+							<div class="card-body">
+								<div class="bg-primary rounded-1">
+									<h5 class="text-center text-white py-2">Proyeksi Pendapatan</h5>
+								</div>
+								<p class="text-center">Investasi sebesar : <span id="total_invest"></span></p>
+								<p class="text-center">Perkiraan imbal hasil yang akan diterima dalam : <span id="years_value2">0</span> tahun</p>
+								<h2 class="text-center fw-bold"><span id="total_return"></span></h2>
+								<h3 class="text-center fw-bold">(<span id="tokens"></span> Token)</h3>
+							</div>
+						</div>
+
+						<div class="card shadow mt-4">
+							<div class="card-body">
+								<p>Total aset dalam <span id="years_value3">0</span> tahun</p>
+								<h4><span id="total_return2"></span></h4>
+								<h5>(<span id="tokens2"></span> Token)</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</xpath>
+	</template>
+</odoo>

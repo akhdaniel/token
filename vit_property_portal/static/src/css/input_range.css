@@ -1,0 +1,54 @@
+/* ===== Range Progress Style ===== */
+.custom-range-progress {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    /* hanya satu background: kita atur lewat JS */
+    background: linear-gradient(to right, #6c757d 0%, #6c757d 100%);
+    outline: none;
+    appearance: none;              /* penting: hilangkan default UI */
+}
+
+/* Hilangkan track bawaan browser */
+.custom-range-progress::-webkit-slider-runnable-track {
+    height: 8px;
+    background: transparent;       /* <-- transparan agar tidak dobel */
+    border: none;
+}
+.custom-range-progress::-moz-range-track {
+    height: 8px;
+    background: transparent;       /* <-- transparan agar tidak dobel */
+    border: none;
+}
+
+/* Thumb untuk WebKit */
+.custom-range-progress::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #575859;
+    border: 2px solid #fff;
+    margin-top: -6px;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0,0,0,.2);
+}
+
+/* Thumb untuk Firefox */
+.custom-range-progress::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #575859;
+    border: 2px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0,0,0,.2);
+}
+
+/* Fokus/hover */
+.custom-range-progress:focus::-webkit-slider-thumb {
+    background: #041b3e;
+}
+.custom-range-progress:focus::-moz-range-thumb {
+    background: #041b3e;
+}

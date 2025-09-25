@@ -1,0 +1,7 @@
+<odoo>
+	<data>
+		<menuitem id="vit_property_rent_top_menu" name="Property Rent" sequence="20" web_icon="vit_property_rent,static/description/icon.png" />
+		<menuitem id="vit_property_rent_sub_menu" name="Operations" sequence="40" parent="vit_property_rent_top_menu" />
+		<menuitem id="vit_property_rent_config_menu" name="Configurations" sequence="1000" parent="vit_property_rent_top_menu" />
+	</data>
+</odoo>

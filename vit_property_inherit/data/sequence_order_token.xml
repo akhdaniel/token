@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data >
+		<function name="write" model="ir.model.data">
+			<function name="search" model="ir.model.data">
+				<value eval="[('module', '=', 'vit_property'), ('name', '=', 'sequence_order_token')]"/>
+			</function>
+			<value eval="{'noupdate': False}" /> 
+		</function>
+		<record id="vit_property.sequence_order_token" model="ir.sequence">
+			<field name="name">sequence_order_token</field>
+			<field name="code">vit.order_token</field>
+			<field name="prefix">ORDXX/%(year)s/%(month)s/</field>
+			<field name="padding">3</field>
+		</record>
+		<function name="write" model="ir.model.data">
+			<function name="search" model="ir.model.data">
+				<value eval="[('module', '=', 'vit_property'), ('name', '=', 'sequence_order_token')]"/>
+			</function>
+			<value eval="{'noupdate': True}" />
+		</function>
+	</data>
+</odoo>

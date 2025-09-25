@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<!--record id="view_property_profit_share_tree" model="ir.ui.view">
+			<field name="name">property_profit_share_tree</field>
+			<field name="model">vit.property_profit_share</field>
+			<field name="inherit_id" ref="vit_property.view_vit_property_profit_share_tree"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- form view -->
+		<!-- record id="view_property_profit_share_form" model="ir.ui.view">
+			<field name="name">property_profit_share_form</field>
+			<field name="model">vit.property_profit_share</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="vit_property.view_vit_property_profit_share_form"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- search -->
+		<!--record id="view_property_profit_share_search" model="ir.ui.view">
+			<field name="name">property_profit_share</field>
+			<field name="model">vit.property_profit_share</field>
+			<field name="inherit_id" ref="vit_property.view_vit_property_profit_share_search"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- action window -->
+		<!--record id="vit_property.action_property_profit_share" model="ir.actions.act_window">
+			<field name="name">Property Profit Share</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.property_profit_share</field>
+			<field name="view_mode">list,form,kanban,pivot,calendar,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Property Profit Share
+				</p><p>
+
+				</p>
+			</field>
+		</record-->
+
+		<menuitem id="menu_property_profit_share" name="Property Profit Share" parent="vit_property_menu_4" action="action_property_profit_share" sequence="70"/>
+	</data>
+</odoo>

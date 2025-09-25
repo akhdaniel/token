@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_asset_overview" name="Ikhtisar Aset (Modern)">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h4 class="fw-bold mb-1">Ikhtisar Aset</h4>
+                        <p class="text-muted mb-0">
+                            Ringkasan portofolio investasi properti Anda
+                        </p>
+                    </div>
+                    <a href="/properties"
+                       class="btn btn-outline-primary px-4">
+                        <i class="fa fa-plus me-2"></i>Tambah Investasi
+                    </a>
+                </div>
+                <hr/>
+
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 rounded-4">
+                            <div class="card-body p-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    <p class="text-primary text-uppercase small mb-2">Saldo Saya</p>
+                                    <h3 class="fw-bold text-success mb-0">
+                                        <t t-esc="user_balance_currency or '0'" t-options="{'widget': 'monetary', 'display_currency': user.currency_id}"/>
+                                    </h3>
+                                </div>
+                                <a href="#"
+                                   class="btn btn-success w-100 mt-4 py-2">
+                                    Tarik Dana
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 rounded-4">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-muted">Nilai Akun Saat Ini</span>
+                                    <span class="fw-bold text-success">
+                                        <t t-esc="current_account_value or '0'" t-options="{'widget': 'monetary', 'display_currency': user.currency_id}"/>
+                                    </span>
+                                </div>
+                                <hr class="my-3"/>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Investasi Awal</span>
+                                    <span class="fw-semibold text-dark">
+                                        <t t-esc="investasi_awal or 0" t-options="{'widget': 'monetary', 'display_currency': user.currency_id}"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Total Sewa Diperoleh</span>
+                                    <span class="fw-semibold text-dark">
+                                        <t t-esc="total_rent_income or 0" t-options="{'widget': 'monetary', 'display_currency': user.currency_id}"/>
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Token</span>
+                                    <span class="fw-semibold text-dark">
+                                        <t t-esc="token_awal or 0" /> + <t t-esc="token_count or 0" />
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Properti Dimiliki</span>
+                                    <span class="fw-semibold text-dark">
+                                        <t t-esc="owned_property_count or 0"/>
+                                    </span>
+                                </div>
+                                <a href="/investor/nilai_akun" class="btn btn-outline-info w-100 mt-3 py-2">
+                                    Lihat Detail
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card h-100 rounded-4 bg-light">
+                            <div class="card-body p-4 d-flex flex-column justify-content-center text-center">
+                                <h5 class="fw-bold mb-3 text-primary">Optimalkan Portofolio Anda</h5>
+                                <p class="text-muted mb-4">
+                                    Diversifikasi investasi untuk pertumbuhan jangka panjang dan risiko minimal.
+                                </p>
+                                <a href="/properties" class="btn btn-outline-primary px-4">
+                                    Lihat Rekomendasi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="nilai_akun_table" name="Tabel Nilai Akun">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <span class="fw-bold">Detail Nilai Akun</span>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="text-center">Property</th>
+                                            <th class="text-center">Transaksi</th>
+                                            <th class="text-center">Token</th>
+                                            <th class="text-center">Jumlah Investasi</th>
+                                            <th class="text-center">Profit</th>
+                                            <th class="text-center">Token Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="rows" t-as="r">
+                                            <tr>
+                                                <td><t t-esc="r['property_name']"/></td>
+                                                <td><t t-esc="r['transaksi']"/></td>
+                                                <td class="text-center"><t t-esc="r['token']"/></td>
+                                                <td class="text-end">
+                                                <t t-esc="r['jumlah_investasi']"
+                                                    t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                </td>
+                                                <td class="text-end">
+                                                <t t-esc="r['profit']"
+                                                    t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                </td>
+                                                <td class="text-center"><t t-esc="r['token_profit']"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- report qweb view -->
+		<record id="action_report_vit_property_unit" model="ir.actions.report">
+			<field name="name">Property Unit</field>
+			<field name="model">vit.property_unit</field>
+			<field name="report_type">qweb-pdf</field>
+			<field name="report_name">vit_property.vit_property_unit_report</field>
+			<field name="report_file">vit_property.vit_property_unit_report</field>
+			<field name="print_report_name">object.name</field>
+			<field name="binding_model_id" ref="vit_property.model_vit_property_unit"/>
+			<field name="binding_type">report</field>
+		</record>
+		<!-- document template -->
+		<template id="vit_property.vit_property_unit_report_document" >
+			<t t-call="web.external_layout">
+				<t t-set="doc" t-value="doc.with_context({'lang': lang})"/>
+				<div class="page">
+					<h2>
+						Property Unit: <span t-field="doc.name"/>
+					</h2>
+					<div class="row mt32 mb32">
+						<div class="col-auto mw-100 mb-2">
+							<strong>Address</strong>
+							<p class="m-0" t-field="doc.address" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Description</strong>
+							<p class="m-0" t-field="doc.description" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Total Tokens</strong>
+							<p class="m-0" t-field="doc.total_tokens" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Available Tokens</strong>
+							<p class="m-0" t-field="doc.available_tokens" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Price Per Token</strong>
+							<p class="m-0" t-field="doc.price_per_token" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Property Type</strong>
+							<p class="m-0" t-field="doc.property_type" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Cost Price</strong>
+							<p class="m-0" t-field="doc.cost_price" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Sale Price</strong>
+							<p class="m-0" t-field="doc.sale_price" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Is Sale</strong>
+							<p class="m-0" t-field="doc.is_sale" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Is Rent</strong>
+							<p class="m-0" t-field="doc.is_rent" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Rental Price</strong>
+							<p class="m-0" t-field="doc.rental_price" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Sale Price Target</strong>
+							<p class="m-0" t-field="doc.sale_price_target" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Expected Rental Yield</strong>
+							<p class="m-0" t-field="doc.expected_rental_yield" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Stage Is Draft</strong>
+							<p class="m-0" t-field="doc.stage_is_draft" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Stage Is Done</strong>
+							<p class="m-0" t-field="doc.stage_is_done" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Allow Confirm</strong>
+							<p class="m-0" t-field="doc.allow_confirm" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Allow Cancel</strong>
+							<p class="m-0" t-field="doc.allow_cancel" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Stage Name</strong>
+							<p class="m-0" t-field="doc.stage_name" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Product Template</strong>
+							<p class="m-0" t-field="doc.product_template_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Owner</strong>
+							<p class="m-0" t-field="doc.owner_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Currency</strong>
+							<p class="m-0" t-field="doc.currency_id"/>
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Stage</strong>
+							<p class="m-0" t-field="doc.stage_id"/>
+						</div>
+					</div>
+				</div>
+				<div class="oe_structure"/>
+				<h2>Token</h2>
+				<table class="table table-sm o_main_table" name="token_ids_table">
+					<thead>
+						<tr>
+							<td> Name</td>
+							<td> Inherit</td>
+							<td>Is Investment Token</td>
+							<td>Token Code</td>
+							<td>Token State</td>
+							<td>Property Unit</td>
+						</tr>
+					</thead>
+					<tbody class="token_ids_tbody">
+						<tr t-foreach="doc.token_ids" t-as="line">
+							<td><span t-field="line._name" /></td>
+							<td><span t-field="line._inherit" /></td>
+							<td><span t-field="line.is_investment_token" /></td>
+							<td><span t-field="line.token_code" /></td>
+							<td><span t-field="line.token_state" /></td>
+							<td><span t-field="line.property_unit_id" /></td>
+						</tr> <!-- foreach-->
+					</tbody>
+				</table>
+				<div class="oe_structure"/>
+				<h2>Property Unit Image</h2>
+				<table class="table table-sm o_main_table" name="property_unit_image_ids_table">
+					<thead>
+						<tr>
+							<td>Name</td>
+							<td>Sequence</td>
+							<td>Image</td>
+							<td>Property Unit</td>
+						</tr>
+					</thead>
+					<tbody class="property_unit_image_ids_tbody">
+						<tr t-foreach="doc.property_unit_image_ids" t-as="line">
+							<td><span t-field="line.name" /></td>
+							<td><span t-field="line.sequence" /></td>
+							<td><span t-field="line.image" /></td>
+							<td><span t-field="line.property_unit_id" /></td>
+						</tr> <!-- foreach-->
+					</tbody>
+				</table>
+				<div class="oe_structure"/>
+			</t>
+		</template>
+
+		<!-- main template -->
+		<template id="vit_property.vit_property_unit_report">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="doc">
+					<t t-set="lang" t-value="doc.create_uid.lang"/>
+					<t t-call="vit_property.vit_property_unit_report_document" />
+				</t>
+			</t>
+		</template>
+
+	</data>
+</odoo>

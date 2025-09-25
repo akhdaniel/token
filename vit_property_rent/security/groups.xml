@@ -1,0 +1,17 @@
+<odoo>
+	<data>
+		<record model="ir.module.category" id="module_category_property_rent">
+			<field name="name">Property Rent</field>
+			<field name="description">Property Rent Groups</field>
+			<field name="sequence">10</field>
+		</record>
+		<record id="group_property_rent_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="module_category_property_rent"/>
+		</record>
+		<record id="group_property_rent_manager" model="res.groups">
+			<field name="name">Manager</field>
+			<field name="category_id" ref="module_category_property_rent"/>
+		</record>
+	</data>
+</odoo>

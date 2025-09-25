@@ -1,0 +1,184 @@
+<odoo>
+	<!-- ===== LIST VIEW ===== -->
+	<template id="portal_property_list" name="Property List">
+		<t t-call="portal.portal_layout">
+			<section class="goro-section container">
+				<!-- ==== FILTER BAR ==== -->
+				<div class="d-flex justify-content-center mb-4">
+					<div class="btn-group" role="group" aria-label="Filter Properti">
+						<a href="/properties?mode=all"
+						t-att-class="'btn btn-outline-primary px-4 ' + ('active' if mode == 'all' else '')">
+						Semua
+						</a>
+						<a href="/properties?mode=sale"
+						t-att-class="'btn btn-outline-success px-4 ' + ('active' if mode == 'sale' else '')">
+						Dijual
+						</a>
+						<a href="/properties?mode=rent"
+						t-att-class="'btn btn-outline-info px-4 ' + ('active' if mode == 'rent' else '')">
+						Disewakan
+						</a>
+					</div>
+				</div>
+
+				<div class="row g-4">
+					<t t-foreach="properties" t-as="prop">
+
+						<!-- ambil gambar pertama -->
+						<t t-set="first_img" t-value="prop.property_unit_image_ids and prop.property_unit_image_ids[0].image or False"/>
+
+						<div class="col-12 col-md-6 col-lg-4">
+							<div class="card h-100 rounded-3 hover-scale">
+								<img t-att-src="first_img and 'data:image/png;base64,%s' % first_img.decode() or '/web/static/img/placeholder.png'" class="card-img-top rounded-top-4" style="object-fit:cover;height:200px;" alt="Property Image"/>
+
+								<div class="card-body d-flex flex-column">
+									<h5 class="card-title mb-2" t-esc="prop.name"/>
+									<p class="text-muted small mb-2">
+										<i class="fa fa-map-marker me-1"></i>
+										<t t-esc="prop.address"/>
+									</p>
+									<p class="fw-semibold mb-2">Price per Token:
+										<span t-esc="prop.price_per_token" t-options="{'widget': 'monetary', 'display_currency': prop.currency_id}"/>
+									</p>
+									<t t-set="sold_tokens" t-value="prop.total_tokens - prop.available_tokens"/>
+									<t t-set="sold_percent" t-value="(sold_tokens / prop.total_tokens * 100) if prop.total_tokens else 0"/>
+									<div class="progress mb-1" style="height:6px;" role="progressbar" t-att-aria-valuenow="sold_percent" aria-valuemin="0" aria-valuemax="100">
+										<div class="progress-bar" t-att-style="'width:{}%'.format(sold_percent)"></div>
+									</div>
+									<div class="d-flex justify-content-between small mb-2">
+										<span><t t-esc="round(sold_percent,2)"/>%</span>
+										<span><t t-esc="prop.available_tokens"/> token tersedia</span>
+									</div>
+
+									<div class="mt-auto">
+										<a t-att-href="'/properties/%d' % prop.id" class="btn btn-primary w-100 rounded-3">
+											<i class="fa fa-file-contract me-1"></i> Investasi Sekarang
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</t>
+				</div>
+			</section>
+		</t>
+	</template>
+
+	<template id="portal_property_detail" name="Property Detail">
+		<t t-call="portal.portal_layout">
+			<section class="container portal_property_detail_wrapper">
+				<div class="row g-5">
+
+					<!-- ===== KIRI : GAMBAR ===== -->
+					<div class="col-lg-6">
+						<!-- Gambar Utama -->
+						<div class="mb-4">
+							<t t-if="property.property_unit_image_ids and property.property_unit_image_ids[0]">
+								<img id="mainImage"
+									t-att-src="'data:image/png;base64,%s' % property.property_unit_image_ids[0].image.decode()"
+									class="w-100 rounded-3 shadow object-fit-cover"
+									style="max-height:500px;"
+									alt="Property Image"/>
+							</t>
+							<t t-else="">
+								<img 
+									src="/web/static/img/placeholder.png"
+									class="w-100 rounded-3 shadow object-fit-cover"
+									style="max-height:500px;"
+									alt="No Image"/>
+							</t>
+						</div>
+						<!-- Thumbnails -->
+						<t t-if="property.property_unit_image_ids and len(property.property_unit_image_ids) > 1">
+							<div class="row g-3">
+								<t t-foreach="property.property_unit_image_ids[1:]" t-as="img" t-foreach-index="idx">
+									<div class="col-6 col-md-4">
+										<img t-att-src="'data:image/png;base64,%s' % img.image.decode()"
+											t-att-data-full="'data:image/png;base64,%s' % img.image.decode()"
+											class="img-fluid rounded-3 shadow-sm thumb-image"
+											style="height:150px;width:100%;object-fit:cover;cursor:pointer;"
+											alt="Property Image Thumbnail"/>
+									</div>
+								</t>
+							</div>
+						</t>
+					</div>
+
+					<!-- ===== KANAN : INFORMASI & FORM ===== -->
+					<div class="col-lg-6 bg-light py-3 rounded-3 vit-token-wrapper" t-att-data-price-per-token="property.price_per_token">
+						<h1 class="fw-bold mb-3" t-esc="property.name"/>
+						<p class="text-muted mb-3">
+							<i class="fa fa-map-marker me-1 text-muted"></i>
+							<t t-esc="property.address"/>
+						</p>
+						<p class="lead text-muted mb-4" t-esc="property.description or ''"/>
+
+						<div class="mb-4">
+							<p><strong>Tipe Properti:</strong> <t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, '-')"/></p>
+							<p><strong>Expected Rental Yield:</strong> <t t-esc="property.expected_rental_yield"/> %</p>
+						</div>
+
+						<!-- info tambahan -->
+						<div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+							<div class="col">
+								<div class="card h-100 text-center border-0 rounded-3">
+									<div class="card-body">
+										<h6 class="text-muted">Price per Token</h6>
+										<p class="fs-6 fw-bold text-primary mb-0" t-esc="property.price_per_token" t-options="{'widget': 'monetary', 'display_currency': property.currency_id}"/>
+									</div>
+								</div>
+							</div>
+
+							<div class="col">
+								<div class="card h-100 text-center border-0 rounded-3">
+									<div class="card-body">
+										<h6 class="text-muted">Total Tokens</h6>
+										<p class="fs-4 fw-bold text-success mb-0"
+										t-esc="property.total_tokens"/>
+									</div>
+								</div>
+							</div>
+
+							<div class="col">
+								<div class="card h-100 text-center border-0 rounded-3">
+									<div class="card-body">
+										<h6 class="text-muted">Available Tokens</h6>
+										<p class="fs-4 fw-bold text-warning mb-0"
+										t-esc="property.available_tokens"/>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- FORM INVESTASI -->
+						<form t-att-action="'/properties/%d/buy_token' % property.id" method="post" class="needs-validation p-4 rounded-3 shadow-lg">
+							<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+							<input type="hidden" id="property_id" name="property_id" t-att-value="property.id"/>
+
+							<label class="form-label fw-semibold d-flex justify-content-between">
+								<span>Jumlah Token</span>
+								<span id="tokenValue" class="badge bg-primary fs-6 vit-token-value">0</span>
+							</label>
+							<input type="range" id="years" 
+								class="form-range custom-range-progress vit-token-range"
+								name="token_qty"
+								min="0"
+								t-att-max="property.available_tokens"
+								value="0"/>
+
+							<p class="mt-3 mb-4 fs-5 fw-bold">
+								Total Investasi:
+								<span id="totalPrice" class="text-success vit-token-total">0</span>
+							</p>
+
+							<button type="submit"
+									class="btn btn-primary btn-lg w-100 rounded-pill shadow">
+								<i class="fa fa-wallet me-2"></i> Investasi Sekarang
+							</button>
+						</form>
+					</div>
+				</div>
+			</section>
+		</t>
+	</template>
+</odoo>
