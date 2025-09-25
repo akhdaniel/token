@@ -6,7 +6,7 @@ class PropertyWebsite(http.Controller):
 
 	@http.route('/list_properties', type='http', auth='public', methods=['GET'], csrf=False, website=True)
 	def list_properties(self):
-		props = request.env['vit.property_unit'].sudo().search([])
+		props = request.env['vit.property_unit'].sudo().search([('stage_name','=','Published')])
 		data = [
 			{'id': p.id, 'name': p.name, 'price_per_token': p.price_per_token}
 			for p in props

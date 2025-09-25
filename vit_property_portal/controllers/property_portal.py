@@ -10,7 +10,7 @@ class PropertyPortal(http.Controller):
 	@http.route(['/properties'], type='http', auth='public', website=True)
 	def list_properties(self, **kw):
 		mode = kw.get('mode', 'all')
-		domain = ['|', ('is_sale', '=', True), ('is_rent', '=', True)]
+		domain = ['|', ('is_sale', '=', True), ('is_rent', '=', True), ('stage_name','=','Published')]
 		if mode == 'sale':
 			domain = [('is_sale', '=', True)]
 		elif mode == 'rent':
