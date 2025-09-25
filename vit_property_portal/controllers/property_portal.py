@@ -10,13 +10,18 @@ class PropertyPortal(http.Controller):
 	@http.route(['/properties'], type='http', auth='public', website=True)
 	def list_properties(self, **kw):
 		mode = kw.get('mode', 'all')
-		domain = ['|', ('is_sale', '=', True), ('is_rent', '=', True), ('stage_name','=','Published')]
+		domain = [('stage_name', '=', 'Publish'), ('available_tokens','>', 0)]
+
 		if mode == 'sale':
-			domain = [('is_sale', '=', True)]
+			domain.append(('is_sale', '=', True))
 		elif mode == 'rent':
-			domain = [('is_rent', '=', True)]
-		else: 
-			domain = ['|', ('is_sale', '=', True), ('is_rent', '=', True)]
+			domain.append(('is_rent', '=', True))
+		else:
+			domain.append('|')
+			domain.extend([
+				('is_sale', '=', True),
+				('is_rent', '=', True)
+			])
 
 		properties = request.env['vit.property_unit'].sudo().search(domain)
 		return request.render('vit_property_portal.portal_property_list', {
