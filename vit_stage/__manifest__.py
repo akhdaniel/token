@@ -24,7 +24,6 @@
 		"view/model.xml",
 		"view/stage.xml",
 		"report/stage.xml",
-		"data/vit.stage.csv"
 	],
 	"installable": True,
 	"auto_install": False,
