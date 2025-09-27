@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-		<!-- search -->
-		<!--record id="view_investor_search" model="ir.ui.view">
-			<field name="name">investor</field>
+		<!-- form inherited view -->
+		<!-- <record id="view_investor_form_inherit" model="ir.ui.view">
+			<field name="name">view_investor_form_inherit</field>
 			<field name="model">res.partner</field>
-			<field name="inherit_id" ref=""/>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
 			<field name="arch" type="xml">
+				<notebook position="inside">
+					<page id="investor" string="Investor" attrs="{'invisible': [('is_investor', '=', False)]}">
+						<group>
+							<group>
+								<field name="is_investor" />
+								<field name="ktp_number" />
+								<field name="ktp_image" />
+								<field name="selfie_ktp" />
+								<field name="npwp_number" />
+								<field name="npwp_image" />
+								<field name="bank_name" />
+								<field name="bank_account_number" />
+								<field name="bank_account_name" />
+								<field name="total_investment" />
+								<field name="total_tokens" />
+								<field name="total_dividend_received" />
+								<field name="kyc_status" />
+								<field name="kyc_approved_date" />
+							</group>
+						</group>
+					</page>
+				</notebook>
 			</field>
-		</record-->
+		</record> -->
 		<!-- action window -->
 		<!--record id="vit_property.action_investor" model="ir.actions.act_window">
 			<field name="name">Investor</field>
@@ -26,6 +49,6 @@
 			</field>
 		</record-->
 
-		<menuitem id="menu_investor" name="Investor" parent="vit_property_config_menu" action="action_investor" sequence="20"/>
+		<!-- <menuitem id="menu_investor" name="Investor" parent="vit_property_config_menu" action="action_investor" sequence="20"/> -->
 	</data>
 </odoo>

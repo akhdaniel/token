@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_asset_overview" name="Ikhtisar Aset (Modern)">
+    <template id="portal_asset_overview" name="Aset Investor">
         <t t-call="portal.portal_layout">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -102,7 +102,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="withdrawForm" t-att-action="'/portal/withdraw_request'" method="post">
+                            <form id="withdrawForm" t-att-action="'/investor/payment_request'" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <div class="mb-3">
                                     <label for="token_amount" class="form-label fw-semibold">Jumlah Token</label>
                                     <input type="number" min="1" step="1" name="token_amount"
@@ -137,7 +138,7 @@
         </t>
     </template>
 
-    <template id="nilai_akun_table" name="Tabel Nilai Akun">
+    <template id="nilai_akun_table" name="Ikhtisar Nilai Akun">
         <t t-call="portal.portal_layout">
             <div class="container">
                 <div class="row">

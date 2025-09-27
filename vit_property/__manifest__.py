@@ -47,7 +47,11 @@
 		"view/currency.xml",
 		"view/property_unit_image.xml",
 		"report/property_unit_image.xml",
-		"view/owner_users.xml"
+		"view/owner_users.xml",
+		"view/payment_request.xml",
+		"report/payment_request.xml",
+		"data/sequence_payment_request.xml",
+		"view/bank.xml"
 	],
 	"installable": True,
 	"auto_install": False,

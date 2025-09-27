@@ -5,3 +5,4 @@ from . import test_property_profit_share_line
 from . import test_order_token
 from . import test_property_token_move
 from . import test_property_unit_image
+from . import test_payment_request

@@ -16,7 +16,7 @@ class investor(models.Model):
 
 
 	_inherit = "res.partner"
-	is_investor = fields.Boolean( string=_("Is Investor"), default=False)
+	is_investor = fields.Boolean( string=_("Is Investor"))
 	ktp_number = fields.Char( string=_("Ktp Number"))
 	ktp_image = fields.Binary( string=_("Ktp Image"))
 	selfie_ktp = fields.Binary( string=_("Selfie Ktp"))

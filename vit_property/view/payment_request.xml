@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<record id="view_vit_payment_request_tree" model="ir.ui.view">
+			<field name="name">vit_payment_request_tree</field>
+			<field name="model">vit.payment_request</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<list string="Payment Request">
+					<field name="name" /> <!-- 100-->
+					<field name="stage_id" /> <!-- 100-->
+					<field name="token_amount" /> <!-- 101-->
+					<field name="investor_id" /> <!-- 101-->
+					<field name="request_amount" /> <!-- 102-->
+					<field name="bank_id" /> <!-- 102-->
+				</list>
+			</field>
+		</record>
+		<!-- pivot view -->
+		<record id="view_vit_payment_request_pivot" model="ir.ui.view">
+			<field name="name">vit_payment_request_tree</field>
+			<field name="model">vit.payment_request</field>
+			<field name="type">pivot</field>
+			<field name="arch" type="xml">
+				<pivot string="Payment Request">
+					<field name="stage_id" type="row"/>
+					<field name="investor_id" type="row"/>
+					<field name="bank_id" type="row"/>
+				</pivot>
+			</field>
+		</record>
+		<!-- form view -->
+		<record id="view_vit_payment_request_form" model="ir.ui.view">
+			<field name="name">vit_payment_request_form</field>
+			<field name="model">vit.payment_request</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form string="Payment Request">
+					<header>
+						<button string="Confirm" type="object" name="action_confirm" invisible="allow_confirm==False" class="oe_highlight" icon="fa-check-circle" />
+						<button string="Cancel" type="object" name="action_cancel" invisible="allow_cancel==False" icon="fa-times-circle"/>
+						<field name="stage_id" widget="statusbar" options="{'fold_field':'fold'}" />
+						<button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+								<!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+								<!--field name="detail_ids" invisible="1"/-->
+							<!--/button-->
+						</div>
+						<div class="oe_title">
+							<label for="name" class="oe_edit_only" string="Payment Request Name"/>
+							<h1><field name="name" /></h1>
+						</div>
+						<group>
+							<group> <!-- left -->
+								<field name="stage_is_draft" invisible="True" />
+								<field name="stage_is_done" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="allow_confirm" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="allow_cancel" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="stage_name" invisible="True" readonly="stage_is_draft==False"/>
+								<field name="token_amount"  readonly="stage_is_draft==False"/>
+								<field name="request_amount"  readonly="stage_is_draft==False"/>
+							</group>
+							<group> <!-- right -->
+								<field name="investor_id"  readonly="stage_is_draft==False"/>
+								<field name="bank_id"  readonly="stage_is_draft==False"/>
+							</group>
+						</group>
+						<notebook>
+						</notebook>
+						<group name="note_group" col="6" class="mt-2 mt-md-0">
+							<group colspan="4">
+							</group>
+							<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+							</group>
+							<div class="clearfix"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<!-- search -->
+		<record id="view_vit_payment_request_search" model="ir.ui.view">
+			<field name="name">vit_payment_request</field>
+			<field name="model">vit.payment_request</field>
+			<field name="arch" type="xml">
+				<search string="Payment Request">
+
+					<filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
+					<filter string="Token Amount" name="filter_by_token_amount" domain="[('token_amount','=','')]" />
+					<filter string="Request Amount" name="filter_by_request_amount" domain="[('request_amount','=','')]" />
+					<filter string="Stage Is Draft" name="filter_by_stage_is_draft" domain="[('stage_is_draft','=','')]" />
+					<filter string="Stage Is Done" name="filter_by_stage_is_done" domain="[('stage_is_done','=','')]" />
+					<filter string="Allow Confirm" name="filter_by_allow_confirm" domain="[('allow_confirm','=','')]" />
+					<filter string="Allow Cancel" name="filter_by_allow_cancel" domain="[('allow_cancel','=','')]" />
+					<filter string="Stage Name" name="filter_by_stage_name" domain="[('stage_name','=','')]" />
+					<field name="name" select="True"/>
+					<field name="token_amount" select="True"/>
+					<field name="request_amount" select="True"/>
+					<field name="stage_is_draft" select="True"/>
+					<field name="stage_is_done" select="True"/>
+					<field name="allow_confirm" select="True"/>
+					<field name="allow_cancel" select="True"/>
+					<field name="stage_name" select="True"/>
+					<field name="stage_id" select="True"/>
+					<field name="investor_id" select="True"/>
+					<field name="bank_id" select="True"/>
+					<group string="Group By..">
+						<filter string="Stage" domain="[]" name="group_by_stage_id" context="{'group_by':'stage_id'}"/>
+						<filter string="Investor" domain="[]" name="group_by_investor_id" context="{'group_by':'investor_id'}"/>
+						<filter string="Bank" domain="[]" name="group_by_bank_id" context="{'group_by':'bank_id'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		<!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+		<record id="view_vit_payment_request_kanban" model="ir.ui.view" >
+			<field name="name">vit_payment_request</field>
+			<field name="model">vit.payment_request</field>
+			<field name="arch" type="xml">
+				<kanban version="7.0">
+					<field name="id" />
+					<templates>
+						<t t-name="card" class="flex-row">
+							<main class="p-2">
+								<h4>
+									<a type="open"><field name="name"/></a>
+								</h4>
+							</main>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+		<!-- graph -->
+		<record id="view_vit_payment_request_graph" model="ir.ui.view">
+			<field name="name">vit_payment_request</field>
+			<field name="model">vit.payment_request</field>
+			<field name="arch" type="xml">
+				<graph string="Payment Request" type="bar">
+					<field name="stage_id"/>
+				</graph>
+			</field>
+		</record>
+		<!-- action window -->
+		<record id="action_payment_request" model="ir.actions.act_window">
+			<field name="name">Payment Request</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.payment_request</field>
+			<field name="view_mode">list,form,kanban,pivot,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Payment Request
+				</p><p>
+
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_payment_request" name="Payment Request" parent="vit_property_sub_menu" action="action_payment_request" sequence="4"/>
+	</data>
+</odoo>

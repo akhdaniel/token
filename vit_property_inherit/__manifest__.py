@@ -22,7 +22,7 @@
 	"description": "",
 	"data": [
 		"security/ir.model.access.csv",
-		#"view/investor.xml",
+		"view/investor.xml",
 		# "view/product_template.xml",
 		#"view/sale_order.xml",
 		# "view/property_unit.xml",

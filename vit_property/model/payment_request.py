@@ -4,25 +4,23 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
-class property_profit_share(models.Model):
+class payment_request(models.Model):
 	"""
 	{
-	"sequence":3
+	"sequence":4
 	}
 	"""
 
-	_name = "vit.property_profit_share"
-	_description = "vit.property_profit_share"
+	_name = "vit.payment_request"
+	_description = "vit.payment_request"
 
 
 	def action_reload_view(self):
 		pass
 
-	name = fields.Char( required=True, copy=False, default="New", readonly=True, string="Allocation Name")
-	start_date = fields.Date( string=_("Start Date"))
-	end_date = fields.Date( string=_("End Date"))
-	total_revenue = fields.Float(string="Total Gross Revenue")
-	total_profit_share_amount = fields.Float(string="Total Amount to Share")
+	name = fields.Char( required=True, copy=False, default="New", readonly=True,  string=_("Name"))
+	token_amount = fields.Integer(readonly=True,  string=_("Token Amount"))
+	request_amount = fields.Float(readonly=True,  string=_("Request Amount"))
 	stage_is_draft = fields.Boolean(related="stage_id.draft", store=True,  string=_("Stage Is Draft"))
 	stage_is_done = fields.Boolean(related="stage_id.done", store=True,  string=_("Stage Is Done"))
 	allow_confirm = fields.Boolean(related="stage_id.allow_confirm", store=True,  string=_("Allow Confirm"))
@@ -34,8 +32,8 @@ class property_profit_share(models.Model):
 	def create(self, vals):
 		for val in vals:
 			if not val.get("name", False) or val["name"] == "New":
-				val["name"] = self.env["ir.sequence"].next_by_code("vit.property_profit_share") or "Error Number!!!"
-		return super(property_profit_share, self).create(vals)
+				val["name"] = self.env["ir.sequence"].next_by_code("vit.payment_request") or "Error Number!!!"
+		return super(payment_request, self).create(vals)
 
 	def _get_first_stage(self):
 		try:
@@ -79,16 +77,15 @@ class property_profit_share(models.Model):
 		for me_id in self :
 			if not me_id.stage_id.draft:
 				raise UserError("Cannot delete non draft record!  Make sure that the Stage draft flag is checked.")
-		return super(property_profit_share, self).unlink()
+		return super(payment_request, self).unlink()
 
 	def copy(self, default=None):
 		default = dict(default or {})
 		default.update({
 			'name': self.name + ' (Copy)'
 		})
-		return super(property_profit_share, self).copy(default)
+		return super(payment_request, self).copy(default)
 
-	property_unit_id = fields.Many2one(comodel_name="vit.property_unit", string="Property", required=True)
 	stage_id = fields.Many2one(comodel_name="vit.stage",  default=_get_first_stage, copy=False, group_expand="_group_expand_states",  string=_("Stage"))
-	investor_id = fields.Many2one(comodel_name="res.partner",  string=_("Investor"))
-	profit_share_line_ids = fields.One2many(comodel_name="vit.property_profit_share_line",  inverse_name="profit_share_id", string="Profit Share Details")
+	investor_id = fields.Many2one(comodel_name="res.partner", readonly=True,  string=_("Investor"))
+	bank_id = fields.Many2one(comodel_name="res.partner.bank", readonly=True,  string=_("Bank"))

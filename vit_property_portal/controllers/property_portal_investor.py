@@ -97,3 +97,29 @@ class PropertyPortalInvestor(http.Controller):
 				'page_name': 'nilai_akun',
 			}
 		)
+
+	@http.route(['/investor/payment_request'], type='http', auth="user", website=True, csrf=True)
+	def portal_withdraw_request(self, **post):
+		token_amount = post.get('token_amount')
+		bank_account = post.get('bank_account')
+		if not token_amount or not bank_account:
+			return request.redirect('/my/home?error=missing_data')
+
+		try:
+			token_amount = int(token_amount)
+			bank_id = int(bank_account)
+		except ValueError:
+			return request.redirect('/my/home?error=invalid_data')
+
+		user = request.env.user
+		partner = user.partner_id
+		request_amount = token_amount
+
+		payment = request.env['vit.payment_request'].sudo().create({
+			'investor_id': partner.id,
+			'bank_id': bank_id,
+			'token_amount': token_amount,
+			'request_amount': request_amount,
+		})
+
+		return request.redirect('/my/home?success=withdraw_submitted')
