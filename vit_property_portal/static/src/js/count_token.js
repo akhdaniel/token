@@ -14,11 +14,27 @@ publicWidget.registry.VitPropertyDetail = publicWidget.Widget.extend({
             this._range = tokenWrapper.querySelector('.vit-token-range');
             this._value = tokenWrapper.querySelector('.vit-token-value');
             this._total = tokenWrapper.querySelector('.vit-token-total');
+            this._numberInput = tokenWrapper.querySelector('.vit-token-input');
 
             if (this._range && this._value && this._total) {
                 this._updateDisplay(this._range.value);
+                // geser slider -> update input number
                 this._range.addEventListener('input', ev => {
-                    this._updateDisplay(ev.target.value);
+                    const val = ev.target.value;
+                    this._numberInput.value = val;
+                    this._updateDisplay(val);
+                });
+
+                // ketik angka -> update slider
+                this._numberInput.addEventListener('input', ev => {
+                    let val = parseInt(ev.target.value, 10) || 0;
+                    // batasi sesuai min / max slider
+                    const min = parseInt(this._range.min, 10) || 0;
+                    const max = parseInt(this._range.max, 10) || 0;
+                    val = Math.min(Math.max(val, min), max);
+                    this._range.value = val;
+                    this._updateDisplay(val);
+                    this._updateSliderBackground();
                 });
             }
         }

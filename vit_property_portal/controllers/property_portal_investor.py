@@ -1,5 +1,7 @@
 from odoo import http
 from odoo.http import request
+import logging
+_logger = logging.getLogger(__name__)
 
 class PropertyPortalInvestor(http.Controller):
 	@http.route(['/investor/ikhtisar'], type='http', auth="user", website=True)
@@ -71,9 +73,22 @@ class PropertyPortalInvestor(http.Controller):
 				'token_profit': total_token_profit,
 			})
 
+		# === Summary + Total Saldo ===
+		total_investasi = sum(r['jumlah_investasi'] for r in result_rows)
+		total_profit    = sum(r['profit'] for r in result_rows)
+
+		summary = {
+			'total_token': sum(r['token'] for r in result_rows),
+			'total_investasi': sum(r['jumlah_investasi'] for r in result_rows),
+			'total_profit': sum(r['profit'] for r in result_rows),
+			'total_token_profit': sum(r['token_profit'] for r in result_rows),
+			'total_saldo': total_investasi + total_profit, 
+		}
+
 		return request.render('vit_property_portal.nilai_akun_table',  
 			{
 				'rows': result_rows, 
+				'summary': summary,  
 				'currency': user.currency_id,
 				'breadcrumbs': [
 					('Portofolio', '/investor/ikhtisar'),

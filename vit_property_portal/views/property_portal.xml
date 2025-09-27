@@ -64,14 +64,11 @@
 		</t>
 	</template>
 
-	<template id="portal_property_detail" name="Property Detail">
+	<!-- <template id="portal_property_detail" name="Beli Token">
 		<t t-call="portal.portal_layout">
 			<section class="container portal_property_detail_wrapper">
 				<div class="row g-5">
-
-					<!-- ===== KIRI : GAMBAR ===== -->
 					<div class="col-lg-6">
-						<!-- Gambar Utama -->
 						<div class="mb-4">
 							<t t-if="property.property_unit_image_ids and property.property_unit_image_ids[0]">
 								<img id="mainImage"
@@ -88,7 +85,6 @@
 									alt="No Image"/>
 							</t>
 						</div>
-						<!-- Thumbnails -->
 						<t t-if="property.property_unit_image_ids and len(property.property_unit_image_ids) > 1">
 							<div class="row g-3">
 								<t t-foreach="property.property_unit_image_ids[1:]" t-as="img" t-foreach-index="idx">
@@ -104,7 +100,6 @@
 						</t>
 					</div>
 
-					<!-- ===== KANAN : INFORMASI & FORM ===== -->
 					<div class="col-lg-6 bg-light py-3 rounded-3 vit-token-wrapper" t-att-data-price-per-token="property.price_per_token">
 						<h1 class="fw-bold mb-3" t-esc="property.name"/>
 						<p class="text-muted mb-3">
@@ -118,7 +113,6 @@
 							<p><strong>Expected Rental Yield:</strong> <t t-esc="property.expected_rental_yield"/> %</p>
 						</div>
 
-						<!-- info tambahan -->
 						<div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
 							<div class="col">
 								<div class="card h-100 text-center border-0 rounded-3">
@@ -150,7 +144,6 @@
 							</div>
 						</div>
 
-						<!-- FORM INVESTASI -->
 						<form t-att-action="'/properties/%d/buy_token' % property.id" method="post" class="needs-validation p-4 rounded-3 shadow-lg">
 							<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 							<input type="hidden" id="property_id" name="property_id" t-att-value="property.id"/>
@@ -160,8 +153,15 @@
 								<span id="tokenValue" class="badge bg-primary fs-6 vit-token-value">0</span>
 							</label>
 							<input type="range" id="years" 
-								class="form-range custom-range-progress vit-token-range"
+								class="form-range mb-3 custom-range-progress vit-token-range"
 								name="token_qty"
+								min="0"
+								t-att-max="property.available_tokens"
+								value="0"/>
+							
+							<input type="number"
+								class="form-control vit-token-input"
+								name="token_qty_number"
 								min="0"
 								t-att-max="property.available_tokens"
 								value="0"/>
@@ -176,6 +176,124 @@
 								<i class="fa fa-wallet me-2"></i> Investasi Sekarang
 							</button>
 						</form>
+					</div>
+				</div>
+			</section>
+		</t>
+	</template> -->
+
+	<template id="portal_property_detail" name="Beli Token">
+		<t t-call="portal.portal_layout">
+			<section class="container portal_property_detail_wrapper">
+				<div class="row g-5 align-items-start">
+
+					<!-- === LEFT : GALLERY === -->
+					<div class="col-lg-6">
+						<!-- Main Image -->
+						<div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-sm mb-3">
+							<t t-if="property.property_unit_image_ids and property.property_unit_image_ids[0]">
+							<img id="mainImage"
+								t-att-src="'data:image/png;base64,%s' % property.property_unit_image_ids[0].image.decode()"
+								class="w-100 h-100 object-fit-cover"
+								alt="Property Image"/>
+							</t>
+							<t t-else="">
+							<img src="/web/static/img/placeholder.png"
+								class="w-100 h-100 object-fit-cover"
+								alt="No Image"/>
+							</t>
+						</div>
+
+						<!-- Thumbnails -->
+						<t t-if="property.property_unit_image_ids and len(property.property_unit_image_ids) > 1">
+							<div class="d-flex flex-wrap gap-2">
+							<t t-foreach="property.property_unit_image_ids[1:]" t-as="img">
+								<img t-att-src="'data:image/png;base64,%s' % img.image.decode()"
+									t-att-data-full="'data:image/png;base64,%s' % img.image.decode()"
+									class="thumb-image rounded-3 shadow-sm"
+									style="height:90px;width:90px;object-fit:cover;cursor:pointer;"
+									alt="Property Thumbnail"/>
+							</t>
+							</div>
+						</t>
+					</div>
+
+					<!-- === RIGHT : DETAILS & FORM === -->
+					<div class="col-lg-6 vit-token-wrapper" t-att-data-price-per-token="property.price_per_token">
+						<div class="bg-white rounded-4 shadow-lg p-4">
+							<!-- Title & Address -->
+							<h1 class="fw-bold mb-2 text-primary" t-esc="property.name"/>
+							<p class="text-secondary mb-3">
+							<i class="fa fa-map-marker me-2"></i>
+							<t t-esc="property.address"/>
+							</p>
+							<p class="text-muted mb-4 lh-lg" t-esc="property.description or ''"/>
+							<div class="mb-4">
+								<p><strong>Tipe Properti:</strong> <t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, '-')"/></p>
+								<p><strong>Expected Rental Yield:</strong> <t t-esc="property.expected_rental_yield"/> %</p>
+							</div>
+
+							<!-- Property Info -->
+							<div class="row text-center g-3 mb-4">
+							<div class="col">
+								<div class="p-3 rounded-3 bg-light h-100">
+								<small class="text-muted d-block">Price/Token</small>
+								<span class="fw-bold fs-5 text-primary"
+										t-esc="property.price_per_token"
+										t-options="{'widget':'monetary','display_currency':property.currency_id}"/>
+								</div>
+							</div>
+							<div class="col">
+								<div class="p-3 rounded-3 bg-light h-100">
+								<small class="text-muted d-block">Total Tokens</small>
+								<span class="fw-bold fs-5 text-success"
+										t-esc="property.total_tokens"/>
+								</div>
+							</div>
+							<div class="col">
+								<div class="p-3 rounded-3 bg-light h-100">
+									<small class="text-muted d-block">Available</small>
+									<span class="fw-bold fs-5 text-warning"
+											t-esc="property.available_tokens"/>
+									</div>
+								</div>
+							</div>
+
+							<!-- Investment Form -->
+							<form t-att-action="'/properties/%d/buy_token' % property.id" method="post" class="needs-validation">
+								<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+								<input type="hidden" name="property_id" t-att-value="property.id"/>
+
+								<label class="form-label fw-semibold d-flex justify-content-between">
+									<span>Jumlah Token</span>
+									<span id="tokenValue" class="badge bg-primary fs-6 vit-token-value">0</span>
+								</label>
+
+								<input type="range" 
+										name="token_qty"
+										class="form-range mb-4 custom-range-progress vit-token-range"
+										min="0"
+										t-att-max="property.available_tokens"
+										value="0"
+										id="years"/>
+
+								<input type="number"
+										name="token_qty_number"
+										class="form-control mb-3 mt-2 vit-token-input"
+										min="0"
+										t-att-max="property.available_tokens"
+										id="tokenInput"/>
+
+								<div class="d-flex flex-column mb-4">
+									<span class="fw-semibold">Total Investasi:</span>
+									<span id="totalPrice" class="fw-bold text-success fs-5 text-end vit-token-total">0</span>
+								</div>
+
+								<button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm">
+									<i class="fa fa-wallet me-2"></i> Investasi Sekarang
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</section>

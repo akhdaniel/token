@@ -5,7 +5,12 @@ class OauthController(http.Controller):
 
 	@http.route('/choose-role', type='http', auth='user', website=True)
 	def choose_role(self, **kw):
-		return request.render('vit_oauth_portal.choose_role_template', {})
+		return request.render('vit_oauth_portal.choose_role_template', {
+			'breadcrumbs': [
+				('Choose Role', False),   
+			],
+			'page_name': 'choose_role_template',
+		})
 
 	@http.route(['/choose-role/submit'], type='http', auth='user', methods=['POST'], website=True, csrf=True)
 	def choose_role_submit(self, **post):

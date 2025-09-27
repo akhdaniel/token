@@ -53,6 +53,6 @@
 			</field>
 		</record-->
 
-		<!-- <menuitem id="menu_rent_transaction" name="Rent Transaction" parent="vit_property_rent_sub_menu" action="action_rent_transaction" sequence="40"/> -->
+		<menuitem id="menu_rent_transaction" name="Rent Transaction" parent="vit_property.vit_property_sub_menu" action="vit_property_rent.action_rent_transaction" sequence="2"/>
 	</data>
 </odoo>

@@ -11494,6 +11494,7 @@
 							}
 						}
 					],
+					"documentation": "{\n\"xml:tree:create\":\"False\",\n\"sequence\":3\n}",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -11981,6 +11982,7 @@
 							}
 						}
 					],
+					"documentation": "{\n\"sequence\":1\n}",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
@@ -16533,7 +16535,7 @@
 							}
 						}
 					],
-					"documentation": "{\n\"parent_menu\":\"vit_property.vit_property_sub_menu\"\n}",
+					"documentation": "{\n\"menu\":0\n}",
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
