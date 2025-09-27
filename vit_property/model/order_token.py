@@ -5,6 +5,11 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 class order_token(models.Model):
+	"""
+	{
+	"sequence":1
+	}
+	"""
 
 	_name = "vit.order_token"
 	_description = "vit.order_token"

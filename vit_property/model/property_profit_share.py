@@ -5,6 +5,12 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 class property_profit_share(models.Model):
+	"""
+	{
+	"xml:tree:create":"False",
+	"sequence":3
+	}
+	"""
 
 	_name = "vit.property_profit_share"
 	_description = "vit.property_profit_share"

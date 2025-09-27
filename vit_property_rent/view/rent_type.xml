@@ -10,7 +10,7 @@
 				<list string="Rent Type">
 					<field name="name" /> <!-- 100-->
 					<field name="period" /> <!-- 101-->
-					<field name="date" widget="day_month"/> <!-- 102-->
+					<field name="date" widget="date" options="{'format': 'dd-MM'}"/> <!-- 102-->
 				</list>
 			</field>
 		</record>
@@ -39,7 +39,7 @@
 						<group>
 							<group> <!-- left -->
 								<field name="period"  />
-								<field name="date" />
+								<field name="date" widget="date" options="{'format': 'dd-MM'}" />
 							</group>
 							<group> <!-- right -->
 							</group>
@@ -120,6 +120,6 @@
 			</field>
 		</record>
 
-		<menuitem id="menu_rent_type" name="Rent Type" parent="vit_property.vit_property_config_menu" action="action_rent_type" sequence="60"/>
+		<menuitem id="menu_rent_type" name="Rent Type" parent="vit_property_rent_config_menu" action="action_rent_type" sequence="60"/>
 	</data>
 </odoo>

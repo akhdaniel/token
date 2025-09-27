@@ -191,6 +191,6 @@
 			</field>
 		</record>
 
-		<menuitem id="menu_order_token" name="Order Token" parent="vit_property_sub_menu" action="action_order_token" sequence="120"/>
+		<menuitem id="menu_order_token" name="Order Token" parent="vit_property_sub_menu" action="action_order_token" sequence="1"/>
 	</data>
 </odoo>

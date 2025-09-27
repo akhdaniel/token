@@ -1,4 +1,6 @@
 from odoo import models
+import logging
+_logger = logging.getLogger(__name__)
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'

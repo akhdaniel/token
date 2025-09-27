@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class rent_transaction(models.Model):
 	"""
 	{
-	"parent_menu":"vit_property.vit_property_sub_menu"
+	"menu":0
 	}
 	"""
 

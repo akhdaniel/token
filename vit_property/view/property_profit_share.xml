@@ -189,6 +189,6 @@
 			</field>
 		</record>
 
-		<menuitem id="menu_property_profit_share" name="Property Profit Share" parent="vit_property_sub_menu" action="action_property_profit_share" sequence="70"/>
+		<menuitem id="menu_property_profit_share" name="Property Profit Share" parent="vit_property_sub_menu" action="action_property_profit_share" sequence="3"/>
 	</data>
 </odoo>

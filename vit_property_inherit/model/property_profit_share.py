@@ -66,68 +66,65 @@ class property_profit_share(models.Model):
 	def _group_expand_states(self, stages, domain, order):
 		return self.env['vit.stage'].search([('model_id', '=', self.env['ir.model']._get_id(self._name))])
 
-	# def unlink(self):
-	# 	for me_id in self :
-	# 		if not me_id.stage_id.draft:
-	# 			raise UserError("Cannot delete non draft record!  Make sure that the Stage draft flag is checked.")
-	# 	return super(property_profit_share, self).unlink()
-
+	def unlink(self):
+		for me_id in self :
+			if not me_id.stage_id.draft:
+				raise UserError("Cannot delete non draft record!  Make sure that the Stage draft flag is checked.")
+		return super(property_profit_share, self).unlink()
 
 	def action_confirm(self):
-		"""Hitung dan buat detail profit share per investor"""
-		for rec in self:
-			if not rec.total_profit_share_amount:
-				raise UserError(_("Total profit share amount must be set."))
+		pass
 
-			# 1) Cari token terjual untuk property ini
-			sold_tokens = self.env['product.product'].search([
-				('property_unit_id', '=', rec.property_unit_id.id),
-				# ('token_state', '=', 'sold')
-			])
+	# def action_confirm(self):
+	# 	for rec in self:
+	# 		if not rec.total_profit_share_amount:
+	# 			raise UserError(_("Total profit share amount must be set."))
 
-			if not sold_tokens:
-				raise UserError(_("No sold tokens found for this property."))
+	# 		confirmed_orders = self.env['vit.order_token'].search([
+	# 			('property_unit_id', '=', rec.property_unit_id.id),
+	# 			('status', '=', 'confirmed'),
+	# 		])
+	# 		if not confirmed_orders:
+	# 			raise UserError(_("No confirmed investor orders found."))
 
-			total_sold = len(sold_tokens)
+	# 		total_sold = sum(confirmed_orders.mapped('qty_token'))
+	# 		if total_sold <= 0:
+	# 			raise UserError(_("Total sold tokens must be greater than zero."))
 
-			# 2) Hitung kepemilikan token per investor
-			confirmed_orders = self.env['vit.order_token'].search([
-				('property_unit_id', '=', rec.property_unit_id.id),
-				('status', '=', 'confirmed'),
-				('to_partner_id', '=', rec.investor_id.id),
-			])
+	# 		investor_map = {}
+	# 		for order in confirmed_orders:
+	# 			partner = order.to_partner_id
+	# 			if not partner:
+	# 				continue
+	# 			investor_map.setdefault(partner.id, 0)
+	# 			investor_map[partner.id] += order.qty_token
 
-			if not confirmed_orders:
-				raise UserError(_("No confirmed investor orders found."))
+	# 		new_headers = []
+	# 		for inv_id, token_count in investor_map.items():
+	# 			proportion = token_count / total_sold
+	# 			amount = proportion * rec.total_profit_share_amount
 
-			# Map investor -> total token yg dimiliki
-			investor_map = {}
-			for order in confirmed_orders:
-				if not order.to_partner_id:
-					continue
-				investor_map.setdefault(order.to_partner_id.id, 0)
-				investor_map[order.to_partner_id.id] += order.qty_token
+	# 			new_header = self.env['vit.property_profit_share'].create({
+	# 				'name': f"{rec.name} - {self.env['res.partner'].browse(inv_id).name}",
+	# 				'start_date': rec.start_date,
+	# 				'end_date': rec.end_date,
+	# 				'total_revenue': rec.total_revenue,
+	# 				'total_profit_share_amount': amount,   
+	# 				'property_unit_id': rec.property_unit_id.id,
+	# 				'investor_id': inv_id,
+	# 				'rent_transaction_id': self.rent_transaction_id.id,
+	# 				'property_unit_id': self.property_unit_id.id,
+	# 				'stage_id': rec.stage_id.id,  
+	# 			})
 
-			# 3) Buat detail profit share per investor
-			line_vals = []
-			for inv_id, token_count in investor_map.items():
-				proportion = token_count / total_sold
-				amount = proportion * rec.total_profit_share_amount
-				line_vals.append({
-					'name': rec.name,
-					'token_count': amount / rec.property_unit_id.price_per_token,
-					'amount': amount,
-					'profit_share_id': rec.id,
-				})
+	# 			self.env['vit.property_profit_share_line'].create({
+	# 				'name': new_header.name,
+	# 				'token_count': token_count,
+	# 				'amount': amount,
+	# 				'profit_share_id': new_header.id,
+	# 			})
+	# 			new_headers.append(new_header.id)
 
-			# hapus detail lama (opsional)
-			rec.profit_share_line_ids.unlink()
-			self.env['vit.property_profit_share_line'].create(line_vals)
+	# 		rec.stage_id = rec._get_next_stage()
 
-			# 4) Pindahkan ke stage berikut (menggunakan logic stage bawaan)
-			next_stage = rec._get_next_stage()
-			rec.stage_id = next_stage
-			if rec.stage_id.execute_enter and \
-			   hasattr(rec, rec.stage_id.execute_enter) and \
-			   callable(getattr(rec, rec.stage_id.execute_enter)):
-				eval(f"rec.{rec.stage_id.execute_enter}()")
+	# 	return True

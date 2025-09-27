@@ -27,7 +27,7 @@
 		#"view/sale_order.xml",
 		# "view/property_unit.xml",
 		#"view/owner.xml",
-		#"view/property_profit_share.xml",
+		"view/property_profit_share.xml",
 		#"data/sequence_property_profit_share.xml",
 		#"view/property_profit_share_line.xml",
 		#"view/account_move.xml",

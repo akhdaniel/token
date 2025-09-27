@@ -13,3 +13,4 @@ from . import stage
 from . import payment_transaction
 from . import property_unit_image
 from . import property_profit_share
+from . import payment_register

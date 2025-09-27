@@ -10,7 +10,10 @@
     "category": "Utility",
     "license": "OPL-1",
     "data": [
-        "view/profit_share_rent_rel.xml"
+        "security/ir.model.access.csv",
+        "wizard/property_profit_share_wizard.xml",
+        "view/profit_share_rent_rel.xml",
+        "view/rent_transaction.xml",
     ],
     "installable": True,
     "application": True,

@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_property_profit_share_wizard_form" model="ir.ui.view">
+        <field name="name">property.profit.share.create.wizard.form</field>
+        <field name="model">vit.property_profit_share_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Buat Profit Share Baru">
+                <group>
+                    <field name="rent_transaction_id" />
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="property_unit_id"/>
+                    <field name="total_profit_share_amount"/>
+                </group>
+                <footer>
+                    <button string="Create"
+                            name="action_create_profit_share"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_profit_share_create_wizard" model="ir.actions.act_window">
+        <field name="name">Create Profit Share</field>
+        <field name="res_model">vit.property_profit_share_wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

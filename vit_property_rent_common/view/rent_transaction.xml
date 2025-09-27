@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="view_vit_rent_transaction_form_inherit_profit" model="ir.ui.view">
+            <field name="name">vit.rent.transaction.form.inherit.profit</field>
+            <field name="model">vit.rent_transaction</field>
+            <field name="inherit_id" ref="vit_property_rent.view_vit_rent_transaction_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[@name='action_confirm']" position="after">
+                    <button name="%(action_open_profit_share_create_wizard)d"
+                        string="Run Profit Share"
+                        type="action"
+                        class="oe_highlight" 
+                        context="{
+                            'default_rent_transaction_id': id, 
+                            'default_property_unit_id': property_unit_id,
+                            'default_total_profit_share_amount': amount_total_rent,
+                        }"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
