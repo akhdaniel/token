@@ -26,10 +26,7 @@
                                         <t t-esc="user_balance_currency or 0" t-options="{'widget': 'monetary', 'display_currency': user.currency_id}"/>
                                     </h3>
                                 </div>
-                                <!-- Tombol Tarik Dana -->
-                                <button class="btn btn-success w-100 mt-4 py-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#withdrawModal">
+                                <button class="btn btn-success w-100 mt-4 py-2" data-bs-toggle="modal" data-bs-target="#withdrawModal">
                                     Tarik Dana
                                 </button>
                             </div>
@@ -93,7 +90,7 @@
                 </div>
             </div>
 
-            <!-- ===== Modal Penarikan Dana ===== -->
+            <!-- Modal Penarikan Dana -->
             <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="withdrawModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content rounded-4 border-0 shadow">
@@ -134,7 +131,6 @@
                     </div>
                 </div>
             </div>
-            <!-- ===== End Modal ===== -->
         </t>
     </template>
 
@@ -179,7 +175,6 @@
                                     </tbody>
                                 </table>
 
-                                <!-- Ringkasan / Summary -->
                                 <hr/>
                                 <div class="card bg-light border-0">
                                     <div class="card-body">
@@ -214,16 +209,68 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- End Ringkasan -->
-
-                                <!-- Tambahan Total Saldo -->
+                                
                                 <hr class="my-3"/>
                                 <div class="text-center">
                                     <h5 class="fw-bold mb-1">Total Saldo</h5>
                                     <h4 class="fw-bold text-success">
-                                        <t t-esc="summary['total_saldo']"
-                                        t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                        <t t-esc="summary['total_saldo']" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
                                     </h4>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h5 class="fw-bold mb-3">Detail Token per Properti</h5>
+                                    <div class="accordion" id="tokenAccordion">
+                                        <t t-foreach="property_tokens_map.values()" t-as="pt">
+                                            <t t-set="slug" t-value="pt['property_name'].replace(' ', '-')"/>
+                                            <div class="accordion-item mb-1 rounded">
+                                                <h2 class="accordion-header" t-att-id="'heading-%s' % slug">
+                                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" t-att-data-bs-target="'#collapse-%s' % slug" aria-expanded="false" t-att-aria-controls="'collapse-%s' % slug">
+                                                        <i class="fas fa-building me-2 text-primary"></i>
+                                                        <t t-esc="pt['property_name']"/>
+                                                    </button>
+                                                </h2>
+                                                <div class="accordion-collapse collapse" t-att-id="'collapse-%s' % slug" t-att-aria-labelledby="'heading-%s' % slug" data-bs-parent="#tokenAccordion">
+                                                    <div class="accordion-body">
+                                                        <table class="table table-striped table-sm table-hover align-middle mb-0">
+                                                            <thead class="table-light">
+                                                                <tr>
+                                                                    <th class="text-center">Token Code</th>
+                                                                    <th class="text-center">Status</th>
+                                                                    <th class="text-center">Price per Token</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <t t-foreach="pt['tokens']" t-as="token" t-key="token.id">
+                                                                    <tr>
+                                                                        <td class="text-center">
+                                                                            <span class="badge bg-info">
+                                                                                <t t-esc="token.token_code"/>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <t t-if="token.token_state == 'available'">
+                                                                                <span class="badge bg-info">Available</span>
+                                                                            </t>
+                                                                            <t t-elif="token.token_state == 'reserved'">
+                                                                                <span class="badge bg-warning text-dark">Reserved</span>
+                                                                            </t>
+                                                                            <t t-else="">
+                                                                                <span class="badge bg-success">Sold</span>
+                                                                            </t>
+                                                                        </td>
+                                                                        <td class="text-end">
+                                                                            <t t-esc="token.property_unit_id.price_per_token" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                                        </td>
+                                                                    </tr>
+                                                                </t>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
                                 </div>
                             </div>
                         </div>

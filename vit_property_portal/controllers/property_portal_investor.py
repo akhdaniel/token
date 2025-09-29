@@ -47,16 +47,13 @@ class PropertyPortalInvestor(http.Controller):
 		user = request.env.user
 		investor = user.partner_id
 
-		# === Ambil Order Token investor ===
 		order_tokens = request.env['vit.order_token'].sudo().search([
 			('to_partner_id', '=', investor.id),
-			('status', '=', 'confirmed')     # contoh filter jika hanya transaksi confirmed
+			('status', '=', 'confirmed')
 		])
 
-		# Hitung profit/token profit per property_unit + order_token
 		result_rows = []
 		for order in order_tokens:
-			# Profit line untuk property ini & investor yg sama
 			profit_lines = request.env['vit.property_profit_share_line'].sudo().search([
 				('profit_share_id.investor_id', '=', investor.id),
 				('profit_share_id.property_unit_id', '=', order.property_unit_id.id)
@@ -73,7 +70,6 @@ class PropertyPortalInvestor(http.Controller):
 				'token_profit': total_token_profit,
 			})
 
-		# === Summary + Total Saldo ===
 		total_investasi = sum(r['jumlah_investasi'] for r in result_rows)
 		total_profit    = sum(r['profit'] for r in result_rows)
 
@@ -85,11 +81,30 @@ class PropertyPortalInvestor(http.Controller):
 			'total_saldo': total_investasi + total_profit, 
 		}
 
+		sale_order_ids = order_tokens.mapped('sale_order_id').ids
+		token_product_ids = request.env['sale.order.line'].sudo().search([
+			('order_id', 'in', sale_order_ids),
+			('product_id.is_investment_token', '=', True),
+		]).mapped('product_id').ids
+		tokens = request.env['product.product'].sudo().search([
+			('id', 'in', token_product_ids),
+			('property_unit_id', 'in', order_tokens.mapped('property_unit_id').ids),
+			('token_state', 'in', ['reserved', 'sold']),
+		])
+		property_tokens_map = {}
+		for token in tokens:
+			prop = token.property_unit_id
+			property_tokens_map.setdefault(prop.id, {
+				'property_name': prop.name,
+				'tokens': []
+			})['tokens'].append(token)
+
 		return request.render('vit_property_portal.nilai_akun_table',  
 			{
 				'rows': result_rows, 
 				'summary': summary,  
 				'currency': user.currency_id,
+				'property_tokens_map': property_tokens_map,
 				'breadcrumbs': [
 					('Portofolio', '/investor/ikhtisar'),
 					('Ikhtisar Nilai Akun', False),   
