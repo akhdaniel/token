@@ -156,20 +156,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <t t-foreach="rows" t-as="r">
+                                        <t t-if="rows">
+                                            <t t-foreach="rows" t-as="r">
+                                                <tr>
+                                                    <td><t t-esc="r['property_name']"/></td>
+                                                    <td><t t-esc="r['transaksi']"/></td>
+                                                    <td class="text-center"><t t-esc="r['token']"/></td>
+                                                    <td class="text-end">
+                                                    <t t-esc="r['jumlah_investasi']"
+                                                        t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                    </td>
+                                                    <td class="text-end">
+                                                    <t t-esc="r['profit']"
+                                                        t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                    </td>
+                                                    <td class="text-center"><t t-esc="r['token_profit']"/></td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
                                             <tr>
-                                                <td><t t-esc="r['property_name']"/></td>
-                                                <td><t t-esc="r['transaksi']"/></td>
-                                                <td class="text-center"><t t-esc="r['token']"/></td>
-                                                <td class="text-end">
-                                                <t t-esc="r['jumlah_investasi']"
-                                                    t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                <td colspan="6" class="text-center text-muted">
+                                                    Belum ada data investasi
                                                 </td>
-                                                <td class="text-end">
-                                                <t t-esc="r['profit']"
-                                                    t-options="{'widget': 'monetary', 'display_currency': currency}"/>
-                                                </td>
-                                                <td class="text-center"><t t-esc="r['token_profit']"/></td>
                                             </tr>
                                         </t>
                                     </tbody>
@@ -226,7 +235,7 @@
                                             <div class="accordion-item mb-1 rounded">
                                                 <h2 class="accordion-header" t-att-id="'heading-%s' % slug">
                                                     <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" t-att-data-bs-target="'#collapse-%s' % slug" aria-expanded="false" t-att-aria-controls="'collapse-%s' % slug">
-                                                        <i class="fas fa-building me-2 text-primary"></i>
+                                                        <i class="fa fa-building me-2 text-primary"></i>
                                                         <t t-esc="pt['property_name']"/>
                                                     </button>
                                                 </h2>

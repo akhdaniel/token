@@ -2,14 +2,14 @@
 <odoo>
 	<data>
 		<!-- form inherited view -->
-		<!-- <record id="view_investor_form_inherit" model="ir.ui.view">
+		<record id="view_investor_form_inherit" model="ir.ui.view">
 			<field name="name">view_investor_form_inherit</field>
 			<field name="model">res.partner</field>
 			<field name="type">form</field>
 			<field name="inherit_id" ref="base.view_partner_form"/>
 			<field name="arch" type="xml">
 				<notebook position="inside">
-					<page id="investor" string="Investor" attrs="{'invisible': [('is_investor', '=', False)]}">
+					<page id="investor" string="Investor" modifiers="{'invisible': [('is_investor', '=', False)]}">
 						<group>
 							<group>
 								<field name="is_investor" />
@@ -31,7 +31,7 @@
 					</page>
 				</notebook>
 			</field>
-		</record> -->
+		</record> 
 		<!-- action window -->
 		<!--record id="vit_property.action_investor" model="ir.actions.act_window">
 			<field name="name">Investor</field>

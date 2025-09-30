@@ -31,4 +31,10 @@ class PaymentTransaction(models.Model):
                 )[:order.qty_token]
                 tokens.write({'token_state': 'sold'})
 
+                if order.to_partner_id and order.to_partner_id.is_investor:
+                    order.to_partner_id.sudo().write({
+                        'total_investment': order.to_partner_id.total_investment + order.total_amount,
+                        'total_tokens': order.to_partner_id.total_tokens + order.qty_token,
+                    })
+
         return res

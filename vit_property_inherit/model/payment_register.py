@@ -7,12 +7,10 @@ class PaymentRegister(models.TransientModel):
 
     def action_create_payments(self):
         invoices = self.line_ids.move_id
-        _logger.info("Invoices yang akan dibayar: %s", invoices.ids)
 
         res = super().action_create_payments()
 
         payments = self.line_ids.payment_id
-        _logger.info("Payments dibuat: %s", payments.ids)
 
         for inv in invoices:
             order = self.env['vit.order_token'].sudo().search([
@@ -28,5 +26,11 @@ class PaymentRegister(models.TransientModel):
                     lambda t: t.token_state == 'reserved'
                 )[:order.qty_token]
                 tokens.write({'token_state': 'sold'})
+                
+                if order.to_partner_id and order.to_partner_id.is_investor:
+                    order.to_partner_id.sudo().write({
+                        'total_investment': order.to_partner_id.total_investment + order.total_amount,
+                        'total_tokens': order.to_partner_id.total_tokens + order.qty_token,
+                    })
 
         return res
