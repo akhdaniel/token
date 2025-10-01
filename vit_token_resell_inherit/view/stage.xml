@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- search -->
+		<!--record id="view_stage_search" model="ir.ui.view">
+			<field name="name">stage</field>
+			<field name="model">vit.stage</field>
+			<field name="inherit_id" ref=""/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- action window -->
+		<!--record id="vit_token_resell.action_stage" model="ir.actions.act_window">
+			<field name="name">Stage</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.stage</field>
+			<field name="view_mode">list,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Stage
+				</p><p>
+
+				</p>
+			</field>
+		</record-->
+
+	</data>
+</odoo>

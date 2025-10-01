@@ -103,7 +103,6 @@ class PropertyPortalOwner(CustomerPortal):
 			user = request.env.user
 			partner = user.partner_id
 			form_data = kw.get('data', {})
-			_logger.info("[/api/property/save]  save_property_unit data : %s", form_data)
 
 			if not partner.is_owner:
 				return {'success': False, 'message': 'You are not authorized to perform this action.'}

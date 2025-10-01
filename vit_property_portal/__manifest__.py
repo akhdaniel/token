@@ -28,6 +28,7 @@
 		"views/property_portal_owner.xml",
 		"views/property_portal_token.xml",
 		"views/property_portal_investor.xml",
+		"views/property_portal_marketplace.xml",
 	],
 	"assets": {
 		'web.assets_frontend': [
@@ -38,6 +39,7 @@
 			'vit_property_portal/static/src/js/token_pagination.js',
 			'vit_property_portal/static/src/js/token_generate.js',
 			'vit_property_portal/static/src/js/property_image.js',
+			'vit_property_portal/static/src/js/token_resell.js',
 			'vit_property_portal/static/src/css/property_portal.css',
 			'vit_property_portal/static/src/css/input_range.css',
 		],

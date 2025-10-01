@@ -4,3 +4,4 @@ from . import property_portal_signup
 from . import property_portal_owner
 from . import property_portal_investor
 from . import property_portal_image
+from . import property_portal_token_resell

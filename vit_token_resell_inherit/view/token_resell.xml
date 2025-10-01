@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<!--record id="view_token_resell_tree" model="ir.ui.view">
+			<field name="name">token_resell_tree</field>
+			<field name="model">vit.token_resell</field>
+			<field name="inherit_id" ref="vit_token_resell.view_vit_token_resell_tree"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- form view -->
+		<!-- record id="view_token_resell_form" model="ir.ui.view">
+			<field name="name">token_resell_form</field>
+			<field name="model">vit.token_resell</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="vit_token_resell.view_vit_token_resell_form"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- search -->
+		<!--record id="view_token_resell_search" model="ir.ui.view">
+			<field name="name">token_resell</field>
+			<field name="model">vit.token_resell</field>
+			<field name="inherit_id" ref="vit_token_resell.view_vit_token_resell_search"/>
+			<field name="arch" type="xml">
+			</field>
+		</record-->
+		<!-- action window -->
+		<!--record id="vit_token_resell.action_token_resell" model="ir.actions.act_window">
+			<field name="name">Token Resell</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.token_resell</field>
+			<field name="view_mode">list,form,kanban,pivot,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Token Resell
+				</p><p>
+
+				</p>
+			</field>
+		</record-->
+
+		<menuitem id="menu_token_resell" name="Token Resell" parent="vit_property.vit_property_sub_menu" action="vit_token_resell.action_token_resell" sequence="4"/>
+	</data>
+</odoo>

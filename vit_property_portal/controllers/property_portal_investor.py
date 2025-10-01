@@ -94,10 +94,21 @@ class PropertyPortalInvestor(http.Controller):
 		property_tokens_map = {}
 		for token in tokens:
 			prop = token.property_unit_id
-			property_tokens_map.setdefault(prop.id, {
-				'property_name': prop.name,
-				'tokens': []
-			})['tokens'].append(token)
+			if not prop:
+				continue
+
+			if prop.id not in property_tokens_map:
+				# inisialisasi
+				tokens_per_property = tokens.filtered(lambda t: t.property_unit_id.id == prop.id)
+				property_tokens_map[prop.id] = {
+					'property_id': prop.id,
+					'property_name': prop.name,
+					'tokens': [],
+					'total_token': len(tokens_per_property),
+				}
+
+			# tambahkan token
+			property_tokens_map[prop.id]['tokens'].append(token)
 
 		return request.render('vit_property_portal.nilai_akun_table',  
 			{

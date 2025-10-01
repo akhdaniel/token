@@ -103,9 +103,7 @@
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <div class="mb-3">
                                     <label for="token_amount" class="form-label fw-semibold">Jumlah Token</label>
-                                    <input type="number" min="1" step="1" name="token_amount"
-                                           id="token_amount" class="form-control rounded-3"
-                                           placeholder="Masukkan jumlah token" required="True"/>
+                                    <input type="number" min="1" step="1" name="token_amount" id="token_amount" class="form-control rounded-3" placeholder="Masukkan jumlah token" required="True"/>
                                 </div>
                                 <div class="mb-3">
                                     <label for="bank_account" class="form-label fw-semibold">Rekening Bank Tujuan</label>
@@ -234,13 +232,33 @@
                                             <t t-set="slug" t-value="pt['property_name'].replace(' ', '-')"/>
                                             <div class="accordion-item mb-1 rounded">
                                                 <h2 class="accordion-header" t-att-id="'heading-%s' % slug">
-                                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" t-att-data-bs-target="'#collapse-%s' % slug" aria-expanded="false" t-att-aria-controls="'collapse-%s' % slug">
+                                                    <button class="accordion-button collapsed fw-semibold" type="button" 
+                                                        data-bs-toggle="collapse" 
+                                                        t-att-data-bs-target="'#collapse-%s' % slug"
+                                                        aria-expanded="false" 
+                                                        t-att-aria-controls="'collapse-%s' % slug">
                                                         <i class="fa fa-building me-2 text-primary"></i>
                                                         <t t-esc="pt['property_name']"/>
                                                     </button>
                                                 </h2>
-                                                <div class="accordion-collapse collapse" t-att-id="'collapse-%s' % slug" t-att-aria-labelledby="'heading-%s' % slug" data-bs-parent="#tokenAccordion">
+                                                <div class="accordion-collapse collapse" 
+                                                    t-att-id="'collapse-%s' % slug" 
+                                                    t-att-aria-labelledby="'heading-%s' % slug" 
+                                                    data-bs-parent="#tokenAccordion">
+                                                    
                                                     <div class="accordion-body">
+                                                        <!-- Tombol Resell -->
+                                                        <div class="mb-2 mt-2">
+                                                            <button class="btn btn-primary"
+                                                                data-bs-toggle="modal"
+                                                                t-att-data-bs-target="'#resellPropertyModal-%s' % pt['property_id']">
+                                                                <i class="fa fa-dollar-sign me-1"></i> Jual Token
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="alert-container" id="alert-container"></div>
+
+                                                        <!-- Tabel Token -->
                                                         <table class="table table-striped table-sm table-hover align-middle mb-0">
                                                             <thead class="table-light">
                                                                 <tr>
@@ -269,12 +287,43 @@
                                                                             </t>
                                                                         </td>
                                                                         <td class="text-end">
-                                                                            <t t-esc="token.property_unit_id.price_per_token" t-options="{'widget': 'monetary', 'display_currency': currency}"/>
+                                                                            <t t-esc="token.property_unit_id.price_per_token"
+                                                                                t-options="{'widget': 'monetary', 'display_currency': currency}"/>
                                                                         </td>
                                                                     </tr>
                                                                 </t>
                                                             </tbody>
                                                         </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal Resell -->
+                                            <div class="modal fade" t-att-id="'resellPropertyModal-%s' % pt['property_id']" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-primary text-white">
+                                                            <h5 class="modal-title">Resell Token - <t t-esc="pt['property_name']"/></h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form class="resell-property-form" t-att-data-property-id="pt['property_id']">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Jumlah Token yang ingin dijual</label>
+                                                                    <input type="number" name="qty_token" class="form-control" min="1" t-att-max="pt['total_token']" required="True" />
+                                                                    <small class="text-muted">Anda memiliki <t t-esc="pt['total_token']"/> token</small>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Harga per Token</label>
+                                                                    <input type="number" name="price_per_token" class="form-control" step="1000" required="True"/>
+                                                                </div>
+                                                                <div class="text-end">
+                                                                    <button type="submit" class="btn btn-success">
+                                                                        <i class="fa fa-paper-plane me-1"></i> Ajukan Resell
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

@@ -1,0 +1,90 @@
+<odoo>
+    <template id="portal_token_resell" name="Token Resell Marketplace">
+        <t t-call="portal.portal_layout">
+
+            <!-- Hero Section -->
+            <section class="pt-5 pb-3 px-3 bg-light text-center rounded-3">
+                <div class="container">
+                    <h5 class="fw-bold mb-3">Pasar Sekunder Token Properti</h5>
+                    <p class="text-muted fs-8">
+                        Jual atau beli token properti dengan mudah di marketplace investasi kami.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Token Resell Listing -->
+            <section class="container my-4">
+                <div class="row g-4">
+                    <t t-foreach="resell_tokens" t-as="resell">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card h-100 rounded-3 hover-scale">
+                                <!-- Property Image -->
+                                <t t-if="resell.property_unit_id.property_unit_image_ids">
+                                    <img t-att-src="'data:image/png;base64,%s' % resell.property_unit_id.property_unit_image_ids[0].image.decode()"
+                                    class="card-img-top rounded-top-4"
+                                    style="object-fit:cover; height:200px;"
+                                    alt="Property Image"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/web/static/img/placeholder.png"
+                                        class="card-img-top rounded-top-4"
+                                        style="object-fit:cover; height:200px;"
+                                        alt="No Image"/>
+                                </t>
+                                <div class="card-body d-flex flex-column">
+                                    <!-- Property Name -->
+                                    <h5 class="fw-bold mb-1" t-esc="resell.property_unit_id.name"/>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fa fa-map-marker me-1"></i>
+                                        <t t-esc="resell.property_unit_id.address"/>
+                                    </p>
+
+                                    <!-- Token & Price Info -->
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                                            <i class="fa fa-check-circle me-1"></i>
+                                            <t t-esc="resell.qty_token"/> Token
+                                        </span>
+                                        <span class="fw-bold text-success">
+                                            <t t-esc="'{:,.0f}'.format(resell.price_per_token)"/> IDR / Token
+                                        </span>
+                                    </div>
+
+                                    <!-- Owner Info -->
+                                    <p class="text-muted small mb-3">
+                                        <i class="fa fa-user-circle me-1"></i> 
+                                        Dijual oleh: <t t-esc="resell.investor_id.name"/>
+                                    </p>
+
+                                    <!-- Action Button -->
+                                    <div class="mt-auto">
+                                        <a href="#" class="btn btn-primary w-100 rounded-3">
+                                           <i class="fa fa-shopping-cart me-1"></i> Beli Token
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Empty State -->
+                <t t-if="not resell_tokens">
+                    <div class="text-center py-5">
+                        <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Belum ada token dijual saat ini</h5>
+                    </div>
+                </t>
+            </section>
+
+            <!-- Call to Action -->
+            <section class="py-5 bg-primary text-white text-center rounded-3 my-5 container px-4">
+                <h3 class="fw-bold">Ingin menjual token yang Anda miliki?</h3>
+                <p class="mb-4">Daftarkan token Anda di pasar sekunder dan dapatkan likuiditas lebih cepat.</p>
+                <a href="#" class="btn btn-light btn-lg rounded-3">
+                    <i class="fa fa-upload me-1"></i> Jual Token Sekarang
+                </a>
+            </section>
+        </t>
+    </template>
+</odoo>

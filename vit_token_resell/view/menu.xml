@@ -1,0 +1,7 @@
+<odoo>
+	<data>
+		<menuitem id="vit_token_resell_top_menu" name="Token Resell" sequence="20" web_icon="vit_token_resell,static/description/icon.png" />
+		<menuitem id="vit_token_resell_sub_menu" name="Operations" sequence="40" parent="vit_token_resell_top_menu" />
+		<menuitem id="vit_token_resell_config_menu" name="Configurations" sequence="1000" parent="vit_token_resell_top_menu" />
+	</data>
+</odoo>
