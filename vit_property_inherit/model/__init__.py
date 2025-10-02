@@ -15,3 +15,6 @@ from . import property_unit_image
 from . import property_profit_share
 from . import payment_register
 from . import payment_request
+from . import property_document
+from . import ir_attachment
+from . import document_type

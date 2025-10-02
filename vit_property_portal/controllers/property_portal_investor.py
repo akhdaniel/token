@@ -25,7 +25,8 @@ class PropertyPortalInvestor(http.Controller):
 		token_count = sum(profit_share.profit_share_line_ids.mapped('token_count'))
 
 		owned_property_count = len(order_recs.mapped('property_unit_id'))
-		
+		invested_properties = profit_share.mapped('property_unit_id')
+
 		values = {
 			'user': user,
 			'user_balance_currency': amount_awal + total_amount,
@@ -35,6 +36,7 @@ class PropertyPortalInvestor(http.Controller):
 			'token_count': token_count,
 			'investasi_awal': amount_awal,
 			'owned_property_count': owned_property_count,
+			'invested_properties': invested_properties,
 			'breadcrumbs': [
 				('Portofolio', False),   
 			],

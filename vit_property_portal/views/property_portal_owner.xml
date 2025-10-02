@@ -275,6 +275,13 @@
                                                 Image
                                             </a>
                                         </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#" class="nav-link" id="document-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#document-pane" role="tab"
+                                                    aria-controls="document-pane" aria-selected="false">
+                                                Document
+                                            </a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane fade show active" id="token-pane" role="tabpanel" aria-labelledby="token-tab">
@@ -384,6 +391,162 @@
                                                                 <div class="mb-3">
                                                                     <label class="form-label">Change Image</label>
                                                                     <input type="file" name="image" accept="image/*" class="form-control"/>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary w-100">Update</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="document-pane" role="tabpanel" aria-labelledby="document-tab">
+                                            <div class="d-flex justify-content-start align-items-start mt-3 mb-3">
+                                                <button type="button" class="btn btn-primary" id="btn-add-document">
+                                                    <i class="fa fa-upload me-1"></i> Upload Document
+                                                </button>
+                                            </div>
+
+                                            <!-- Alert container -->
+                                            <div id="document-alert-container"></div>
+
+                                            <!-- Table List -->
+                                            <table class="table table-bordered table-hover" id="document-table">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th class="text-center">Name</th>
+                                                        <th class="text-center">Preview</th> <th class="text-center">File Name</th>
+                                                        <th class="text-center">Issue Date</th>
+                                                        <th class="text-center">Expiry Date</th>
+                                                        <th class="text-center">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-if="property_unit and property_unit.property_document_ids">
+                                                        <t t-foreach="property_unit.property_document_ids" t-as="doc">
+                                                            <t t-set="attachment" t-value="request.env['ir.attachment'].sudo().search([('res_model', '=', 'vit.property_document'), ('res_id', '=', doc.id), ('res_field', '=', 'document_file')], limit=1)"/>
+                                                            <t t-set="mimetype" t-value="attachment.mimetype if attachment else 'application/octet-stream'"/>
+                                                            
+                                                            <tr t-att-data-id="doc.id"
+                                                                t-att-data-name="doc.name.name"
+                                                                t-att-data-type-id="doc.name.id"
+                                                                t-att-data-issue="doc.issue_date"
+                                                                t-att-data-expiry="doc.date_expiry"
+                                                                t-att-data-file="doc.file_name"
+                                                                t-att-data-url="'/web/content/vit.property_document/' + str(doc.id) + '/document_file?filename_field=file_name'"
+                                                                t-att-data-mimetype="mimetype"> <td><t t-esc="doc.name.name"/></td>
+                                                                
+                                                                <td class="text-center">
+                                                                    <t t-if="mimetype and mimetype.startswith('image/')">
+                                                                        <img t-att-src="'/web/content/vit.property_document/' + str(doc.id) + '/document_file?image_zoom=0&amp;width=50&amp;height=50&amp;filename_field=file_name'" class="img-thumbnail" alt="Preview"/>
+                                                                    </t>
+                                                                    <t t-elif="mimetype and mimetype == 'application/pdf'">
+                                                                        <i class="fa fa-file-pdf-o fa-2x text-danger" title="PDF File"></i>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <i class="fa fa-file-o fa-2x text-muted" title="Document File"></i>
+                                                                    </t>
+                                                                </td>
+                                                                
+                                                                <td>
+                                                                    <a t-att-href="'/web/content/vit.property_document/' + str(doc.id) + '/document_file?download=false&amp;filename_field=file_name'"> 
+                                                                        <t t-esc="doc.file_name"/>
+                                                                    </a>
+                                                                </td>
+                                                                <td><t t-esc="doc.issue_date"/></td>
+                                                                <td><t t-esc="doc.date_expiry"/></td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-warning btn-edit-doc">Edit</button>
+                                                                    <button class="btn btn-sm btn-danger btn-delete-doc">Delete</button>
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <tr>
+                                                            <td colspan="6" class="text-center text-muted"> Belum ada dokumen
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+
+                                            <!-- Modal Upload Document -->
+                                            <div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Upload Document</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="upload-document-form">
+                                                                <input type="hidden" name="property_unit_id" t-att-value="property_unit and property_unit.id"/>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Document Type</label>
+                                                                    <select name="document_type_id" class="form-control" required="True">
+                                                                        <t t-foreach="request.env['vit.document_type'].sudo().search([])" t-as="dt">
+                                                                            <option t-att-value="dt.id"><t t-esc="dt.name"/></option>
+                                                                        </t>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Issue Date</label>
+                                                                    <input type="date" name="issue_date" class="form-control"/>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Expiry Date</label>
+                                                                    <input type="date" name="date_expiry" class="form-control"/>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Select File</label>
+                                                                    <input type="file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.png" class="form-control" required="True"/>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary w-100">
+                                                                    Upload
+                                                                    <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal Edit Document -->
+                                            <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Document</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="edit-document-form">
+                                                                <input type="hidden" name="document_id"/>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Document Type</label>
+                                                                    <select name="document_type_id" class="form-control" required="True">
+                                                                        <t t-foreach="request.env['vit.document_type'].sudo().search([])" t-as="dt">
+                                                                            <option t-att-value="dt.id"><t t-esc="dt.name"/></option>
+                                                                        </t>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Issue Date</label>
+                                                                    <input type="date" name="issue_date" class="form-control"/>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Expiry Date</label>
+                                                                    <input type="date" name="date_expiry" class="form-control"/>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Preview</label>
+                                                                    <div id="doc-preview" class="border p-2 text-center">
+                                                                        <span class="text-muted">No preview</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Change File</label>
+                                                                    <input type="file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.png" class="form-control"/>
                                                                 </div>
                                                                 <button type="submit" class="btn btn-primary w-100">Update</button>
                                                             </form>

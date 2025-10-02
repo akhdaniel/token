@@ -38,5 +38,21 @@
                 </xpath>
 			</field>
 		</record>
+
+		<record id="view_product_product_search_inherit" model="ir.ui.view">
+			<field name="name">product_product</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_search_form_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//filter[@name='categ_id']" position="after">
+					<filter string="Property Unit" name="group_by_property_unit_id" context="{'group_by':'property_unit_id'}"/>
+					<field name="property_unit_id"/>
+				</xpath>
+				<xpath expr="//filter[@name='group_by_property_unit_id']" position="after">
+					<filter string="Token Type" name="group_by_token_type" context="{'group_by':'token_type'}"/>
+					<field name="token_type"/>
+				</xpath>
+			</field>
+		</record>
 	</data>
 </odoo>

@@ -102,6 +102,17 @@
                             <form id="withdrawForm" t-att-action="'/investor/payment_request'" method="post">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <div class="mb-3">
+                                    <label for="property_id" class="form-label fw-semibold">Pilih Properti</label>
+                                    <select class="form-select rounded-3" name="property_id" id="property_id" required="True">
+                                        <option value="">Pilih Properti</option>
+                                        <t t-foreach="invested_properties" t-as="p">
+                                            <option t-att-value="p.id">
+                                                <t t-esc="p.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label for="token_amount" class="form-label fw-semibold">Jumlah Token</label>
                                     <input type="number" min="1" step="1" name="token_amount" id="token_amount" class="form-control rounded-3" placeholder="Masukkan jumlah token" required="True"/>
                                 </div>

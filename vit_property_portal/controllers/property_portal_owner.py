@@ -240,3 +240,5 @@ class PropertyPortalOwner(CustomerPortal):
 		if property_unit.owner_id == request.env.user.partner_id:
 			property_unit.unlink()
 		return request.redirect('/my/properties')
+
+	

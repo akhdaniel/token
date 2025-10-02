@@ -22,6 +22,7 @@
 	"description": "",
 	"data": [
 		"security/ir.model.access.csv",
+		"security/portal_access.xml",
 		"view/investor.xml",
 		"view/token.xml",
 		#"view/sale_order.xml",
