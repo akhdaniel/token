@@ -14,10 +14,13 @@
 			<field name="name">product_template_form</field>
 			<field name="model">product.template</field>
 			<field name="type">form</field>
-			<field name="inherit_id" ref="product.product_template_only_form_view"/>
+			<field name="inherit_id" ref="product.product_template_form_view"/>
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='standard_price']" position="after">
 					<field name="total_tokens" string="Total Tokens" />
+				</xpath>
+				<xpath expr="//notebook/page[@id='product_template']" position="attributes">
+					<attribute name="invisible">is_property==False</attribute>
 				</xpath>
 			</field>
 		</record>

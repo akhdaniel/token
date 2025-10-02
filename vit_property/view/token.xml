@@ -2,22 +2,24 @@
 <odoo>
 	<data>
 		<!-- form inherited view -->
-		<record id="view_product_product_form" model="ir.ui.view">
-			<field name="name">product_product_form</field>
+		<record id="view_token_form" model="ir.ui.view">
+			<field name="name">token_form</field>
 			<field name="model">product.product</field>
 			<field name="type">form</field>
 			<field name="inherit_id" ref="product.product_template_form_view"/>
 			<field name="arch" type="xml">
 				<notebook position="inside">
-					<page id="product_product" string="Product Product">
+					<page id="token" string="Token">
 						<group>
 							<group>
 								<field name="is_investment_token" />
 								<field name="token_code" />
 								<field name="token_state" />
+								<field name="token_type" />
 							</group>
 							<group>
 								<field name="property_unit_id" />
+								<field name="token_owner_id" />
 							</group>
 						</group>
 					</page>
@@ -25,8 +27,8 @@
 			</field>
 		</record>
 		<!-- action window -->
-		<record id="action_product_product" model="ir.actions.act_window">
-			<field name="name">Product Product</field>
+		<record id="action_token" model="ir.actions.act_window">
+			<field name="name">Token</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="res_model">product.product</field>
 			<field name="context">{"default_is_investment_token":1}</field>
@@ -34,12 +36,13 @@
 			<field name="view_mode">list,form</field>
 			<field name="help" type="html">
 				<p class="oe_view_nocontent_create">
-				Click to add a new Product Product
+				Click to add a new Token
 				</p><p>
 
 				</p>
 			</field>
 		</record>
 
+		<menuitem id="menu_token" name="Token" parent="vit_property_menu_1" action="action_token" sequence="20"/>
 	</data>
 </odoo>

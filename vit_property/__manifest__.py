@@ -37,7 +37,7 @@
 		"report/property_profit_share_line.xml",
 		"view/account_move.xml",
 		"view/sale_order_line.xml",
-		"view/product_product.xml",
+		"view/token.xml",
 		"view/order_token.xml",
 		"report/order_token.xml",
 		"data/sequence_order_token.xml",
@@ -51,7 +51,13 @@
 		"view/payment_request.xml",
 		"report/payment_request.xml",
 		"data/sequence_payment_request.xml",
-		"view/bank.xml"
+		"view/bank.xml",
+		"view/document_type.xml",
+		"report/document_type.xml",
+		"data/vit.document_type.csv",
+		"view/property_document.xml",
+		"report/property_document.xml",
+		"view/token_owner.xml"
 	],
 	"installable": True,
 	"auto_install": False,

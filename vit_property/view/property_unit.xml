@@ -109,6 +109,17 @@
 									</list>
 								</field>
 							</page>
+							<page name="property_document_ids" string="Document">
+								<field name="property_document_ids" readonly="stage_is_draft==False">
+									<list >
+										<field name="document_file" /> <!-- 100-->
+										<field name="name" /> <!-- 100-->
+										<field name="file_name" /> <!-- 101-->
+										<field name="date_expiry" /> <!-- 102-->
+										<field name="issue_date" /> <!-- 103-->
+									</list>
+								</field>
+							</page>
 						</notebook>
 						<group name="note_group" col="6" class="mt-2 mt-md-0">
 							<group colspan="4">
@@ -222,6 +233,6 @@
 			</field>
 		</record>
 
-		<menuitem id="menu_property_unit" name="Property Unit" parent="vit_property_menu_1" action="action_property_unit" sequence="50"/>
+		<menuitem id="menu_property_unit" name="Property Unit" parent="vit_property_menu_1" action="action_property_unit" sequence="10"/>
 	</data>
 </odoo>

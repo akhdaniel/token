@@ -121,7 +121,9 @@
 							<td>Is Investment Token</td>
 							<td>Token Code</td>
 							<td>Token State</td>
+							<td>Token Type</td>
 							<td>Property Unit</td>
+							<td>Token Owner</td>
 						</tr>
 					</thead>
 					<tbody class="token_ids_tbody">
@@ -131,7 +133,9 @@
 							<td><span t-field="line.is_investment_token" /></td>
 							<td><span t-field="line.token_code" /></td>
 							<td><span t-field="line.token_state" /></td>
+							<td><span t-field="line.token_type" /></td>
 							<td><span t-field="line.property_unit_id" /></td>
+							<td><span t-field="line.token_owner_id" /></td>
 						</tr> <!-- foreach-->
 					</tbody>
 				</table>
@@ -151,6 +155,30 @@
 							<td><span t-field="line.name" /></td>
 							<td><span t-field="line.sequence" /></td>
 							<td><span t-field="line.image" /></td>
+							<td><span t-field="line.property_unit_id" /></td>
+						</tr> <!-- foreach-->
+					</tbody>
+				</table>
+				<div class="oe_structure"/>
+				<h2>Property Document</h2>
+				<table class="table table-sm o_main_table" name="property_document_ids_table">
+					<thead>
+						<tr>
+							<td>Document File</td>
+							<td>File Name</td>
+							<td>Date Expiry</td>
+							<td>Issue Date</td>
+							<td>Name</td>
+							<td>Property Unit</td>
+						</tr>
+					</thead>
+					<tbody class="property_document_ids_tbody">
+						<tr t-foreach="doc.property_document_ids" t-as="line">
+							<td><span t-field="line.document_file" /></td>
+							<td><span t-field="line.file_name" /></td>
+							<td><span t-field="line.date_expiry" /></td>
+							<td><span t-field="line.issue_date" /></td>
+							<td><span t-field="line.name" /></td>
 							<td><span t-field="line.property_unit_id" /></td>
 						</tr> <!-- foreach-->
 					</tbody>

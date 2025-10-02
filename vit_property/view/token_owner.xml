@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- action window -->
+		<record id="action_token_owner" model="ir.actions.act_window">
+			<field name="name">Token Owner</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">res.partner</field>
+			<field name="view_mode">list,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Token Owner
+				</p><p>
+
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_token_owner" name="Token Owner" parent="vit_property_config_menu" action="action_token_owner" sequence="220"/>
+	</data>
+</odoo>

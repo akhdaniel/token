@@ -7,7 +7,8 @@ from odoo.exceptions import UserError
 class property_unit(models.Model):
 	"""
 	{
-	"menu":1
+	"menu":1,
+	"sequence":10
 	}
 	"""
 
@@ -121,3 +122,4 @@ class property_unit(models.Model):
 	stage_id = fields.Many2one(comodel_name="vit.stage",  default=_get_first_stage, copy=False, group_expand="_group_expand_states",  string=_("Stage"))
 	token_ids = fields.One2many(comodel_name="product.product",  inverse_name="property_unit_id",  string=_("Token"))
 	property_unit_image_ids = fields.One2many(comodel_name="vit.property_unit_image",  inverse_name="property_unit_id",  string=_("Property Unit Image"))
+	property_document_ids = fields.One2many(comodel_name="vit.property_document",  inverse_name="property_unit_id", string="Document")

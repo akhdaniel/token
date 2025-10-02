@@ -13,14 +13,34 @@
 			</field>
 		</record>
 		<!-- form view -->
-		<!-- record id="view_property_unit_form" model="ir.ui.view">
+		<record id="view_property_unit_form" model="ir.ui.view">
 			<field name="name">property_unit_form</field>
 			<field name="model">vit.property_unit</field>
 			<field name="type">form</field>
 			<field name="inherit_id" ref="vit_property.view_vit_property_unit_form"/>
 			<field name="arch" type="xml">
+				<xpath expr="//button[@name='action_generate_token']" position="attributes">
+					<attribute name="invisible">can_generate_token==False</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/notebook/page[@name='token_ids']" position="replace">
+					<page string="Token Initial">
+						<field name="token_initial_ids" />
+					</page>
+					<page string="Token Reward">
+						<field name="token_reward_ids" />
+					</page>
+				</xpath>
+				<xpath expr="//field[@name='is_sale']" position="attributes">
+					<attribute name="invisible">is_rent==True</attribute>
+				</xpath>
+				<xpath expr="//field[@name='sale_price']" position="attributes">
+					<attribute name="invisible">is_rent==True</attribute>
+				</xpath>
+				<xpath expr="//field[@name='sale_price_target']" position="attributes">
+					<attribute name="invisible">is_rent==True</attribute>
+				</xpath>
 			</field>
-		</record-->
+		</record>
 		<!-- search -->
 		<!--record id="view_property_unit_search" model="ir.ui.view">
 			<field name="name">property_unit</field>

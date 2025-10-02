@@ -29,7 +29,7 @@ class PaymentTransaction(models.Model):
                 tokens = order.property_unit_id.token_ids.filtered(
                     lambda t: t.token_state == 'reserved'
                 )[:order.qty_token]
-                tokens.write({'token_state': 'sold'})
+                tokens.write({'token_state': 'sold','token_owner_id':order.to_partner_id.id})
 
                 if order.to_partner_id and order.to_partner_id.is_investor:
                     order.to_partner_id.sudo().write({

@@ -16,5 +16,5 @@ class PropertyProfitShare(models.Model):
 	@api.depends('rent_transaction_id')
 	def _compute_amount_to_share(self):
 		for rec in self:
-			rec.total_profit_share_amount = rec.rent_transaction_id.amount_total_rent
+			rec.total_profit_share_amount = rec.rent_transaction_id.rent_price_per_month
 			rec.property_unit_id = rec.rent_transaction_id.property_unit_id

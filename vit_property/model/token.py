@@ -4,10 +4,11 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
-class product_product(models.Model):
+class token(models.Model):
 	"""
 	{
-	"menu":0
+	"menu":1,
+	"sequence":20
 	}
 	"""
 
@@ -23,6 +24,8 @@ class product_product(models.Model):
 	is_investment_token = fields.Boolean( string=_("Is Investment Token"))
 	token_code = fields.Char( string=_("Token Code"))
 	token_state = fields.Selection(selection=[("available", "Available"),("reserved", "Reserved"),("sold", "Sold")],default="available",  string=_("Token State"))
+	token_type = fields.Selection(selection=[("token_initial", "Token Initial"),("token_reward", "Token Reward")],  string=_("Token Type"))
 
 
 	property_unit_id = fields.Many2one(comodel_name="vit.property_unit",  string=_("Property Unit"))
+	token_owner_id = fields.Many2one(comodel_name="res.partner", string="Owner")

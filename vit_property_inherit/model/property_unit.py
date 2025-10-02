@@ -20,11 +20,26 @@ class property_unit(models.Model):
 			('model_id', '=', self.env['ir.model']._get_id('vit.property_unit'))
 		],
 	)
-
-	available_tokens = fields.Integer(
-		compute="_compute_available_tokens",
-		store=True  
+	token_initial_ids = fields.One2many(
+		comodel_name="product.product",
+		inverse_name="property_unit_id",
+		domain=[("token_type", "=", "token_initial")],
+		string="Token Initial"
 	)
+
+	token_reward_ids = fields.One2many(
+		comodel_name="product.product",
+		inverse_name="property_unit_id",
+		domain=[("token_type", "=", "token_reward")],
+		string="Token Reward"
+	)
+	available_tokens = fields.Integer(compute="_compute_available_tokens", store=True )
+	can_generate_token = fields.Boolean(string="Can Generate Token", default=True)
+
+	# @api.depends("token_ids")
+	# def _compute_can_generate_token(self):
+	# 	for rec in self:
+	# 		rec.can_generate_token = not bool(rec.token_ids)
 
 	@api.depends('token_ids.token_state')
 	def _compute_available_tokens(self):
@@ -96,11 +111,19 @@ class property_unit(models.Model):
 				"name": f"{self.name} - Token {i+1}",
 				"list_price": self.price_per_token,
 				"taxes_id": [(6, 0, [])],
+				"supplier_taxes_id": [(6, 0, [])],
 				"type": "service",
 				"token_state": "available",
+				"token_type": "token_initial",
 				"is_investment_token": True,
 				"property_unit_id": self.id,
+				"token_owner_id": self.owner_id.id,
 				"token_code": f"{self.id}-{i+1:03d}",
 			})
 		Product.create(vals_list)
 		self.available_tokens = len(vals_list)
+		self.can_generate_token = False 
+		return {
+			"type": "ir.actions.client",
+			"tag": "reload",
+		}

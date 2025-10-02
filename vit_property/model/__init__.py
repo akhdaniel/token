@@ -8,7 +8,7 @@ from . import property_profit_share
 from . import property_profit_share_line
 from . import account_move
 from . import sale_order_line
-from . import product_product
+from . import token
 from . import order_token
 from . import property_token_move
 from . import stage
@@ -17,3 +17,6 @@ from . import property_unit_image
 from . import owner_users
 from . import payment_request
 from . import bank
+from . import document_type
+from . import property_document
+from . import token_owner

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_token_form_inherit" model="ir.ui.view">
+			<field name="name">token_form</field>
+			<field name="model">product.product</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="product.product_normal_form_view"/>
+			<field name="arch" type="xml">
+				<notebook position="inside">
+					<page id="token" string="Token" modifiers="{'invisible': [('is_investment_token', '=', False)]}">
+						<group>
+							<group>
+								<field name="is_investment_token" />
+								<field name="token_code" />
+								<field name="token_state" />
+								<field name="token_type" />
+							</group>
+							<group>
+								<field name="property_unit_id" />
+								<field name="token_owner_id" />
+							</group>
+						</group>
+					</page>
+				</notebook>
+			</field>
+		</record>
+
+		<record id="view_token_tree_inherit" model="ir.ui.view">
+			<field name="name">product.product.inherit</field>
+			<field name="model">product.product</field>
+			<field name="type">list</field>
+			<field name="inherit_id" ref="product.product_product_tree_view"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='token_code']" position="after">
+                    <field name="token_type"/>
+                    <field name="token_owner_id"/>
+                </xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
