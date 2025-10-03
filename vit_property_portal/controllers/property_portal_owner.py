@@ -50,12 +50,14 @@ class PropertyPortalOwner(CustomerPortal):
 
 		page = int(kw.get('page', page))
 		page_size = 40  
-		token_ids = property_unit.token_ids
+		token_ids = property_unit.token_initial_ids
 		total = len(token_ids)
 		page_count = ceil(total / page_size)
 		start = (page - 1) * page_size
 		end = start + page_size
 		tokens_page = token_ids[start:end]
+
+		rent_types = request.env['vit.rent_type'].sudo().search([])
 
 		values = self._prepare_portal_layout_values()
 		values.update({
@@ -64,6 +66,7 @@ class PropertyPortalOwner(CustomerPortal):
 			'page': page,
 			'page_count': page_count,
 			'page_size': page_size,
+			'rent_types': rent_types,
 			'breadcrumbs': [
 				('Properties', '/owner/properties'),
 				(property_unit.name, False),   
@@ -80,7 +83,7 @@ class PropertyPortalOwner(CustomerPortal):
 
 		page = int(kw.get('page', 1))
 		page_size = 40
-		token_ids = property_unit.token_ids
+		token_ids = property_unit.token_inital_ids
 		total = len(token_ids)
 		page_count = max(1, (total + page_size - 1) // page_size)
 		start, end = (page - 1) * page_size, page * page_size

@@ -180,7 +180,7 @@
                                                 <select name="rent_type_id" class="form-control">
                                                     <option value="">-- Select Rental Type --</option>
                                                     <t t-foreach="rent_types" t-as="rt">
-                                                        <option t-att-value="rt.id" t-att-selected="property_unit and property_unit.rent_type_id">
+                                                        <option t-att-value="rt.id" t-att-selected="property_unit and property_unit.rent_type_id and property_unit.rent_type_id.id == rt.id">
                                                             <t t-esc="rt.name"/>
                                                         </option>
                                                     </t>
