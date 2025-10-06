@@ -265,7 +265,14 @@
                                             <a href="#" class="nav-link active" id="token-tab" data-bs-toggle="tab"
                                                     data-bs-target="#token-pane" role="tab"
                                                     aria-controls="token-pane" aria-selected="true">
-                                                Token
+                                                Token Initial
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a href="#" class="nav-link" id="reward-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#reward-pane" role="tab"
+                                                    aria-controls="reward-pane" aria-selected="false">
+                                                Token Reward
                                             </a>
                                         </li>
                                         <li class="nav-item" role="presentation">
@@ -295,6 +302,55 @@
                                                 </t>
                                             </t>
                                         </div>
+
+                                        <div class="tab-pane fade" id="reward-pane" role="tabpanel" aria-labelledby="reward-tab">
+                                            <table class="table table-striped table-hover table-bordered mt-3">
+                                                <thead>
+                                                    <tr class="bg-light">
+                                                        <th class="text-center" scope="col">Name</th>
+                                                        <th class="text-center" scope="col">Token State</th>
+                                                        <th class="text-center" scope="col">Token Code</th>
+                                                        <th class="text-center" scope="col">Token Type</th>
+                                                        <th class="text-center" scope="col">Owner</th>
+                                                        <th class="text-center" scope="col">Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-if="tokens_page_reward">
+                                                        <t t-foreach="tokens_page_reward" t-as="token">
+                                                            <tr>
+                                                                <td><t t-esc="token.name"/></td>
+                                                                <td class="text-center">
+                                                                    <t t-if="token.token_state == 'sold'">
+                                                                        <span class="badge bg-success">Sold</span>
+                                                                    </t>
+                                                                    <t t-elif="token.token_state == 'available'">
+                                                                        <span class="badge bg-info text-dark">Available</span>
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        <span class="badge bg-warning text-dark">Reserved</span>
+                                                                    </t>
+                                                                </td>
+                                                                <td><t t-esc="token.token_code"/></td>
+                                                                <td><t t-esc="dict(token._fields['token_type'].selection).get(token.token_type)"/></td>
+                                                                <td><t t-esc="token.token_owner_id.name"/></td>
+                                                                <td>
+                                                                    <span t-esc="token.lst_price" t-options="{'widget': 'monetary', 'display_currency': property_unit.currency_id}" />
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <tr>
+                                                            <td colspan="6" class="text-center text-muted">
+                                                                Belum ada token
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
                                         <div class="tab-pane fade" id="image-pane" role="tabpanel" aria-labelledby="image-tab">
                                             <div class="d-flex justify-content-start align-items-start mt-3 mb-3">
                                                 <button type="button" class="btn btn-primary" id="btn-add-image">
@@ -437,7 +493,7 @@
                                                                 
                                                                 <td class="text-center">
                                                                     <t t-if="mimetype and mimetype.startswith('image/')">
-                                                                        <img t-att-src="'/web/content/vit.property_document/' + str(doc.id) + '/document_file?image_zoom=0&amp;width=50&amp;height=50&amp;filename_field=file_name'" class="img-thumbnail" alt="Preview"/>
+                                                                        <img t-att-src="'/web/content/vit.property_document/' + str(doc.id) + '/document_file?filename_field=file_name'" class="img-thumbnail" alt="Preview"/>
                                                                     </t>
                                                                     <t t-elif="mimetype and mimetype == 'application/pdf'">
                                                                         <i class="fa fa-file-pdf-o fa-2x text-danger" title="PDF File"></i>
@@ -501,6 +557,7 @@
                                                                     <label class="form-label">Select File</label>
                                                                     <input type="file" name="document_file" accept=".pdf,.doc,.docx,.jpg,.png" class="form-control" required="True"/>
                                                                 </div>
+                                                                <div id="upload-preview" class="border rounded p-2 text-center d-none"></div>
                                                                 <button type="submit" class="btn btn-primary w-100">
                                                                     Upload
                                                                     <span class="spinner-border spinner-border-sm d-none" role="status"></span>

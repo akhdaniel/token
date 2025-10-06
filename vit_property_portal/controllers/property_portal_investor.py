@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+from datetime import datetime
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -13,19 +14,19 @@ class PropertyPortalInvestor(http.Controller):
 			('to_partner_id', '=', partner)
 		])
 
-		# token & amount
 		token_awal = sum(order_recs.mapped('qty_token'))
 		amount_awal = sum(order_recs.mapped('total_amount'))
 
-		# profit share
 		profit_share = request.env['vit.property_profit_share'].sudo().search([
 			('investor_id', '=', partner)
 		])
+		all_properties = profit_share.mapped('property_unit_id')
+		unique_property_ids = list(set(all_properties.ids))
+		invested_properties = request.env['vit.property_unit'].sudo().browse(unique_property_ids)
+
 		total_amount = sum(profit_share.profit_share_line_ids.mapped('amount'))
 		token_count = sum(profit_share.profit_share_line_ids.mapped('token_count'))
-
 		owned_property_count = len(order_recs.mapped('property_unit_id'))
-		invested_properties = profit_share.mapped('property_unit_id')
 
 		values = {
 			'user': user,
@@ -36,7 +37,7 @@ class PropertyPortalInvestor(http.Controller):
 			'token_count': token_count,
 			'investasi_awal': amount_awal,
 			'owned_property_count': owned_property_count,
-			'invested_properties': invested_properties,
+			'invested_properties': profit_share,
 			'breadcrumbs': [
 				('Portofolio', False),   
 			],
@@ -100,7 +101,6 @@ class PropertyPortalInvestor(http.Controller):
 				continue
 
 			if prop.id not in property_tokens_map:
-				# inisialisasi
 				tokens_per_property = tokens.filtered(lambda t: t.property_unit_id.id == prop.id)
 				property_tokens_map[prop.id] = {
 					'property_id': prop.id,
@@ -108,8 +108,6 @@ class PropertyPortalInvestor(http.Controller):
 					'tokens': [],
 					'total_token': len(tokens_per_property),
 				}
-
-			# tambahkan token
 			property_tokens_map[prop.id]['tokens'].append(token)
 
 		return request.render('vit_property_portal.nilai_akun_table',  
@@ -128,26 +126,35 @@ class PropertyPortalInvestor(http.Controller):
 
 	@http.route(['/investor/payment_request'], type='http', auth="user", website=True, csrf=True)
 	def portal_withdraw_request(self, **post):
+		property_unit_id = post.get('property_unit_id')
 		token_amount = post.get('token_amount')
 		bank_account = post.get('bank_account')
-		if not token_amount or not bank_account:
+
+		if not property_unit_id or not token_amount or not bank_account:
 			return request.redirect('/my/home?error=missing_data')
 
 		try:
+			property_unit_id = int(property_unit_id)
 			token_amount = int(token_amount)
 			bank_id = int(bank_account)
 		except ValueError:
 			return request.redirect('/my/home?error=invalid_data')
 
+		property_unit = request.env['vit.property_unit'].sudo().browse(property_unit_id)
+		if not property_unit.exists():
+			return request.redirect('/my/home?error=invalid_property')
+
 		user = request.env.user
 		partner = user.partner_id
-		request_amount = token_amount
+
+		request_amount = property_unit.price_per_token * token_amount
 
 		payment = request.env['vit.payment_request'].sudo().create({
 			'investor_id': partner.id,
 			'bank_id': bank_id,
 			'token_amount': token_amount,
 			'request_amount': request_amount,
+			'request_date': datetime.now(),
 		})
 
 		return request.redirect('/my/home?success=withdraw_submitted')

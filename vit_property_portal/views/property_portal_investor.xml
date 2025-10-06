@@ -102,12 +102,12 @@
                             <form id="withdrawForm" t-att-action="'/investor/payment_request'" method="post">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <div class="mb-3">
-                                    <label for="property_id" class="form-label fw-semibold">Pilih Properti</label>
-                                    <select class="form-select rounded-3" name="property_id" id="property_id" required="True">
+                                    <label for="property_unit_id" class="form-label fw-semibold">Pilih Properti</label>
+                                    <select class="form-select rounded-3" name="property_unit_id" id="property_unit_id" required="True">
                                         <option value="">Pilih Properti</option>
                                         <t t-foreach="invested_properties" t-as="p">
-                                            <option t-att-value="p.id">
-                                                <t t-esc="p.name"/>
+                                            <option t-att-value="p.property_unit_id.id">
+                                                <t t-esc="p.property_unit_id.name"/>
                                             </option>
                                         </t>
                                     </select>

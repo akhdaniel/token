@@ -21,6 +21,7 @@ class payment_request(models.Model):
 	name = fields.Char( required=True, copy=False, default="New", readonly=True,  string=_("Name"))
 	token_amount = fields.Integer(readonly=True,  string=_("Token Amount"))
 	request_amount = fields.Float(readonly=True,  string=_("Request Amount"))
+	request_date = fields.Datetime( string=_("Request Date"))
 	stage_is_draft = fields.Boolean(related="stage_id.draft", store=True,  string=_("Stage Is Draft"))
 	stage_is_done = fields.Boolean(related="stage_id.done", store=True,  string=_("Stage Is Done"))
 	allow_confirm = fields.Boolean(related="stage_id.allow_confirm", store=True,  string=_("Allow Confirm"))

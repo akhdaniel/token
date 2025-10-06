@@ -11,6 +11,7 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
         'click .btn-delete-doc': '_onDelete',
         'click .btn-edit-doc': '_openEdit',
         'submit #edit-document-form': '_onUpdate',
+        'change #uploadDocumentModal input[name="document_file"]': '_onFileChange',
     },
 
     start() {
@@ -49,8 +50,9 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
             } else {
                 $('#uploadDocumentModal').modal('hide');
                 form.reset();
+                $('#upload-preview').empty().addClass('d-none');
                 this._showAlert('success', 'Document uploaded successfully');
-                this._reloadTable();
+                await this._reloadTable();
             }
         } catch (err) {
             spinner.addClass('d-none');
@@ -66,7 +68,7 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
             this._showAlert('danger', result.error);
         } else {
             this._showAlert('success', 'Document deleted');
-            this._reloadTable();
+            await this._reloadTable();
         }
     },
 
@@ -82,14 +84,14 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
         rows.forEach(r => {
             let previewHtml = '<span>File</span>';
             if (r.mimetype.includes('image')) {
-                previewHtml = `<img src="${r.file_url}?image_zoom=0&amp;width=50&amp;height=50" class="img-thumbnail" alt="Preview"/>`;
+                previewHtml = `<img src="${r.file_url}&filename_field=file_name" class="img-thumbnail" alt="Preview"/>`;
             } else if (r.mimetype.includes('pdf')) {
                 previewHtml = `<i class="fa fa-file-pdf-o fa-2x text-danger" title="PDF File"></i>`;
             } else {
                 previewHtml = `<i class="fa fa-file-o fa-2x text-muted" title="Document File"></i>`;
             }
 
-            const downloadLink = `<a href="${r.file_url}?download=false">${r.file_name}</a>`;
+            const downloadLink = `<a href="${r.file_url}?download=false&filename_field=file_name">${r.file_name}</a>`;
             tbody.append(`<tr data-id="${r.id}"
                                 data-type-id="${r.document_type_id}"
                                 data-name="${r.document_type}"
@@ -132,7 +134,7 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
         } else if (mimetype.includes('image')) {
             preview.html(`<img src="${fileUrl}" class="img-fluid rounded" style="max-height:300px;"/>`);
         } else {
-            preview.html(`<a href="${fileUrl}?download=true" target="_blank">${fileName}</a>`);
+            preview.html(`<a href="${fileUrl}?download=false" target="_blank">${fileName}</a>`);
         }
 
         modal.modal('show');
@@ -170,6 +172,35 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
             $('#editDocumentModal').modal('hide');
             this._showAlert('success', 'Document updated');
             this._reloadTable();
+        }
+    },
+
+    _onFileChange(ev) {
+        const file = ev.currentTarget.files[0];
+        const preview = $('#upload-preview');
+        preview.empty().removeClass('d-none');
+
+        if (!file) {
+            preview.addClass('d-none');
+            return;
+        }
+
+        const mimetype = file.type;
+
+        if (mimetype.includes('image')) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                preview.html(`<img src="${e.target.result}" class="img-fluid rounded" style="max-height:300px;"/>`);
+            };
+            reader.readAsDataURL(file);
+        } else if (mimetype.includes('pdf')) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                preview.html(`<embed src="${e.target.result}" type="application/pdf" width="100%" height="400px"/>`);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.html(`<span class="text-muted"><i class="fa fa-file-o"></i> ${file.name}</span>`);
         }
     },
 

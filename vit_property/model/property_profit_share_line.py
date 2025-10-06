@@ -21,8 +21,6 @@ class property_profit_share_line(models.Model):
 	name = fields.Char( required=True, copy=False, string=_("Name"))
 	amount = fields.Float( string=_("Amount"))
 	token_count = fields.Integer( string=_("Token Count"))
-	start_date = fields.Date( string=_("Start Date"))
-	end_date = fields.Date( string=_("End Date"))
 
 
 	def copy(self, default=None):

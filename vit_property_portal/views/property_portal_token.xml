@@ -3,10 +3,6 @@
     <template id="portal_my_property_list_token" name="Property Unit Token">
         <div id="token-table-wrapper" t-att-data-property-id="property_unit and property_unit.id or ''" class="mt-3">
             <div class="d-flex justify-content-between mt-3">
-                <!-- <button type="button" id="btn-generate-token" class="btn btn-primary px-4">
-                    Generate Token
-                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                </button> -->
                 <div>
                     <button type="button" id="btn-generate-token"
                         t-att-class="len(property_unit.token_ids) &gt; 0 and 'btn btn-dark px-4' or 'btn btn-primary px-4'"
@@ -83,7 +79,7 @@
             </t>
             <t t-else="">
                 <tr>
-                    <td colspan="4" class="text-center text-muted">
+                    <td colspan="6" class="text-center text-muted">
                         Belum ada token
                     </td>
                 </tr>
