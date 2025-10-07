@@ -13,6 +13,7 @@ from . import stage
 from . import payment_transaction
 from . import property_unit_image
 from . import property_profit_share
+from . import property_profit_share_line
 from . import payment_register
 from . import payment_request
 from . import property_document
