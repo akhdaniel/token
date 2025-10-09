@@ -20,19 +20,8 @@ class property_unit(models.Model):
 			('model_id', '=', self.env['ir.model']._get_id('vit.property_unit'))
 		],
 	)
-	token_initial_ids = fields.One2many(
-		comodel_name="product.product",
-		inverse_name="property_unit_id",
-		domain=[("token_type", "=", "token_initial")],
-		string="Token Initial"
-	)
-
-	token_reward_ids = fields.One2many(
-		comodel_name="product.product",
-		inverse_name="property_unit_id",
-		domain=[("token_type", "=", "token_reward")],
-		string="Token Reward"
-	)
+	token_initial_ids = fields.One2many(comodel_name="product.product", inverse_name="property_unit_id", domain=[("token_type", "=", "token_initial")], string="Token Initial")
+	token_reward_ids = fields.One2many(comodel_name="product.product", inverse_name="property_unit_id", domain=[("token_type", "=", "token_reward")], string="Token Reward")
 	available_tokens = fields.Integer(compute="_compute_available_tokens", store=True )
 	can_generate_token = fields.Boolean(string="Can Generate Token", default=True)
 
@@ -68,6 +57,12 @@ class property_unit(models.Model):
 			return False
 
 	def action_confirm(self):
+		if not self.property_unit_image_ids:
+			raise UserError("Cannot confirm record without image!  Please upload image.")
+			
+		if not self.property_document_ids:
+			raise UserError("Cannot confirm record without document!  Please upload document.")
+
 		stage = self._get_next_stage()
 		self.stage_id=stage
 		if self.stage_id.execute_enter and hasattr(self, self.stage_id.execute_enter) and callable(getattr(self, self.stage_id.execute_enter)):

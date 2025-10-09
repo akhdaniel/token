@@ -86,7 +86,7 @@ class PropertyPortalOwner(CustomerPortal):
 
 		page = int(kw.get('page', 1))
 		page_size = 40
-		token_ids = property_unit.token_inital_ids
+		token_ids = property_unit.token_initial_ids
 		total = len(token_ids)
 		page_count = max(1, (total + page_size - 1) // page_size)
 		start, end = (page - 1) * page_size, page * page_size
@@ -148,14 +148,14 @@ class PropertyPortalOwner(CustomerPortal):
 					'property_type': form_data.get('property_type'),
 					'is_sale': form_data.get('is_sale'),
 					'is_rent': form_data.get('is_rent'),
-					'rental_price': form_data.get('rental_price'),
+					'rental_price': float(form_data.get('rental_price') or 0),
 					'cost_price': cost_price,
-					'sale_price_target': form_data.get('sale_price_target'),
+					'sale_price_target': float(form_data.get('sale_price_target') or 0),
 					'expected_rental_yield': form_data.get('expected_rental_yield'),
 					'owner_id': partner.id,
 					'currency_id': user.company_id.currency_id.id,
 					'price_per_token': price_per_token,
-					'rent_type_id': form_data.get('rent_type_id'),
+					'rent_type_id': int(form_data.get('rent_type_id')) if form_data.get('rent_type_id') else None,
 					'stage_id': data_stage.id,
 				})
 
@@ -197,7 +197,7 @@ class PropertyPortalOwner(CustomerPortal):
 				'owner_id': partner.id,
 				'currency_id': user.company_id.currency_id.id,
 				'price_per_token': price_per_token,
-				'rent_type_id': form_data.get('rent_type_id'),
+				'rent_type_id': int(form_data.get('rent_type_id')) if form_data.get('rent_type_id') else None,
 				'stage_id': data_stage.id,
 			})
 

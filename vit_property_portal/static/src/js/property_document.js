@@ -82,32 +82,33 @@ publicWidget.registry.PropertyDocumentManager = publicWidget.Widget.extend({
         }
 
         rows.forEach(r => {
-            let previewHtml = '<span>File</span>';
+            const cacheBuster = `&_t=${Date.now()}`;
+            let previewHtml = '';
             if (r.mimetype.includes('image')) {
-                previewHtml = `<img src="${r.file_url}&filename_field=file_name" class="img-thumbnail" alt="Preview"/>`;
+                previewHtml = `<img src="${r.file_url}?filename_field=file_name${cacheBuster}" class="img-thumbnail" alt="Preview"/>`;
             } else if (r.mimetype.includes('pdf')) {
                 previewHtml = `<i class="fa fa-file-pdf-o fa-2x text-danger" title="PDF File"></i>`;
             } else {
                 previewHtml = `<i class="fa fa-file-o fa-2x text-muted" title="Document File"></i>`;
             }
 
-            const downloadLink = `<a href="${r.file_url}?download=false&filename_field=file_name">${r.file_name}</a>`;
-            tbody.append(`<tr data-id="${r.id}"
-                                data-type-id="${r.document_type_id}"
-                                data-name="${r.document_type}"
-                                data-issue="${r.issue_date || ''}"
-                                data-expiry="${r.date_expiry || ''}"
-                                data-file="${r.file_name}"
-                                data-url="${r.file_url}"
-                                data-mimetype="${r.mimetype}"> <td>${r.document_type}</td>
-                                <td class="text-center">${previewHtml}</td> <td>${downloadLink}</td>
-                                <td>${r.issue_date || ''}</td>
-                                <td>${r.date_expiry || ''}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning btn-edit-doc">Edit</button>
-                                    <button class="btn btn-sm btn-danger btn-delete-doc">Delete</button>
-                                </td>
-                            </tr>`);
+            const downloadLink = `<a href="${r.file_url}?download=false&filename_field=file_name${cacheBuster}">${r.file_name}</a>`;
+
+            tbody.append(`
+                <tr data-id="${r.id}" data-type-id="${r.document_type_id}" data-name="${r.document_type}"
+                    data-issue="${r.issue_date || ''}" data-expiry="${r.date_expiry || ''}"
+                    data-file="${r.file_name}" data-url="${r.file_url}" data-mimetype="${r.mimetype}">
+                    <td>${r.document_type}</td>
+                    <td class="text-center">${previewHtml}</td>
+                    <td>${downloadLink}</td>
+                    <td>${r.issue_date || ''}</td>
+                    <td>${r.date_expiry || ''}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning btn-edit-doc">Edit</button>
+                        <button class="btn btn-sm btn-danger btn-delete-doc">Delete</button>
+                    </td>
+                </tr>
+            `);
         });
     },
 
