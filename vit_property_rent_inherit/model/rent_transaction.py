@@ -21,7 +21,7 @@ class rent_transaction(models.Model):
 			('model_id', '=', self.env['ir.model']._get_id('vit.rent_transaction'))
 		],
 	)
-	end_date = fields.Date(compute="_compute_dates_amount", store=True)
+	end_date = fields.Datetime(compute="_compute_dates_amount", store=True)
 	amount_total_rent = fields.Float(compute="_compute_dates_amount", store=True)
 	rent_price_per_month = fields.Float(compute='_compute_rent_price', store=True)
 	rent_type_id = fields.Many2one(comodel_name="vit.rent_type", related="property_unit_id.rent_type_id",  string=_("Rent Type"))
@@ -36,18 +36,74 @@ class rent_transaction(models.Model):
 		for rec in self:
 			end_date = False
 			if rec.start_date and rec.duration and rec.rent_type_id:
-				# tentukan jumlah bulan / tahun
 				name = (rec.rent_type_id.name or "").lower()
 				if "month" in name:
 					end_date = rec.start_date + relativedelta(months=rec.duration)
 				elif "year" in name:
 					end_date = rec.start_date + relativedelta(years=rec.duration)
 			rec.end_date = end_date
-			# total harga sewa
+			rec.transaction_date = rec.start_date
 			rec.amount_total_rent = (rec.duration or 0) * (rec.rent_price_per_month or 0)
+
+	@api.onchange("property_unit_id")
+	def _onchange_property_unit_id(self, ):
+		self.rent_price_per_month = self.property_unit_id.rental_price
+		self.rent_type_id = self.property_unit_id.rent_type_id
+
+		active_rent = self.env["vit.rent_transaction"].search([
+			("property_unit_id", "=", self.property_unit_id.id),
+			("end_date", ">=", fields.Datetime.now()),  
+		], limit=1)
+
+		if active_rent:
+			raise UserError(_(
+				"Properti ini masih dalam masa sewa!\n"
+				"Transaksi aktif: %s\nPeriode: %s → %s"
+			) % (
+				active_rent.name,
+				active_rent.start_date.strftime("%d-%m-%Y") if active_rent.start_date else "-",
+				active_rent.end_date.strftime("%d-%m-%Y") if active_rent.end_date else "-"
+			))
 
 	@api.model_create_multi
 	def create(self, vals):
+		for val in vals:
+			start_date = val.get("start_date")
+			duration = val.get("duration")
+
+			rent_type = None
+			rent_type_id = val.get("rent_type_id")
+			property_unit_id = val.get("property_unit_id")
+			if not rent_type_id and property_unit_id:
+				rent_type = self.env["vit.property_unit"].browse(property_unit_id).rent_type_id
+				rent_type_id = rent_type.id if rent_type else None
+			elif rent_type_id:
+				rent_type = self.env["vit.rent_type"].browse(rent_type_id)
+
+			if start_date and duration and rent_type:
+				name = (rent_type.name or "").lower()
+				start_dt = fields.Datetime.from_string(start_date)
+				if "month" in name:
+					val["end_date"] = start_dt + relativedelta(months=duration)
+				elif "year" in name:
+					val["end_date"] = start_dt + relativedelta(years=duration)
+
+			if property_unit_id and start_date and val.get("end_date"):
+				overlapping = self.env["vit.rent_transaction"].search([
+					("property_unit_id", "=", property_unit_id),
+					("end_date", ">=", start_date),
+					("start_date", "<=", val["end_date"]),
+				], limit=1)
+				if overlapping:
+					raise UserError(_(
+						"Property unit ini masih dalam masa sewa!\n"
+						"Transaksi aktif: %s\nPeriode: %s → %s"
+					) % (
+						overlapping.name,
+						overlapping.start_date.strftime("%d-%m-%Y"),
+						overlapping.end_date.strftime("%d-%m-%Y")
+					))
+			
 		return super(rent_transaction, self).create(vals)
 
 	def _get_first_stage(self):

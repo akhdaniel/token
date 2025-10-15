@@ -12,8 +12,10 @@
 					<field name="investor_id" /> <!-- 100-->
 					<field name="qty_token" /> <!-- 101-->
 					<field name="property_unit_id" /> <!-- 101-->
-					<field name="price_per_token" /> <!-- 102-->
+					<field name="qty_token_available" /> <!-- 102-->
 					<field name="stage_id" /> <!-- 102-->
+					<field name="price_per_token" /> <!-- 103-->
+					<field name="status" /> <!-- 104-->
 				</list>
 			</field>
 		</record>
@@ -63,7 +65,9 @@
 								<field name="allow_cancel" invisible="True" readonly="stage_is_draft==False"/>
 								<field name="stage_name" invisible="True" readonly="stage_is_draft==False"/>
 								<field name="qty_token"  readonly="stage_is_draft==False"/>
+								<field name="qty_token_available"  readonly="stage_is_draft==False"/>
 								<field name="price_per_token"  readonly="stage_is_draft==False"/>
+								<field name="status"  readonly="stage_is_draft==False"/>
 							</group>
 							<group> <!-- right -->
 								<field name="investor_id"  readonly="stage_is_draft==False"/>
@@ -71,6 +75,9 @@
 							</group>
 						</group>
 						<notebook>
+							<page name="order_token_ids" string="Order Token">
+								<field name="order_token_ids" readonly="stage_is_draft==False"/>
+							</page>
 						</notebook>
 						<group name="note_group" col="6" class="mt-2 mt-md-0">
 							<group colspan="4">
@@ -92,7 +99,9 @@
 
 					<filter string="Name" name="filter_by_name" domain="[('name','=','')]" />
 					<filter string="Qty Token" name="filter_by_qty_token" domain="[('qty_token','=','')]" />
+					<filter string="Qty Token Available" name="filter_by_qty_token_available" domain="[('qty_token_available','=','')]" />
 					<filter string="Price Per Token" name="filter_by_price_per_token" domain="[('price_per_token','=','')]" />
+					<filter string="Status" name="filter_by_status" domain="[('status','=','')]" />
 					<filter string="Stage Is Draft" name="filter_by_stage_is_draft" domain="[('stage_is_draft','=','')]" />
 					<filter string="Stage Is Done" name="filter_by_stage_is_done" domain="[('stage_is_done','=','')]" />
 					<filter string="Allow Confirm" name="filter_by_allow_confirm" domain="[('allow_confirm','=','')]" />
@@ -100,7 +109,9 @@
 					<filter string="Stage Name" name="filter_by_stage_name" domain="[('stage_name','=','')]" />
 					<field name="name" select="True"/>
 					<field name="qty_token" select="True"/>
+					<field name="qty_token_available" select="True"/>
 					<field name="price_per_token" select="True"/>
+					<field name="status" select="True"/>
 					<field name="stage_is_draft" select="True"/>
 					<field name="stage_is_done" select="True"/>
 					<field name="allow_confirm" select="True"/>
@@ -113,6 +124,7 @@
 						<filter string="Investor" domain="[]" name="group_by_investor_id" context="{'group_by':'investor_id'}"/>
 						<filter string="Property Unit" domain="[]" name="group_by_property_unit_id" context="{'group_by':'property_unit_id'}"/>
 						<filter string="Stage" domain="[]" name="group_by_stage_id" context="{'group_by':'stage_id'}"/>
+						<filter string="Status" domain="[]" name="group_by_status" context="{'group_by':'status'}"/>
 					</group>
 				</search>
 			</field>

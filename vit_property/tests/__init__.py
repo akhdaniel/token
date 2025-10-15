@@ -8,3 +8,5 @@ from . import test_property_unit_image
 from . import test_payment_request
 from . import test_document_type
 from . import test_property_document
+from . import test_property_financial
+from . import test_property_timeline

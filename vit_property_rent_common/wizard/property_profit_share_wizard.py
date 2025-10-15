@@ -14,8 +14,8 @@ class PropertyProfitShareWizard(models.TransientModel):
 		required=True,
 		readonly=True
 	)
-	start_date = fields.Date(string="Start Date", required=True)
-	end_date = fields.Date(string="End Date", required=True)
+	start_date = fields.Datetime(string="Start Date", required=True)
+	end_date = fields.Datetime(string="End Date", required=True)
 	property_unit_id = fields.Many2one("vit.property_unit", string="Property", readonly=True)
 	total_profit_share_amount = fields.Float(readonly=True, string="Total Profit Share Amount",)
 
@@ -30,6 +30,7 @@ class PropertyProfitShareWizard(models.TransientModel):
 			confirmed_orders = self.env['vit.order_token'].search([
 				('property_unit_id', '=', rec.property_unit_id.id),
 				('status', '=', 'confirmed'),
+				('create_date', '<=', rec.end_date),
 			])
 			if not confirmed_orders:
 				raise UserError(_("No confirmed investor orders found."))

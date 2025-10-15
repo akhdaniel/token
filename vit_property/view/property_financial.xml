@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- tree view -->
+		<record id="view_vit_property_financial_tree" model="ir.ui.view">
+			<field name="name">vit_property_financial_tree</field>
+			<field name="model">vit.property_financial</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<list string="Property Financial">
+					<field name="total_investment" /> <!-- 100-->
+					<field name="name" /> <!-- 100-->
+					<field name="property_upgrade" /> <!-- 101-->
+					<field name="notaris_fee" /> <!-- 102-->
+					<field name="platform_fee" /> <!-- 103-->
+				</list>
+			</field>
+		</record>
+		<!-- pivot view -->
+		<record id="view_vit_property_financial_pivot" model="ir.ui.view">
+			<field name="name">vit_property_financial_tree</field>
+			<field name="model">vit.property_financial</field>
+			<field name="type">pivot</field>
+			<field name="arch" type="xml">
+				<pivot string="Property Financial">
+					<field name="name" type="row"/>
+				</pivot>
+			</field>
+		</record>
+		<!-- form view -->
+		<record id="view_vit_property_financial_form" model="ir.ui.view">
+			<field name="name">vit_property_financial_form</field>
+			<field name="model">vit.property_financial</field>
+			<field name="type">form</field>
+			<field name="priority" eval="8"/>
+			<field name="arch" type="xml">
+				<form string="Property Financial">
+					<header>
+						<button string="Reload" type="object" name="action_reload_view" icon="fa-refresh"/>
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<!--button type="object" name="action_view_detail" class="oe_stat_button" icon="fa-pencil-square-o"-->
+								<!--field name="detail_count" widget="statinfo" string="Detail(s)"/-->
+								<!--field name="detail_ids" invisible="1"/-->
+							<!--/button-->
+						</div>
+						<div class="oe_title">
+							<label for="name" class="oe_edit_only" string="Property Financial Name"/>
+							<h1><field name="name" /></h1>
+						</div>
+						<group>
+							<group> <!-- left -->
+								<field name="total_investment"  />
+								<field name="property_upgrade"  />
+								<field name="notaris_fee"  />
+								<field name="platform_fee"  />
+							</group>
+							<group> <!-- right -->
+							</group>
+						</group>
+						<notebook>
+						</notebook>
+						<group name="note_group" col="6" class="mt-2 mt-md-0">
+							<group colspan="4">
+							</group>
+							<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+							</group>
+							<div class="clearfix"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<!-- search -->
+		<record id="view_vit_property_financial_search" model="ir.ui.view">
+			<field name="name">vit_property_financial</field>
+			<field name="model">vit.property_financial</field>
+			<field name="arch" type="xml">
+				<search string="Property Financial">
+
+					<filter string="Total Investment" name="filter_by_total_investment" domain="[('total_investment','=','')]" />
+					<filter string="Property Upgrade" name="filter_by_property_upgrade" domain="[('property_upgrade','=','')]" />
+					<filter string="Notaris Fee" name="filter_by_notaris_fee" domain="[('notaris_fee','=','')]" />
+					<filter string="Platform Fee" name="filter_by_platform_fee" domain="[('platform_fee','=','')]" />
+					<field name="total_investment" select="True"/>
+					<field name="property_upgrade" select="True"/>
+					<field name="notaris_fee" select="True"/>
+					<field name="platform_fee" select="True"/>
+					<field name="name" select="True"/>
+					<group string="Group By..">
+						<filter string="Name" domain="[]" name="group_by_name" context="{'group_by':'name'}"/>
+					</group>
+				</search>
+			</field>
+		</record>
+		<!-- kanban , to show image, please add image, image_512, image_1920, or image_small in the model -->
+		<record id="view_vit_property_financial_kanban" model="ir.ui.view" >
+			<field name="name">vit_property_financial</field>
+			<field name="model">vit.property_financial</field>
+			<field name="arch" type="xml">
+				<kanban version="7.0">
+					<field name="id" />
+					<templates>
+						<t t-name="card" class="flex-row">
+							<main class="p-2">
+								<h4>
+									<a type="open"><field name="name"/></a>
+								</h4>
+							</main>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+		<!-- graph -->
+		<record id="view_vit_property_financial_graph" model="ir.ui.view">
+			<field name="name">vit_property_financial</field>
+			<field name="model">vit.property_financial</field>
+			<field name="arch" type="xml">
+				<graph string="Property Financial" type="bar">
+					<field name="name"/>
+				</graph>
+			</field>
+		</record>
+		<!-- action window -->
+		<record id="action_property_financial" model="ir.actions.act_window">
+			<field name="name">Property Financial</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">vit.property_financial</field>
+			<field name="view_mode">list,form,kanban,pivot,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				Click to add a new Property Financial
+				</p><p>
+
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="menu_property_financial" name="Property Financial" parent="vit_property_config_menu" action="action_property_financial" sequence="230"/>
+	</data>
+</odoo>

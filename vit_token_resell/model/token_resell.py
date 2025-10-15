@@ -20,7 +20,9 @@ class token_resell(models.Model):
 
 	name = fields.Char( required=True, copy=False, default="New", readonly=True,  string=_("Name"))
 	qty_token = fields.Integer( string=_("Qty Token"))
+	qty_token_available = fields.Integer( string=_("Qty Token Available"))
 	price_per_token = fields.Float( string=_("Price Per Token"))
+	status = fields.Selection(selection=[('draft', 'Draft'),('listed', 'Listed'),('sold', 'Sold'),('cancel', 'Cancel')],  string=_("Status"))
 	stage_is_draft = fields.Boolean(related="stage_id.draft", store=True,  string=_("Stage Is Draft"))
 	stage_is_done = fields.Boolean(related="stage_id.done", store=True,  string=_("Stage Is Done"))
 	allow_confirm = fields.Boolean(related="stage_id.allow_confirm", store=True,  string=_("Allow Confirm"))
@@ -89,3 +91,4 @@ class token_resell(models.Model):
 	investor_id = fields.Many2one(comodel_name="res.partner",  string=_("Investor"))
 	property_unit_id = fields.Many2one(comodel_name="vit.property_unit",  string=_("Property Unit"))
 	stage_id = fields.Many2one(comodel_name="vit.stage",  default=_get_first_stage, copy=False, group_expand="_group_expand_states",  string=_("Stage"))
+	order_token_ids = fields.One2many(comodel_name="vit.order_token",  inverse_name="token_resell_id",  string=_("Order Token"))

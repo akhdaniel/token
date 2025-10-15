@@ -156,7 +156,7 @@ class PropertyPortalOwner(CustomerPortal):
 					'currency_id': user.company_id.currency_id.id,
 					'price_per_token': price_per_token,
 					'rent_type_id': int(form_data.get('rent_type_id')) if form_data.get('rent_type_id') else None,
-					'stage_id': data_stage.id,
+					# 'stage_id': data_stage.id,
 				})
 
 				return {

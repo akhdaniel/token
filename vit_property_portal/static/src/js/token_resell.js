@@ -28,6 +28,7 @@ publicWidget.registry.TokenResellWidget = publicWidget.Widget.extend({
         const propertyId = form.dataset.propertyId;
         const qtyToken = form.querySelector("input[name='qty_token']").value;
         const pricePerToken = form.querySelector("input[name='price_per_token']").value;
+        const priceRaw = priceInput.dataset.rawValue || priceInput.value;
 
         if (!qtyToken || !pricePerToken) {
             this._showAlert('danger', "Mohon isi jumlah token dan harga per token");

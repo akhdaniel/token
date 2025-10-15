@@ -1,9 +1,7 @@
 <odoo>
-	<!-- ===== LIST VIEW ===== -->
 	<template id="portal_property_list" name="Property List">
 		<t t-call="portal.portal_layout">
 			<section class="goro-section container">
-				<!-- ==== FILTER BAR ==== -->
 				<div class="d-flex justify-content-center mb-4">
 					<div class="btn-group" role="group" aria-label="Filter Properti">
 						<a href="/properties?mode=all"
@@ -23,40 +21,78 @@
 
 				<div class="row g-4">
 					<t t-foreach="properties" t-as="prop">
-
-						<!-- ambil gambar pertama -->
 						<t t-set="first_img" t-value="prop.property_unit_image_ids and prop.property_unit_image_ids[0].image or False"/>
-
 						<div class="col-12 col-md-6 col-lg-4">
-							<div class="card h-100 rounded-3 hover-scale">
-								<img t-att-src="first_img and 'data:image/png;base64,%s' % first_img.decode() or '/web/static/img/placeholder.png'" class="card-img-top rounded-top-4" style="object-fit:cover;height:200px;" alt="Property Image"/>
-
-								<div class="card-body d-flex flex-column">
-									<h5 class="card-title mb-2" t-esc="prop.name"/>
-									<p class="text-muted small mb-2">
-										<i class="fa fa-map-marker me-1"></i>
-										<t t-esc="prop.address"/>
-									</p>
-									<p class="fw-semibold mb-2">Price per Token:
-										<span t-esc="prop.price_per_token" t-options="{'widget': 'monetary', 'display_currency': prop.currency_id}"/>
-									</p>
+							<a t-att-href="'/properties/%d' % prop.id" class="text-decoration-none text-reset">
+								<div class="card h-100 rounded-3 hover-scale">
 									<t t-set="sold_tokens" t-value="prop.total_tokens - prop.available_tokens"/>
 									<t t-set="sold_percent" t-value="(sold_tokens / prop.total_tokens * 100) if prop.total_tokens else 0"/>
-									<div class="progress mb-1" style="height:6px;" role="progressbar" t-att-aria-valuenow="sold_percent" aria-valuemin="0" aria-valuemax="100">
-										<div class="progress-bar" t-att-style="'width:{}%'.format(sold_percent)"></div>
-									</div>
-									<div class="d-flex justify-content-between small mb-2">
-										<span><t t-esc="round(sold_percent,2)"/>%</span>
-										<span><t t-esc="prop.available_tokens"/> token tersedia</span>
-									</div>
-
-									<div class="mt-auto">
-										<a t-att-href="'/properties/%d' % prop.id" class="btn btn-primary w-100 rounded-3">
-											<i class="fa fa-file-contract me-1"></i> Investasi Sekarang
-										</a>
+									<t t-if="prop.available_tokens == 0 and sold_percent == 100">
+										<div class="ribbon-wrapper">
+											<div class="ribbon">Terjual Habis</div>
+										</div>
+									</t>
+									<img t-att-src="first_img and 'data:image/png;base64,%s' % first_img.decode() or '/web/static/img/placeholder.png'" class="card-img-top rounded-top-4" style="object-fit:cover;height:200px;" alt="Property Image"/>
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title mb-2" t-esc="prop.name"/>
+										<p class="text-muted small mb-2">
+											<i class="fa fa-map-marker me-1 text-danger"></i>
+											<t t-esc="prop.address"/>
+										</p>
+										<div class="financial-metrics mb-2">
+											<div class="row g-3 text-center text-md-start">
+												<div class="col-12 col-md-4">
+													<div class="p-3 bg-light rounded-3 h-100">
+														<small class="text-muted d-block mb-1">ERY</small>
+														<h6 class="fw-bold text-primary mb-0">
+															<t t-esc="prop.expected_rental_yield"/>%
+														</h6>
+													</div>
+												</div>
+												<div class="col-12 col-md-4">
+													<div class="p-3 rounded-3 h-100" style="background-color: #fff; border: 1px solid #ddd;">
+														<small class="text-muted d-block mb-1">ECA</small>
+														<h6 class="fw-bold text-success mb-0">
+															<t t-esc="prop.expected_capital_appreciation"/>%
+														</h6>
+													</div>
+												</div>
+												<div class="col-12 col-md-4">
+													<div class="p-3 rounded-3 h-100" style="background-color: #fff; border: 1px solid #ddd;">
+														<small class="text-muted d-block mb-1">IRR</small>
+														<h6 class="fw-bold text-warning mb-0">
+															<t t-esc="prop.internal_rate_of_return"/>%
+														</h6>
+													</div>
+												</div>
+											</div>
+										</div>
+										<p class="fw-semibold mb-2">Price per Token:
+											<span t-esc="prop.price_per_token" t-options="{'widget': 'monetary', 'display_currency': prop.currency_id}"/>
+										</p>
+										
+										<div class="progress mb-1" style="height:6px;" role="progressbar" t-att-aria-valuenow="sold_percent" aria-valuemin="0" aria-valuemax="100">
+											<div class="progress-bar" t-att-style="'width:{}%'.format(sold_percent)"></div>
+										</div>
+										<div class="d-flex justify-content-between small mb-2">
+											<span><t t-esc="round(sold_percent,2)"/>%</span>
+											<span><t t-esc="prop.available_tokens"/> token tersedia</span>
+										</div>
+										<div class="mt-auto">
+											<t t-if="prop.available_tokens == 0 and sold_percent == 100">
+												<a t-att-href="'/properties/%d' % prop.id" class="btn btn-secondary w-100 rounded-3">
+													Investasi Sekarang
+												</a>
+											</t>
+											<t t-else="">
+												<a t-att-href="'/properties/%d' % prop.id" class="btn btn-primary w-100 rounded-3">
+													Investasi Sekarang
+												</a>
+											</t>
+										</div>
 									</div>
 								</div>
-							</div>
+							</a>
 						</div>
 					</t>
 				</div>
@@ -68,117 +104,465 @@
 		<t t-call="portal.portal_layout">
 			<section class="container portal_property_detail_wrapper">
 				<div class="row g-5 align-items-start">
-
-					<!-- === LEFT : GALLERY === -->
-					<div class="col-lg-6">
-						<!-- Main Image -->
-						<div class="ratio ratio-4x3 rounded-4 overflow-hidden shadow-sm mb-3">
+					<div class="col-lg-7">
+						<div class="main-image-wrapper ratio ratio-4x3 rounded-4 shadow-sm">
+							<t t-set="sold_tokens" t-value="property.total_tokens - property.available_tokens"/>
+							<t t-set="sold_percent" t-value="(sold_tokens / property.total_tokens * 100) if property.total_tokens else 0"/>
+							
+							<t t-if="property.available_tokens == 0 and sold_percent == 100">
+								<div class="ribbon-wrapper position-absolute" style="top:10px; right:10px; z-index:10;">
+									<div class="ribbon">Terjual Habis</div>
+								</div>
+							</t>
 							<t t-if="property.property_unit_image_ids and property.property_unit_image_ids[0]">
-							<img id="mainImage"
-								t-att-src="'data:image/png;base64,%s' % property.property_unit_image_ids[0].image.decode()"
-								class="w-100 h-100 object-fit-cover"
-								alt="Property Image"/>
+								<img id="mainImage"
+									t-att-src="'data:image/png;base64,%s' % property.property_unit_image_ids[0].image.decode()"
+									class="main-image w-100 h-100 object-fit-cover fade-active"
+									alt="Property Image"/>
 							</t>
 							<t t-else="">
-							<img src="/web/static/img/placeholder.png"
-								class="w-100 h-100 object-fit-cover"
-								alt="No Image"/>
+								<img src="/web/static/img/placeholder.png" class="main-image w-100 h-100 object-fit-cover" alt="No Image"/>
+							</t>
+
+							<t t-if="property.property_unit_image_ids and len(property.property_unit_image_ids) > 1">
+								<div class="thumbnail-overlay-bottom px-4 d-flex flex-column justify-content-end">
+									<div class="thumbnail-blur-bg"></div>
+									<div class="thumbnail-content">
+										<button class="thumb-nav prev"><i class="fa fa-chevron-left"></i></button>
+										<div class="thumb-container d-flex overflow-hidden gap-2">
+											<t t-foreach="property.property_unit_image_ids[1:]" t-as="img">
+												<img t-att-src="'data:image/png;base64,%s' % img.image.decode()"
+													class="thumb-image rounded-3 shadow-sm"
+													alt="Property Thumbnail"/>
+											</t>
+										</div>
+										<button class="thumb-nav next"><i class="fa fa-chevron-right"></i></button>
+									</div>
+								</div>
 							</t>
 						</div>
 
-						<!-- Thumbnails -->
-						<t t-if="property.property_unit_image_ids and len(property.property_unit_image_ids) > 1">
-							<div class="d-flex flex-wrap gap-2">
-							<t t-foreach="property.property_unit_image_ids[1:]" t-as="img">
-								<img t-att-src="'data:image/png;base64,%s' % img.image.decode()"
-									t-att-data-full="'data:image/png;base64,%s' % img.image.decode()"
-									class="thumb-image rounded-3 shadow-sm"
-									style="height:90px;width:90px;object-fit:cover;cursor:pointer;"
-									alt="Property Thumbnail"/>
-							</t>
+						<div class="card border-1 rounded-4 rounded-top-0 mb-4 property-info-card">
+							<div class="card-body">
+								<h3 class="fw-bold text-primary mb-2 mt-2" t-esc="property.name"/>
+								<p class="text-secondary mb-0">
+									<i class="fa fa-map-marker me-2 text-danger"></i>
+									<t t-esc="property.address or 'Alamat belum tersedia'"/>
+								</p>
+								<p>
+									<strong>Tipe Properti:</strong> 
+									<t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, '-')"/>
+								</p>
 							</div>
-						</t>
-					</div>
+						</div>
 
-					<!-- === RIGHT : DETAILS & FORM === -->
-					<div class="col-lg-6 vit-token-wrapper" t-att-data-price-per-token="property.price_per_token">
-						<div class="bg-white rounded-4 shadow-lg p-4">
-							<!-- Title & Address -->
-							<h1 class="fw-bold mb-2 text-primary" t-esc="property.name"/>
-							<p class="text-secondary mb-3">
-							<i class="fa fa-map-marker me-2"></i>
-							<t t-esc="property.address"/>
-							</p>
-							<p class="text-muted mb-4 lh-lg" t-esc="property.description or ''"/>
-							<div class="mb-4">
-								<p><strong>Tipe Properti:</strong> <t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, '-')"/></p>
-								<p><strong>Expected Rental Yield:</strong> <t t-esc="property.expected_rental_yield"/> %</p>
-							</div>
-
-							<!-- Property Info -->
-							<div class="row text-center g-3 mb-4">
+						<!-- Property Info Cards -->
+						<div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
 							<div class="col">
-								<div class="p-3 rounded-3 bg-light h-100">
-								<small class="text-muted d-block">Price/Token</small>
-								<span class="fw-bold fs-5 text-primary"
-										t-esc="property.price_per_token"
-										t-options="{'widget':'monetary','display_currency':property.currency_id}"/>
+								<div class="bg-light rounded-4 text-center h-100 p-3">
+									<i class="fa fa-home text-primary fs-4 mb-2"></i>
+									<div class="small text-muted">Luas</div>
+									<div class="fw-bold"><t t-esc="property.property_size"/> m²</div>
 								</div>
 							</div>
 							<div class="col">
-								<div class="p-3 rounded-3 bg-light h-100">
-								<small class="text-muted d-block">Total Tokens</small>
-								<span class="fw-bold fs-5 text-success"
-										t-esc="property.total_tokens"/>
+								<div class="bg-light rounded-4 text-center h-100 p-3">
+									<i class="fa fa-bed text-primary fs-4 mb-2"></i>
+									<div class="small text-muted">Kamar Tidur</div>
+									<div class="fw-bold"><t t-esc="property.bedroom_count or 0"/></div>
 								</div>
 							</div>
 							<div class="col">
-								<div class="p-3 rounded-3 bg-light h-100">
-									<small class="text-muted d-block">Available</small>
-									<span class="fw-bold fs-5 text-warning"
-											t-esc="property.available_tokens"/>
+								<div class="bg-light rounded-4 text-center h-100 p-3">
+									<i class="fa fa-bath text-primary fs-4 mb-2"></i>
+									<div class="small text-muted">Kamar Mandi</div>
+									<div class="fw-bold"><t t-esc="property.bathroom_count or 0"/></div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Property Tabs -->
+						<div class="card border-1 rounded-4 mb-4">
+							<div class="card-body">
+								<!-- Tab Navigation -->
+								<ul class="nav nav-tabs justify-content-between flex-wrap" id="propertyTab" role="tablist">
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link active w-100" id="rincian-tab" data-bs-toggle="tab" data-bs-target="#rincian" type="button" role="tab">
+											<i class="fa fa-info-circle me-1"></i> Rincian
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="keuangan-tab" data-bs-toggle="tab" data-bs-target="#keuangan" type="button" role="tab">
+											<i class="fa fa-chart-line me-1"></i> Keuangan
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="dokumen-tab" data-bs-toggle="tab" data-bs-target="#dokumen" type="button" role="tab">
+											<i class="fa fa-file-alt me-1"></i> Dokumen
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="pasar-tab" data-bs-toggle="tab" data-bs-target="#pasar" type="button" role="tab">
+											<i class="fa fa-store me-1"></i> Pasar
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="linimasa-tab" data-bs-toggle="tab" data-bs-target="#linimasa" type="button" role="tab">
+											<i class="fa fa-stream me-1"></i> Linimasa
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="rantai-tab" data-bs-toggle="tab" data-bs-target="#rantai" type="button" role="tab">
+											<i class="fa fa-link me-1"></i> Rantai Blok
+										</button>
+									</li>
+								</ul>
+
+								<!-- Tab Content -->
+								<div class="tab-content p-3 mt-3" id="propertyTabContent">
+									<div class="tab-pane fade show active" id="rincian" role="tabpanel" aria-labelledby="rincian-tab">
+										<h5 class="fw-bold mb-3">Deskripsi</h5>
+										<p class="mb-3" t-esc="property.description or 'Belum ada deskripsi properti.'"/>
+										<h5 class="fw-bold mb-3">Lokasi Property</h5>
+										<t t-if="property.latitude and property.longitude">
+											<div id="property-map" class="property-map"
+												t-att-data-lat="property.latitude"
+												t-att-data-lon="property.longitude"
+												t-att-data-name="property.name"
+												t-att-data-address="property.address"
+												style="height: 350px; border-radius: 10px; overflow: hidden;">
+											</div>
+										</t>
+
+										<t t-else="">
+											<div class="alert alert-warning rounded-3">
+												<i class="fa fa-map-marker text-danger me-2"></i>
+												Lokasi belum tersedia.
+											</div>
+										</t>
+									</div>
+									<div class="tab-pane fade" id="keuangan" role="tabpanel" aria-labelledby="keuangan-tab">
+										<p>Data performa keuangan properti (ROI, pendapatan sewa, dsb.) akan ditampilkan di sini.</p>
+									</div>
+									<div class="tab-pane fade" id="dokumen" role="tabpanel" aria-labelledby="dokumen-tab">
+										<p>Dokumen legalitas properti seperti sertifikat, IMB, dan perjanjian akan ditampilkan di sini.</p>
+									</div>
+									<div class="tab-pane fade" id="pasar" role="tabpanel" aria-labelledby="pasar-tab">
+										<p>Informasi pasar dan harga kompetitor di area sekitar akan ditampilkan di sini.</p>
+									</div>
+									<div class="tab-pane fade" id="linimasa" role="tabpanel" aria-labelledby="linimasa-tab">
+										<t t-if="property.property_timeline_ids">
+											<div class="timeline-container position-relative">
+												<!-- Vertical line -->
+												<div class="timeline-line"></div>
+
+												<t t-foreach="property.property_timeline_ids" t-as="tl">
+													<div class="timeline-item position-relative mb-5">
+														<!-- Status icon -->
+														<div class="timeline-icon" t-attf-class="timeline-icon #{tl.status}">
+															<t t-if="tl.status == 'plan'"><i class="fa fa-paper-plane"></i></t>
+															<t t-if="tl.status == 'ongoing'"><i class="fa fa-hourglass-half"></i></t>
+															<t t-if="tl.status == 'done'"><i class="fa fa-check"></i></t>
+														</div>
+
+														<!-- Timeline card -->
+														<div class="timeline-card card border-1 rounded-3 ms-5">
+															<div class="card-body p-4">
+																<div class="d-flex justify-content-between align-items-center mb-2">
+																	<h6 class="fw-bold text-dark mb-0" t-esc="tl.name"/>
+																	<span class="timeline-badge" t-attf-class="timeline-badge #{tl.status}">
+																		<t t-esc="tl.status.title()"/>
+																	</span>
+																</div>
+																<p class="text-muted small mb-2">
+																	<i class="fa fa-calendar me-1"></i>
+																	<t t-esc="tl.timeline_date and tl.timeline_date.strftime('%d %b %Y, %H:%M') or '-'"/>
+																</p>
+																<p class="text-secondary mb-0" t-esc="tl.description or 'Tidak ada deskripsi tambahan.'"/>
+															</div>
+														</div>
+													</div>
+												</t>
+											</div>
+										</t>
+
+										<t t-else="">
+											<div class="alert alert-info border text-center rounded-2 shadow-sm">
+												<i class="fa fa-clock text-muted me-2"></i> 
+												Belum ada aktivitas dalam linimasa proyek ini.
+											</div>
+										</t>
+									</div>
+									<div class="tab-pane fade" id="rantai" role="tabpanel" aria-labelledby="rantai-tab">
+										<p>Informasi blockchain dan transaksi token akan ditampilkan di sini.</p>
 									</div>
 								</div>
 							</div>
+						</div>
+					</div>
 
-							<!-- Investment Form -->
-							<form t-att-action="'/properties/%d/buy_token' % property.id" method="post" class="needs-validation">
-								<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-								<input type="hidden" name="property_id" t-att-value="property.id"/>
+					<!-- === RIGHT: DETAILS & FORM === -->
+					<div class="col-lg-5 vit-token-wrapper" t-att-data-price-per-token="property.price_per_token">
+						<!-- Investment Summary -->
+						<t t-set="sold_tokens" t-value="property.total_tokens - property.available_tokens"/>
+						<t t-set="sold_percent" t-value="(sold_tokens / property.total_tokens * 100) if property.total_tokens else 0"/>
+						<!-- <div class="card bg-white rounded-4 border-1 mb-4 p-2">
+							<div class="card-body">
+								<div class="token-progress p-3 rounded-4 bg-gradient position-relative overflow-hidden mb-3">
+									<div class="d-flex justify-content-between align-items-center mb-2">
+										<span class="fw-semibold text-dark">Progress Investasi</span>
+										<span class="fw-bold text-primary"><t t-esc="round(sold_percent,2)"/>%</span>
+									</div>
 
-								<label class="form-label fw-semibold d-flex justify-content-between">
-									<span>Jumlah Token</span>
-									<span id="tokenValue" class="badge bg-primary fs-6 vit-token-value">0</span>
-								</label>
+									<div class="progress rounded-pill shadow-sm" style="height: 12px;">
+										<div class="progress-bar bg-gradient-primary"
+											t-att-style="'width:{}%; transition: width 0.6s ease;'.format(sold_percent)">
+										</div>
+									</div>
 
-								<input type="range" 
-										name="token_qty"
-										class="form-range mb-4 custom-range-progress vit-token-range"
-										min="0"
-										t-att-max="property.available_tokens"
-										value="0"
-										id="years"/>
-
-								<input type="number"
-										name="token_qty_number"
-										class="form-control mb-3 mt-2 vit-token-input"
-										min="0"
-										t-att-max="property.available_tokens"
-										id="tokenInput"/>
-
-								<div class="d-flex flex-column mb-4">
-									<span class="fw-semibold">Total Investasi:</span>
-									<span id="totalPrice" class="fw-bold text-success fs-5 text-end vit-token-total">0</span>
+									<div class="d-flex justify-content-between mt-2 small">
+										<span class="text-muted">
+											<i class="fa fa-coins me-1 text-warning"></i>
+											<t t-esc="sold_tokens"/> Token Terjual
+										</span>
+										<span class="text-muted">
+											<i class="fa fa-cubes me-1 text-success"></i>
+											<t t-esc="property.available_tokens"/> / <t t-esc="property.total_tokens"/> Tersedia
+										</span>
+									</div>
 								</div>
 
-								<button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm">
-									<i class="fa fa-wallet me-2"></i> Investasi Sekarang
-								</button>
-							</form>
+								<div class="financial-metrics mb-3">
+									<div class="row g-3 text-center text-md-start">
+										<div class="col-12 col-md-4">
+											<div class="p-3 bg-light rounded-3 h-100">
+												<small class="text-muted d-block mb-1">ERY</small>
+												<h4 class="fw-bold text-primary mb-0">
+													<t t-esc="property.expected_rental_yield"/>%
+												</h4>
+											</div>
+										</div>
+										<div class="col-12 col-md-4">
+											<div class="p-3 bg-light rounded-3 h-100">
+												<small class="text-muted d-block mb-1">ECA</small>
+												<h4 class="fw-bold text-success mb-0">
+													<t t-esc="property.expected_capital_appreciation"/>%
+												</h4>
+											</div>
+										</div>
+										<div class="col-12 col-md-4">
+											<div class="p-3 bg-light rounded-3 h-100">
+												<small class="text-muted d-block mb-1">IRR</small>
+												<h4 class="fw-bold text-warning mb-0">
+													<t t-esc="property.internal_rate_of_return"/>%
+												</h4>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row text-center g-3">
+									<div class="col">
+										<div class="p-3 rounded-3 bg-light h-100">
+											<small class="text-muted d-block">Price/Token</small>
+											<span class="fw-bold fs-5 text-primary" t-esc="property.price_per_token" t-options="{'widget':'monetary','display_currency':property.currency_id}"/>
+										</div>
+									</div>
+									<div class="col">
+										<div class="p-3 rounded-3 bg-light h-100">
+											<small class="text-muted d-block">Available</small>
+											<span class="fw-bold fs-5 text-success" t-esc="property.available_tokens"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> -->
+
+						<!-- Investment Summary -->
+						<div class="investment-summary p-4 rounded-4 position-relative overflow-hidden mb-4">
+							<!-- Background Gradient Soft -->
+							<div class="summary-bg position-absolute top-0 start-0 w-100 h-100 rounded-4" 
+								style="background: linear-gradient(135deg, rgba(245,247,250,0.8), rgba(255,255,255,0.9)); z-index:0;"></div>
+
+							<div class="position-relative z-1">
+								<!-- Progress Section -->
+								<div class="text-center mb-4">
+									<div class="progress-circle mx-auto mb-3" style="width:90px; height:90px; position:relative;">
+										<svg viewBox="0 0 36 36" class="circular-chart">
+											<path class="circle-bg" d="M18 2.0845
+												a 15.9155 15.9155 0 0 1 0 31.831
+												a 15.9155 15.9155 0 0 1 0 -31.831"/>
+											<path class="circle"
+												t-att-style="'stroke-dasharray: {:.2f}, 100'.format(sold_percent)"
+												d="M18 2.0845
+												a 15.9155 15.9155 0 0 1 0 31.831
+												a 15.9155 15.9155 0 0 1 0 -31.831"/>
+											<text x="18" y="20.35" class="percentage"><t t-esc="round(sold_percent,1)"/>%</text>
+										</svg>
+									</div>
+									<p class="text-muted small mb-1">Progress Investasi</p>
+									<p class="fw-semibold mb-0"><t t-esc="sold_tokens"/> dari <t t-esc="property.total_tokens"/> token terjual</p>
+								</div>
+
+								<!-- Metrics Section -->
+								<div class="row g-3 mb-3 text-center">
+									<div class="col-4">
+										<div class="metric-badge">
+											<i class="fa fa-chart-line-o text-primary mb-1"></i>
+											<div class="fw-bold"><t t-esc="property.expected_rental_yield"/>%</div>
+											<small class="text-muted">ERY</small>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="metric-badge">
+											<i class="fa fa-building text-success mb-1"></i>
+											<div class="fw-bold"><t t-esc="property.expected_capital_appreciation"/>%</div>
+											<small class="text-muted">ECA</small>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="metric-badge">
+											<i class="fa fa-coins-o text-warning mb-1"></i>
+											<div class="fw-bold"><t t-esc="property.internal_rate_of_return"/>%</div>
+											<small class="text-muted">IRR</small>
+										</div>
+									</div>
+								</div>
+
+								<!-- Price Section -->
+								<div class="text-center mt-4">
+									<div class="d-flex justify-content-center flex-wrap gap-4">
+										<div>
+											<small class="text-muted d-block">Harga per Token</small>
+											<h5 class="fw-bold text-primary mb-0" 
+												t-esc="property.price_per_token" 
+												t-options="{'widget':'monetary','display_currency':property.currency_id}"/>
+										</div>
+										<div>
+											<small class="text-muted d-block">Tersedia</small>
+											<h5 class="fw-bold text-success mb-0"><t t-esc="property.available_tokens"/></h5>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
+
+						<!-- Investment Form -->
+						<form t-att-action="'/properties/%d/buy_token' % property.id" method="post" class="needs-validation">
+							<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+							<input type="hidden" name="property_id" t-att-value="property.id"/>
+
+							<div class="p-4 rounded-4 investment-form">
+								<label class="form-label fw-semibold mb-2">Jumlah Token</label>
+								<input type="number"
+									name="qty_token"
+									class="form-control form-control-lg mb-3 vit-token-input"
+									min="1"
+									t-att-max="property.available_tokens"
+									value="1"
+									id="tokenInput"
+									placeholder="Masukkan jumlah token..."/>
+
+								<!-- Quick Buttons -->
+								<!-- <div class="d-flex flex-wrap gap-2 mb-4">
+									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="5">5</button>
+									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="10">10</button>
+									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="25">25</button>
+									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="100">100</button>
+								</div> -->
+
+								<t t-set="is_sold_out" t-value="property.available_tokens == 0 and sold_percent == 100"/>
+
+								<!-- Quick Buttons -->
+								<div class="d-flex flex-wrap gap-2 mb-4">
+									<t t-foreach="[5, 10, 25, 100]" t-as="qty">
+										<button type="button"
+											class="btn btn-outline-primary flex-fill quick-btn"
+											t-att-data-value="qty"
+											t-att-disabled="True if is_sold_out else None"
+											t-att-class="'btn btn-outline-primary flex-fill quick-btn disabled' if is_sold_out else 'btn btn-outline-primary flex-fill quick-btn'">
+											<t t-esc="qty"/>
+										</button>
+									</t>
+								</div>
+
+
+								<!-- Total -->
+								<div class="alert alert-info text-center py-2 mb-4 rounded-3">
+									Total Investasi: <strong class="vit-token-total">Rp 0</strong>
+								</div>
+
+								<t t-if="property.available_tokens == 0 and sold_percent == 100">
+									<button type="button" class="btn btn-secondary btn-lg w-100 rounded-3 shadow-sm disabled" disabled="True">
+										Investasi Sekarang
+									</button>
+								</t>
+								<t t-else="">
+									<button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 shadow-sm">
+										Investasi Sekarang
+									</button>
+								</t>
+							</div>
+						</form>
+
+						<!-- Investor Pemegang Saham -->
+						<t t-if="investors">
+							<div class="card border-1 rounded-4 mt-4">
+								<div class="card-body p-4">
+									<h5 class="fw-bold mb-3 text-primary">
+										<i class="fa fa-users me-2"></i> Investor Pemegang Token
+									</h5>
+									<p class="text-muted small mb-4">
+										Menampilkan daftar investor yang telah membeli token properti ini.
+									</p>
+
+									<div class="list-group list-group-flush">
+										<t t-foreach="investors" t-as="inv">
+											<t t-set="percentage" t-value="(inv['total_token'] / total_token * 100) if total_token else 0"/>
+											<div class="list-group-item px-0 py-3 border-bottom">
+												<div class="d-flex justify-content-between align-items-center mb-2">
+													<div class="d-flex align-items-center">
+														<div class="rounded-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center me-3"
+															style="width:40px;height:40px;">
+															<t t-esc="(inv['partner'].name or '?')[0].upper()"/>
+														</div>
+														<div>
+															<div class="fw-semibold"><t t-esc="inv['partner'].name"/></div>
+															<small class="text-muted">Bergabung: <t t-esc="inv['last_date'].strftime('%d %b %Y') if inv['last_date'] else '-'"/></small>
+														</div>
+													</div>
+													<div class="text-end">
+														<span class="fw-bold text-dark"><t t-esc="inv['total_token']"/></span>
+														<small class="text-muted ms-1">Token</small>
+													</div>
+												</div>
+
+												<div class="progress" style="height:8px;">
+													<div class="progress-bar bg-primary" 
+														role="progressbar"
+														t-att-style="'width: {}%'.format(int(percentage))"
+														t-att-aria-valuenow="int(percentage)"
+														aria-valuemin="0" aria-valuemax="100">
+													</div>
+												</div>
+												<small class="text-muted d-block mt-1">
+													<t t-esc="'%.2f' % percentage"/>% dari total token
+												</small>
+											</div>
+										</t>
+									</div>
+								</div>
+							</div>
+						</t>
+						<t t-else="">
+							<div class="alert alert-light border text-center mt-4 rounded-4">
+								<i class="fa fa-user-times text-muted me-2"></i> 
+								Belum ada investor yang membeli token properti ini.
+							</div>
+						</t>
 					</div>
 				</div>
 			</section>
 		</t>
 	</template>
+
 </odoo>

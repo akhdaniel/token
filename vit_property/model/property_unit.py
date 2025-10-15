@@ -51,11 +51,18 @@ class property_unit(models.Model):
 	rental_price = fields.Float( string=_("Rental Price"))
 	sale_price_target = fields.Float( string=_("Sale Price Target"))
 	expected_rental_yield = fields.Float( string=_("Expected Rental Yield"))
+	expected_capital_appreciation = fields.Float( string=_("Expected Capital Appreciation"))
+	internal_rate_of_return = fields.Float( string=_("Internal Rate Of Return"))
 	stage_is_draft = fields.Boolean(related="stage_id.draft", store=True,  string=_("Stage Is Draft"))
 	stage_is_done = fields.Boolean(related="stage_id.done", store=True,  string=_("Stage Is Done"))
 	allow_confirm = fields.Boolean(related="stage_id.allow_confirm", store=True,  string=_("Allow Confirm"))
 	allow_cancel = fields.Boolean(related="stage_id.allow_cancel", store=True,  string=_("Allow Cancel"))
 	stage_name = fields.Char(related="stage_id.name", store=True,  string=_("Stage Name"))
+	bedroom_count = fields.Integer( string=_("Bedroom Count"))
+	bathroom_count = fields.Integer( string=_("Bathroom Count"))
+	property_size = fields.Float( string=_("Property Size"))
+	longitude = fields.Float( string=_("Longitude"))
+	latitude = fields.Float( string=_("Latitude"))
 
 
 	@api.model_create_multi
@@ -123,3 +130,4 @@ class property_unit(models.Model):
 	token_ids = fields.One2many(comodel_name="product.product",  inverse_name="property_unit_id",  string=_("Token"))
 	property_unit_image_ids = fields.One2many(comodel_name="vit.property_unit_image",  inverse_name="property_unit_id",  string=_("Property Unit Image"))
 	property_document_ids = fields.One2many(comodel_name="vit.property_document",  inverse_name="property_unit_id", string="Document")
+	property_timeline_ids = fields.One2many(comodel_name="vit.property_timeline",  inverse_name="property_unit_id",  string=_("Property Timeline"))

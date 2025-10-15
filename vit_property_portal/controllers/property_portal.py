@@ -10,7 +10,7 @@ class PropertyPortal(http.Controller):
 	@http.route(['/properties'], type='http', auth='public', website=True)
 	def list_properties(self, **kw):
 		mode = kw.get('mode', 'all')
-		domain = [('stage_name', '=', 'Publish'), ('available_tokens','>', 0)]
+		domain = [('stage_name', '=', 'Publish')]
 
 		if mode == 'sale':
 			domain.append(('is_sale', '=', True))
@@ -36,8 +36,43 @@ class PropertyPortal(http.Controller):
 	@http.route(['/properties/<int:prop_id>'], type='http', auth='public', website=True)
 	def property_detail(self, prop_id, **kw):
 		prop = request.env['vit.property_unit'].sudo().browse(prop_id)
+		# Ambil semua order token confirmed untuk property ini
+		investors_orders = request.env['vit.order_token'].sudo().search([
+			('property_unit_id', '=', prop_id),
+			('status', '=', 'confirmed')
+		])
+
+		# Kelompokkan per investor
+		investors_grouped = []
+		total_token = 0
+		for order in investors_orders:
+			if not order.to_partner_id:
+				continue
+			found = False
+			for i in investors_grouped:
+				if i['partner'].id == order.to_partner_id.id:
+					i['total_token'] += order.qty_token
+					if order.date and (not i['last_date'] or order.date > i['last_date']):
+						i['last_date'] = order.date
+					found = True
+					break
+			if not found:
+				investors_grouped.append({
+					'partner': order.to_partner_id,
+					'total_token': order.qty_token,
+					'last_date': order.date
+				})
+
+		# Hitung total token
+		total_token = sum(i['total_token'] for i in investors_grouped)
+
+		# Urutkan berdasarkan total_token descending
+		investors_sorted = sorted(investors_grouped, key=lambda x: x['total_token'], reverse=True)
+
 		return request.render('vit_property_portal.portal_property_detail', {
 			'property': prop,
+			'investors': investors_sorted,
+			'total_token': total_token,
 			'breadcrumbs': [
 				('Properties', '/properties'),
 				(prop.name, False),   
@@ -51,7 +86,7 @@ class PropertyPortal(http.Controller):
 			return request.redirect('/properties')
 
 		try:
-			qty = int(post.get('token_qty', 0))
+			qty = int(post.get('qty_token', 0))
 			property_id = int(post.get('property_id', property_id))
 		except (ValueError, TypeError):
 			raise UserError(_("Jumlah token tidak valid."))

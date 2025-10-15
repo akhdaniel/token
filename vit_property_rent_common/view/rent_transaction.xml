@@ -16,6 +16,12 @@
                             'default_total_profit_share_amount': rent_price_per_month,
                         }"/>
                 </xpath>
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_open_profit_share_tree" type="object" class="oe_stat_button" icon="fa-bar-chart">
+                        <field name="property_profit_share_count" widget="statinfo" string="Profit Share(s)"/>
+                        <field name="property_profit_share_ids" invisible="1"/>
+                    </button>
+                </xpath>
             </field>
         </record>
     </data>

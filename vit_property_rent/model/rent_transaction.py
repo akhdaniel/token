@@ -15,24 +15,13 @@ class rent_transaction(models.Model):
 	_description = "vit.rent_transaction"
 
 
-	@api.onchange("property_unit_id")
-	def _onchange_property_unit_id(self, ):
-		"""
-		{
-		"@api.onchange":"property_unit_id"
-		}
-		"""
-		self.rent_price_per_month = self.property_unit_id.rental_price
-		self.rent_type_id = self.property_unit_id.rent_type_id
-
-
 	def action_reload_view(self):
 		pass
 
 	name = fields.Char( required=True, copy=False, default="New", readonly=True,  string=_("Name"))
-	start_date = fields.Date(required=True,  string=_("Start Date"))
+	start_date = fields.Datetime(required=True,  string=_("Start Date"))
 	duration = fields.Integer(required=True,  string=_("Duration"))
-	end_date = fields.Date( string=_("End Date"))
+	end_date = fields.Datetime( string=_("End Date"))
 	rent_price_per_month = fields.Float(readonly=True,  string=_("Rent Price Per Month"))
 	amount_total_rent = fields.Float(readonly=True,  string=_("Amount Total Rent"))
 	transaction_date = fields.Datetime( string=_("Transaction Date"))

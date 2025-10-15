@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<data>
-		<!-- search -->
-		<!--record id="view_owner_search" model="ir.ui.view">
-			<field name="name">owner</field>
+		<record id="view_owner_form_inherit" model="ir.ui.view">
+			<field name="name">view_owner_form_inherit</field>
 			<field name="model">res.partner</field>
-			<field name="inherit_id" ref=""/>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
 			<field name="arch" type="xml">
+				<notebook position="inside">
+					<page id="owner" string="Owner" invisible="is_owner == False" >
+						<group>
+							<group>
+								<field name="is_owner" />
+							</group>
+						</group>
+					</page>
+				</notebook>
 			</field>
-		</record-->
+		</record> 
 		<!-- action window -->
 		<!--record id="vit_property.action_owner" model="ir.actions.act_window">
 			<field name="name">Owner</field>
@@ -26,6 +35,6 @@
 			</field>
 		</record-->
 
-		<menuitem id="menu_owner" name="Owner" parent="vit_property_config_menu" action="action_owner" sequence="60"/>
+		<!-- <menuitem id="menu_owner" name="Owner" parent="vit_property_config_menu" action="action_owner" sequence="60"/> -->
 	</data>
 </odoo>

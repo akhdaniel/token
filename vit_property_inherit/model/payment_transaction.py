@@ -36,5 +36,10 @@ class PaymentTransaction(models.Model):
                         'total_investment': order.to_partner_id.total_investment + order.total_amount,
                         'total_tokens': order.to_partner_id.total_tokens + order.qty_token,
                     })
+                
+                if order.token_resell_id:
+                    order.token_resell_id.sudo().write({
+                        'qty_token_available': order.token_resell_id.qty_token - order.qty_token
+                    })
 
         return res

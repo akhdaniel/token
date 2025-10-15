@@ -9,3 +9,290 @@
     transform: translateY(-6px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
+
+div.investment-form {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.list-group-item {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.list-group-item:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+/* .progress {
+    background-color: #e9ecef;
+    border-radius: 6px;
+}
+.progress-bar {
+    border-radius: 6px;
+    transition: width 0.4s ease;
+} */
+
+.token-progress {
+	background: linear-gradient(135deg, #f8f9fa, #ffffff);
+	border: 1px solid #e9ecef;
+	box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.bg-gradient-primary {
+	background: linear-gradient(90deg, #007bff, #00c6ff);
+}
+
+.token-progress .progress {
+	background-color: #e9ecef;
+}
+
+.token-progress .progress-bar {
+	border-radius: 50px;
+}
+
+.financial-metrics .hover-scale {
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.financial-metrics .hover-scale:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+.financial-metrics h4 {
+	font-size: 1.5rem;
+}
+
+.ribbon-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+    width: 140px;
+    height: 140px;
+    z-index: 10;
+}
+
+.ribbon {
+    position: absolute;
+    display: block;
+    width: 170px;
+    padding: 6px 0;
+    background: linear-gradient(45deg, #c0392b, #e74c3c);
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transform: rotate(45deg);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    top: 30px;
+    right: -40px;
+    letter-spacing: 0.5px;
+}
+
+.main-image-wrapper {
+    position: relative;
+    z-index: 2; /* Pastikan ini di atas property-info-card */
+    border-bottom-left-radius: 1rem;  /* pastikan radius bawah aktif */
+    border-bottom-right-radius: 1rem;
+    overflow: hidden; /* agar gambar tetap mengikuti radius */
+}
+
+.main-image-wrapper > .ribbon-wrapper {
+	position: absolute !important;
+	top: 0px !important;
+	right: 0px !important;
+	left: auto !important;
+	bottom: auto !important;
+	width: 140px;
+	height: 140px;
+}
+
+.property-info-card {
+    position: relative;
+    z-index: 1; /* di bawah main-image-wrapper */
+    margin-top: -20px; /* tarik ke atas agar menyatu */
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    background: #fff;
+}
+
+.timeline-container {
+  position: relative;
+  margin-left: 2rem;
+  padding-left: 1.5rem;
+  z-index: 0;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 0;
+  left: 30px;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #007bff40, #6c757d20);
+  border-radius: 2px;
+  z-index: 0;
+}
+
+.timeline-item {
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 0.6s ease both;
+}
+
+.timeline-icon {
+  position: absolute;
+  left: -10px;
+  top: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff; /* padat, tidak transparan */
+  font-size: 15px;
+  z-index: 100; /* pastikan di atas garis */
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.08);
+  position: relative;
+  overflow: visible;
+}
+
+.timeline-icon.plan {
+  color: #0d6efd;
+  border: 2px solid #0d6efd33;
+}
+
+.timeline-icon.ongoing {
+  color: #f0ad4e;
+  border: 2px solid #f0ad4e44;
+}
+
+.timeline-icon.done {
+  color: #198754;
+  border: 2px solid #19875444;
+}
+
+.timeline-icon:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(13, 110, 253, 0.12);
+}
+
+/* === CARD === */
+/* .timeline-card {
+  background: #fff;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
+  margin-left: 4.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04),
+              0 4px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 1rem;
+}
+
+.timeline-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05),
+              0 6px 18px rgba(0, 0, 0, 0.08);
+} */
+
+/* === BADGE === */
+.timeline-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50rem;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
+}
+
+.timeline-badge.plan {
+  background-color: #e7f1ff;
+  color: #0d6efd;
+}
+
+.timeline-badge.ongoing {
+  background-color: #fff3cd;
+  color: #b87d0a;
+}
+
+.timeline-badge.done {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.investment-summary {
+    background: #fff;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Circular Progress */
+.circular-chart {
+    display: block;
+    margin: 10px auto;
+    max-width: 100%;
+    max-height: 250px;
+}
+.circle-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3.8;
+}
+.circle {
+    fill: none;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    stroke: #007bff;
+    animation: progress 1.2s ease-out forwards;
+}
+@keyframes progress {
+    0% { stroke-dasharray: 0 100; }
+}
+.percentage {
+    fill: #333;
+    font-size: 0.5em;
+    text-anchor: middle;
+}
+
+/* Metric badges */
+.metric-badge {
+    background: rgba(245,247,250,0.9);
+    border-radius: 12px;
+    padding: 10px 5px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+.metric-badge:hover {
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.quick-btn.disabled,
+.quick-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+#property-map .leaflet-container {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* animasi muncul */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767.98px) {
+	.financial-metrics h4 {
+		font-size: 1.25rem;
+	}
+}

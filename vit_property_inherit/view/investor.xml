@@ -9,7 +9,7 @@
 			<field name="inherit_id" ref="base.view_partner_form"/>
 			<field name="arch" type="xml">
 				<notebook position="inside">
-					<page id="investor" string="Investor" modifiers="{'invisible': [('is_investor', '=', False)]}">
+					<page id="investor" string="Investor" invisible="is_investor == False" >
 						<group>
 							<group>
 								<field name="is_investor" />

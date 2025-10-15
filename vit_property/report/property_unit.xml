@@ -74,6 +74,14 @@
 							<p class="m-0" t-field="doc.expected_rental_yield" />
 						</div>
 						<div class="col-auto mw-100 mb-2">
+							<strong>Expected Capital Appreciation</strong>
+							<p class="m-0" t-field="doc.expected_capital_appreciation" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Internal Rate Of Return</strong>
+							<p class="m-0" t-field="doc.internal_rate_of_return" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
 							<strong>Stage Is Draft</strong>
 							<p class="m-0" t-field="doc.stage_is_draft" />
 						</div>
@@ -92,6 +100,26 @@
 						<div class="col-auto mw-100 mb-2">
 							<strong>Stage Name</strong>
 							<p class="m-0" t-field="doc.stage_name" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Bedroom Count</strong>
+							<p class="m-0" t-field="doc.bedroom_count" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Bathroom Count</strong>
+							<p class="m-0" t-field="doc.bathroom_count" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Property Size</strong>
+							<p class="m-0" t-field="doc.property_size" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Longitude</strong>
+							<p class="m-0" t-field="doc.longitude" />
+						</div>
+						<div class="col-auto mw-100 mb-2">
+							<strong>Latitude</strong>
+							<p class="m-0" t-field="doc.latitude" />
 						</div>
 						<div class="col-auto mw-100 mb-2">
 							<strong>Product Template</strong>
@@ -179,6 +207,28 @@
 							<td><span t-field="line.date_expiry" /></td>
 							<td><span t-field="line.issue_date" /></td>
 							<td><span t-field="line.name" /></td>
+							<td><span t-field="line.property_unit_id" /></td>
+						</tr> <!-- foreach-->
+					</tbody>
+				</table>
+				<div class="oe_structure"/>
+				<h2>Property Timeline</h2>
+				<table class="table table-sm o_main_table" name="property_timeline_ids_table">
+					<thead>
+						<tr>
+							<td>Name</td>
+							<td>Description</td>
+							<td>Timeline Date</td>
+							<td>Status</td>
+							<td>Property Unit</td>
+						</tr>
+					</thead>
+					<tbody class="property_timeline_ids_tbody">
+						<tr t-foreach="doc.property_timeline_ids" t-as="line">
+							<td><span t-field="line.name" /></td>
+							<td><span t-field="line.description" /></td>
+							<td><span t-field="line.timeline_date" /></td>
+							<td><span t-field="line.status" /></td>
 							<td><span t-field="line.property_unit_id" /></td>
 						</tr> <!-- foreach-->
 					</tbody>

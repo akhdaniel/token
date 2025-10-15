@@ -57,7 +57,11 @@
 		"data/vit.document_type.csv",
 		"view/property_document.xml",
 		"report/property_document.xml",
-		"view/token_owner.xml"
+		"view/token_owner.xml",
+		"view/property_financial.xml",
+		"report/property_financial.xml",
+		"view/property_timeline.xml",
+		"report/property_timeline.xml"
 	],
 	"installable": True,
 	"auto_install": False,

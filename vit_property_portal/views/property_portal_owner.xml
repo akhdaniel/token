@@ -230,6 +230,50 @@
                                             <input type="text" id="expected_rental_yield" name="expected_rental_yield" class="form-control" t-att-value="property_unit and property_unit.expected_rental_yield or ''"/>
                                         </div>
                                     </div>
+
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label for="expected_capital_appreciation" class="form-label fw-medium">Expected Capital Appreciation</label>
+                                            <input type="text" id="expected_capital_appreciation" name="expected_capital_appreciation" class="form-control" t-att-value="property_unit and property_unit.expected_capital_appreciation or ''"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label for="internal_rate_of_return" class="form-label fw-medium">Internal Rate Of Return</label>
+                                            <input type="text" id="internal_rate_of_return" name="internal_rate_of_return" class="form-control" t-att-value="property_unit and property_unit.internal_rate_of_return or ''"/>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label for="bedroom_count" class="form-label fw-medium">Bedroom Count</label>
+                                            <input type="text" id="bedroom_count" name="bedroom_count" class="form-control" t-att-value="property_unit and property_unit.bedroom_count or ''"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="bathroom_count" class="form-label fw-medium">Bathroom Count</label>
+                                            <input type="text" id="bathroom_count" name="bathroom_count" class="form-control" t-att-value="property_unit and property_unit.bathroom_count or ''"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label for="longitude" class="form-label fw-medium">Longitude</label>
+                                            <input type="text" id="longitude" name="longitude" class="form-control" t-att-value="property_unit and property_unit.longitude or ''"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="latitude" class="form-label fw-medium">Latitude</label>
+                                            <input type="text" id="latitude" name="latitude" class="form-control" t-att-value="property_unit and property_unit.latitude or ''"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label for="property_size" class="form-label fw-medium">Property Size</label>
+                                            <input type="text" id="property_size" name="property_size" class="form-control" t-att-value="property_unit and property_unit.property_size or ''"/>
+                                        </div>
+                                    </div>
                                     
                                     <div class="mb-4">
                                         <label for="address" class="form-label fw-medium">Full Address</label>

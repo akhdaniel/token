@@ -7,5 +7,5 @@ class property_profit_share_line(models.Model):
 	_name = "vit.property_profit_share_line"
 	_inherit = "vit.property_profit_share_line"
 
-	start_date = fields.Date( string=_("Start Date"))
-	end_date = fields.Date( string=_("End Date"))
+	start_date = fields.Datetime( string=_("Start Date"))
+	end_date = fields.Datetime( string=_("End Date"))

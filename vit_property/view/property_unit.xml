@@ -26,6 +26,13 @@
 					<field name="rental_price" /> <!-- 111-->
 					<field name="sale_price_target" /> <!-- 112-->
 					<field name="expected_rental_yield" /> <!-- 113-->
+					<field name="expected_capital_appreciation" /> <!-- 114-->
+					<field name="internal_rate_of_return" /> <!-- 115-->
+					<field name="bedroom_count" /> <!-- 116-->
+					<field name="bathroom_count" /> <!-- 117-->
+					<field name="property_size" /> <!-- 118-->
+					<field name="longitude" /> <!-- 119-->
+					<field name="latitude" /> <!-- 120-->
 				</list>
 			</field>
 		</record>
@@ -85,6 +92,13 @@
 								<field name="rental_price"  readonly="stage_is_draft==False"/>
 								<field name="sale_price_target"  readonly="stage_is_draft==False"/>
 								<field name="expected_rental_yield"  readonly="stage_is_draft==False"/>
+								<field name="expected_capital_appreciation"  readonly="stage_is_draft==False"/>
+								<field name="internal_rate_of_return"  readonly="stage_is_draft==False"/>
+								<field name="bedroom_count"  readonly="stage_is_draft==False"/>
+								<field name="bathroom_count"  readonly="stage_is_draft==False"/>
+								<field name="property_size"  readonly="stage_is_draft==False"/>
+								<field name="longitude"  readonly="stage_is_draft==False"/>
+								<field name="latitude"  readonly="stage_is_draft==False"/>
 							</group>
 							<group> <!-- right -->
 								<field name="owner_id"  readonly="stage_is_draft==False"/>
@@ -120,6 +134,16 @@
 									</list>
 								</field>
 							</page>
+							<page name="property_timeline_ids" string="Property Timeline">
+								<field name="property_timeline_ids" readonly="stage_is_draft==False">
+									<list >
+										<field name="name" /> <!-- 100-->
+										<field name="description" /> <!-- 101-->
+										<field name="timeline_date" /> <!-- 102-->
+										<field name="status" /> <!-- 103-->
+									</list>
+								</field>
+							</page>
 						</notebook>
 						<group name="note_group" col="6" class="mt-2 mt-md-0">
 							<group colspan="4">
@@ -152,11 +176,18 @@
 					<filter string="Rental Price" name="filter_by_rental_price" domain="[('rental_price','=','')]" />
 					<filter string="Sale Price Target" name="filter_by_sale_price_target" domain="[('sale_price_target','=','')]" />
 					<filter string="Expected Rental Yield" name="filter_by_expected_rental_yield" domain="[('expected_rental_yield','=','')]" />
+					<filter string="Expected Capital Appreciation" name="filter_by_expected_capital_appreciation" domain="[('expected_capital_appreciation','=','')]" />
+					<filter string="Internal Rate Of Return" name="filter_by_internal_rate_of_return" domain="[('internal_rate_of_return','=','')]" />
 					<filter string="Stage Is Draft" name="filter_by_stage_is_draft" domain="[('stage_is_draft','=','')]" />
 					<filter string="Stage Is Done" name="filter_by_stage_is_done" domain="[('stage_is_done','=','')]" />
 					<filter string="Allow Confirm" name="filter_by_allow_confirm" domain="[('allow_confirm','=','')]" />
 					<filter string="Allow Cancel" name="filter_by_allow_cancel" domain="[('allow_cancel','=','')]" />
 					<filter string="Stage Name" name="filter_by_stage_name" domain="[('stage_name','=','')]" />
+					<filter string="Bedroom Count" name="filter_by_bedroom_count" domain="[('bedroom_count','=','')]" />
+					<filter string="Bathroom Count" name="filter_by_bathroom_count" domain="[('bathroom_count','=','')]" />
+					<filter string="Property Size" name="filter_by_property_size" domain="[('property_size','=','')]" />
+					<filter string="Longitude" name="filter_by_longitude" domain="[('longitude','=','')]" />
+					<filter string="Latitude" name="filter_by_latitude" domain="[('latitude','=','')]" />
 					<field name="name" select="True"/>
 					<field name="address" select="True"/>
 					<field name="description" select="True"/>
@@ -170,11 +201,18 @@
 					<field name="rental_price" select="True"/>
 					<field name="sale_price_target" select="True"/>
 					<field name="expected_rental_yield" select="True"/>
+					<field name="expected_capital_appreciation" select="True"/>
+					<field name="internal_rate_of_return" select="True"/>
 					<field name="stage_is_draft" select="True"/>
 					<field name="stage_is_done" select="True"/>
 					<field name="allow_confirm" select="True"/>
 					<field name="allow_cancel" select="True"/>
 					<field name="stage_name" select="True"/>
+					<field name="bedroom_count" select="True"/>
+					<field name="bathroom_count" select="True"/>
+					<field name="property_size" select="True"/>
+					<field name="longitude" select="True"/>
+					<field name="latitude" select="True"/>
 					<field name="product_template_id" select="True"/>
 					<field name="owner_id" select="True"/>
 					<field name="currency_id" select="True"/>

@@ -2,94 +2,81 @@
 import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.VitPropertyDetail = publicWidget.Widget.extend({
-    // root di container besar
     selector: '.portal_property_detail_wrapper',
 
     start() {
-        // ==== SLIDER TOKEN ====
-        this.$years = this.$el.find('#years');
+        // --- TOKEN CALCULATION (sudah ada) ---
         const tokenWrapper = this.el.querySelector('.vit-token-wrapper');
         if (tokenWrapper) {
             this._price = parseFloat(tokenWrapper.dataset.pricePerToken || '0');
-            this._range = tokenWrapper.querySelector('.vit-token-range');
-            this._value = tokenWrapper.querySelector('.vit-token-value');
-            this._total = tokenWrapper.querySelector('.vit-token-total');
             this._numberInput = tokenWrapper.querySelector('.vit-token-input');
+            this._total = tokenWrapper.querySelector('.vit-token-total');
+            this._quickBtns = tokenWrapper.querySelectorAll('.quick-btn');
 
-            if (this._range && this._value && this._total) {
-                this._updateDisplay(this._range.value);
-                // geser slider -> update input number
-                this._range.addEventListener('input', ev => {
-                    const val = ev.target.value;
+            this._numberInput.addEventListener('input', ev => this._updateTotal(ev.target.value));
+            this._quickBtns.forEach(btn => {
+                const val = parseInt(btn.dataset.value, 10);
+                if (val > parseInt(this._numberInput.max)) btn.disabled = true;
+                btn.addEventListener('click', () => {
                     this._numberInput.value = val;
-                    this._updateDisplay(val);
+                    this._updateTotal(val);
                 });
-
-                // ketik angka -> update slider
-                this._numberInput.addEventListener('input', ev => {
-                    let val = parseInt(ev.target.value, 10) || 0;
-                    // batasi sesuai min / max slider
-                    const min = parseInt(this._range.min, 10) || 0;
-                    const max = parseInt(this._range.max, 10) || 0;
-                    val = Math.min(Math.max(val, min), max);
-                    this._range.value = val;
-                    this._updateDisplay(val);
-                    this._updateSliderBackground();
-                });
-            }
+            });
+            this._updateTotal(this._numberInput.value);
         }
 
-        // ==== GANTI GAMBAR UTAMA ====
-        // const mainImg = this.el.querySelector('#mainImage');
-        // const thumbs  = this.el.querySelectorAll('.thumb-image');
+        // --- IMAGE GALLERY ---
+        const mainImg = this.el.querySelector('#mainImage');
+        const thumbs = Array.from(this.el.querySelectorAll('.thumb-image'));
+        const container = this.el.querySelector('.thumb-container');
+        const prevBtn = this.el.querySelector('.thumb-nav.prev');
+        const nextBtn = this.el.querySelector('.thumb-nav.next');
 
-        // thumbs.forEach(thumb => {
-        //     thumb.addEventListener('click', () => {
-        //         if (!mainImg) return;
-        //         mainImg.src = thumb.dataset.full;
+        if (mainImg && thumbs.length) {
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    const newSrc = thumb.getAttribute('src');
+                    if (mainImg.src !== newSrc) {
+                        mainImg.classList.remove('fade-active');
+                        setTimeout(() => {
+                            mainImg.src = newSrc;
+                            mainImg.classList.add('fade-active');
+                        }, 150);
+                    }
+                    thumbs.forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+            });
 
-        //         // highlight thumbnail aktif
-        //         thumbs.forEach(t => t.classList.remove('border', 'border-primary'));
-        //         thumb.classList.add('border', 'border-primary');
-        //     });
-        // });
+            // Navigasi scroll thumbnail
+            let scrollPos = 0;
+            const scrollStep = 120;
 
-        this._updateSliderBackground();
-        this.$years.on('input', () => this._updateSliderBackground());
+            prevBtn?.addEventListener('click', () => {
+                scrollPos = Math.max(scrollPos - scrollStep, 0);
+                container.scrollTo({ left: scrollPos, behavior: 'smooth' });
+            });
+
+            nextBtn?.addEventListener('click', () => {
+                scrollPos = Math.min(scrollPos + scrollStep, container.scrollWidth);
+                container.scrollTo({ left: scrollPos, behavior: 'smooth' });
+            });
+        }
 
         return this._super(...arguments);
     },
 
-    _updateSliderBackground() {
-        const slider = this.$years[0];
-        if (!slider) return;
-        const min = parseFloat(slider.min || 0);
-        const max = parseFloat(slider.max || 100);
-        const val = parseFloat(slider.value);
-        const percent = ((val - min) * 100) / (max - min);
-        slider.style.background = `linear-gradient(to right,
-            #0d6efd 0%,
-            #0d6efd ${percent}%,
-            #6c757d ${percent}%,
-            #6c757d 100%)`;
-    },
-
-    _updateDisplay(qty) {
+    _updateTotal(qty) {
         const n = parseInt(qty, 10) || 0;
-        this._value.textContent = n;
-        const amount = n * this._price;
-        this._total.textContent = this._formatIDR(amount);
+        const total = n * this._price;
+        this._total.textContent = this._formatIDR(total);
     },
 
     _formatIDR(amount) {
-        try {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(amount);
-        } catch (_) {
-            return 'Rp' + String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        }
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(amount);
     },
 });

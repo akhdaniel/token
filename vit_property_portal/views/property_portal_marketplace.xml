@@ -13,57 +13,88 @@
             </section>
 
             <!-- Token Resell Listing -->
-            <section class="container my-4">
+            <section class="goro-section container my-3">
                 <div class="row g-4">
                     <t t-foreach="resell_tokens" t-as="resell">
                         <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card h-100 rounded-3 hover-scale">
-                                <!-- Property Image -->
-                                <t t-if="resell.property_unit_id.property_unit_image_ids">
-                                    <img t-att-src="'data:image/png;base64,%s' % resell.property_unit_id.property_unit_image_ids[0].image.decode()"
-                                    class="card-img-top rounded-top-4"
-                                    style="object-fit:cover; height:200px;"
-                                    alt="Property Image"/>
-                                </t>
-                                <t t-else="">
-                                    <img src="/web/static/img/placeholder.png"
+                            <a t-att-href="'/marketplace/property/%d' % resell.id" class="text-decoration-none text-reset">
+                                <div class="card h-100 rounded-3 hover-scale">
+                                    <t t-set="sold_tokens" t-value="resell.qty_token - resell.qty_token_available"/>
+                                    <t t-set="sold_percent" t-value="(sold_tokens / resell.qty_token * 100) if resell.qty_token else 0"/>
+                                    <!-- Property Image -->
+                                    <t t-if="resell.property_unit_id.property_unit_image_ids">
+                                        <img t-att-src="'data:image/png;base64,%s' % resell.property_unit_id.property_unit_image_ids[0].image.decode()"
                                         class="card-img-top rounded-top-4"
                                         style="object-fit:cover; height:200px;"
-                                        alt="No Image"/>
-                                </t>
-                                <div class="card-body d-flex flex-column">
-                                    <!-- Property Name -->
-                                    <h5 class="fw-bold mb-1" t-esc="resell.property_unit_id.name"/>
-                                    <p class="text-muted small mb-2">
-                                        <i class="fa fa-map-marker me-1"></i>
-                                        <t t-esc="resell.property_unit_id.address"/>
-                                    </p>
+                                        alt="Property Image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/web/static/img/placeholder.png"
+                                            class="card-img-top rounded-top-4"
+                                            style="object-fit:cover; height:200px;"
+                                            alt="No Image"/>
+                                    </t>
+                                    <div class="card-body d-flex flex-column">
+                                        <!-- Property Name -->
+                                        <h5 class="fw-bold mb-1" t-esc="resell.property_unit_id.name"/>
+                                        <p class="text-muted small mb-2">
+                                            <i class="fa fa-map-marker me-1 text-danger"></i>
+                                            <t t-esc="resell.property_unit_id.address"/>
+                                        </p>
+                                        <div class="financial-metrics mb-2">
+                                            <div class="row g-3 text-center text-md-start">
+                                                <div class="col-12 col-md-4">
+                                                    <div class="p-3 bg-light rounded-3 h-100">
+                                                        <small class="text-muted d-block mb-1">ERY</small>
+                                                        <h6 class="fw-bold text-primary mb-0">
+                                                            <t t-esc="resell.property_unit_id.expected_rental_yield"/>%
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <div class="p-3 rounded-3 h-100" style="background-color: #fff; border: 1px solid #ddd;">
+                                                        <small class="text-muted d-block mb-1">ECA</small>
+                                                        <h6 class="fw-bold text-success mb-0">
+                                                            <t t-esc="resell.property_unit_id.expected_capital_appreciation"/>%
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <div class="p-3 rounded-3 h-100" style="background-color: #fff; border: 1px solid #ddd;">
+                                                        <small class="text-muted d-block mb-1">IRR</small>
+                                                        <h6 class="fw-bold text-warning mb-0">
+                                                            <t t-esc="resell.property_unit_id.internal_rate_of_return"/>%
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="fw-semibold mb-2">Price per Token:
+                                            <span t-esc="resell.price_per_token" t-options="{'widget': 'monetary', 'display_currency': resell.property_unit_id.currency_id}"/>
+                                        </p>
+                                        <div class="progress mb-1" style="height:6px;" role="progressbar" t-att-aria-valuenow="sold_percent" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar" t-att-style="'width:{}%'.format(sold_percent)"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between small mb-2">
+                                            <span><t t-esc="round(sold_percent,2)"/>%</span>
+                                            <span><t t-esc="resell.qty_token_available"/> token tersedia</span>
+                                        </div>
 
-                                    <!-- Token & Price Info -->
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
-                                            <i class="fa fa-check-circle me-1"></i>
-                                            <t t-esc="resell.qty_token"/> Token
-                                        </span>
-                                        <span class="fw-bold text-success">
-                                            <t t-esc="'{:,.0f}'.format(resell.price_per_token)"/> IDR / Token
-                                        </span>
-                                    </div>
+                                        <!-- Owner Info -->
+                                        <p class="text-muted small mb-3">
+                                            <i class="fa fa-user-circle me-1"></i> 
+                                            Dijual oleh: <t t-esc="resell.investor_id.name"/>
+                                        </p>
 
-                                    <!-- Owner Info -->
-                                    <p class="text-muted small mb-3">
-                                        <i class="fa fa-user-circle me-1"></i> 
-                                        Dijual oleh: <t t-esc="resell.investor_id.name"/>
-                                    </p>
-
-                                    <!-- Action Button -->
-                                    <div class="mt-auto">
-                                        <a href="#" class="btn btn-primary w-100 rounded-3">
-                                           <i class="fa fa-shopping-cart me-1"></i> Beli Token
-                                        </a>
+                                        <!-- Action Button -->
+                                        <div class="mt-auto">
+                                            <a t-att-href="'/marketplace/property/%d' % resell.id" class="btn btn-primary w-100 rounded-3">
+                                            Beli Token
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </t>
                 </div>
@@ -78,7 +109,7 @@
             </section>
 
             <!-- Call to Action -->
-            <section class="py-5 bg-primary text-white text-center rounded-3 my-5 container px-4">
+            <section class="py-5 bg-primary text-white text-center rounded-3 my-3 container px-4">
                 <h3 class="fw-bold">Ingin menjual token yang Anda miliki?</h3>
                 <p class="mb-4">Daftarkan token Anda di pasar sekunder dan dapatkan likuiditas lebih cepat.</p>
                 <a href="#" class="btn btn-light btn-lg rounded-3">
@@ -87,4 +118,296 @@
             </section>
         </t>
     </template>
+
+    <template id="portal_token_resell_detail" name="Token Resell Detail">
+        <t t-call="portal.portal_layout">
+            <div class="container portal_property_detail_wrapper">
+                <div class="row g-5 align-items-start">
+                    <div class="col-lg-7">
+                        <!-- === GALLERY === -->
+						<div class="main-image-wrapper ratio ratio-4x3 rounded-4 shadow-sm">
+							<t t-if="property.property_unit_image_ids and property.property_unit_image_ids[0]">
+								<img id="mainImage"
+									t-att-src="'data:image/png;base64,%s' % property.property_unit_image_ids[0].image.decode()"
+									class="main-image w-100 h-100 object-fit-cover fade-active"
+									alt="Property Image"/>
+							</t>
+							<t t-else="">
+								<img src="/web/static/img/placeholder.png" class="main-image w-100 h-100 object-fit-cover" alt="No Image"/>
+							</t>
+
+							<t t-if="property.property_unit_image_ids and len(property.property_unit_image_ids) > 1">
+								<div class="thumbnail-overlay-bottom px-4 d-flex flex-column justify-content-end">
+									<div class="thumbnail-blur-bg"></div>
+									<div class="thumbnail-content">
+										<button class="thumb-nav prev"><i class="fa fa-chevron-left"></i></button>
+										<div class="thumb-container d-flex overflow-hidden gap-2">
+											<t t-foreach="property.property_unit_image_ids[1:]" t-as="img">
+												<img t-att-src="'data:image/png;base64,%s' % img.image.decode()"
+													class="thumb-image rounded-3 shadow-sm"
+													alt="Property Thumbnail"/>
+											</t>
+										</div>
+										<button class="thumb-nav next"><i class="fa fa-chevron-right"></i></button>
+									</div>
+								</div>
+							</t>
+						</div>
+
+						<div class="card border-1 rounded-4 rounded-top-0 mb-4 property-info-card">
+							<div class="card-body">
+								<h3 class="fw-bold text-primary mb-2" t-esc="property.name"/>
+								<p class="text-secondary mb-0">
+									<i class="fa fa-map-marker me-2 text-danger"></i>
+									<t t-esc="property.address or 'Alamat belum tersedia'"/>
+								</p>
+								<p>
+									<strong>Tipe Properti:</strong> 
+									<t t-esc="dict(property._fields['property_type'].selection).get(property.property_type, '-')"/>
+								</p>
+							</div>
+						</div>
+
+                        <!-- 3 Property Info Cards -->
+                        <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+                            <div class="col">
+                                <div class="bg-light rounded-4 text-center h-100 p-3">
+                                    <i class="fa fa-home text-primary fs-4 mb-2"></i>
+                                    <div class="small text-muted">Luas</div>
+                                    <div class="fw-bold"><t t-esc="property.property_size"/> m²</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="bg-light rounded-4 text-center h-100 p-3">
+                                    <i class="fa fa-bed text-primary fs-4 mb-2"></i>
+                                    <div class="small text-muted">Kamar Tidur</div>
+                                    <div class="fw-bold"><t t-esc="property.bedroom_count or 0"/></div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="bg-light rounded-4 text-center h-100 p-3">
+                                    <i class="fa fa-bath text-primary fs-4 mb-2"></i>
+                                    <div class="small text-muted">Kamar Mandi</div>
+                                    <div class="fw-bold"><t t-esc="property.bathroom_count or 0"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Property Tabs -->
+						<div class="card border-1 rounded-4 mb-4">
+							<div class="card-body">
+								<!-- Tab Navigation -->
+								<ul class="nav nav-tabs justify-content-between flex-wrap" id="propertyTab" role="tablist">
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link active w-100" id="rincian-tab" data-bs-toggle="tab" data-bs-target="#rincian" type="button" role="tab">
+											<i class="fa fa-info-circle me-1"></i> Rincian
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="keuangan-tab" data-bs-toggle="tab" data-bs-target="#keuangan" type="button" role="tab">
+											<i class="fa fa-chart-line me-1"></i> Keuangan
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="dokumen-tab" data-bs-toggle="tab" data-bs-target="#dokumen" type="button" role="tab">
+											<i class="fa fa-file-alt me-1"></i> Dokumen
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="pasar-tab" data-bs-toggle="tab" data-bs-target="#pasar" type="button" role="tab">
+											<i class="fa fa-store me-1"></i> Pasar
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="linimasa-tab" data-bs-toggle="tab" data-bs-target="#linimasa" type="button" role="tab">
+											<i class="fa fa-stream me-1"></i> Linimasa
+										</button>
+									</li>
+									<li class="nav-item flex-fill text-center" role="presentation">
+										<button class="nav-link w-100" id="rantai-tab" data-bs-toggle="tab" data-bs-target="#rantai" type="button" role="tab">
+											<i class="fa fa-link me-1"></i> Rantai Blok
+										</button>
+									</li>
+								</ul>
+
+								<!-- Tab Content -->
+								<div class="tab-content p-3 mt-3" id="propertyTabContent">
+									<div class="tab-pane fade show active" id="rincian" role="tabpanel" aria-labelledby="rincian-tab">
+										<h5 class="fw-bold mb-3">Deskripsi</h5>
+										<p t-esc="property.description or 'Belum ada deskripsi properti.'"/>
+									</div>
+									<div class="tab-pane fade" id="keuangan" role="tabpanel" aria-labelledby="keuangan-tab">
+										<p>Data performa keuangan properti (ROI, pendapatan sewa, dsb.) akan ditampilkan di sini.</p>
+									</div>
+									<div class="tab-pane fade" id="dokumen" role="tabpanel" aria-labelledby="dokumen-tab">
+										<p>Dokumen legalitas properti seperti sertifikat, IMB, dan perjanjian akan ditampilkan di sini.</p>
+									</div>
+									<div class="tab-pane fade" id="pasar" role="tabpanel" aria-labelledby="pasar-tab">
+										<p>Informasi pasar dan harga kompetitor di area sekitar akan ditampilkan di sini.</p>
+									</div>
+									<div class="tab-pane fade" id="linimasa" role="tabpanel" aria-labelledby="linimasa-tab">
+										<t t-if="property.property_timeline_ids">
+											<div class="timeline-container position-relative">
+												<!-- Vertical line -->
+												<div class="timeline-line"></div>
+
+												<t t-foreach="property.property_timeline_ids" t-as="tl">
+													<div class="timeline-item position-relative mb-5">
+														<!-- Status icon -->
+														<div class="timeline-icon"
+															t-attf-class="timeline-icon #{tl.status}">
+															<t t-if="tl.status == 'plan'"><i class="fa fa-paper-plane"></i></t>
+															<t t-if="tl.status == 'ongoing'"><i class="fa fa-hourglass-half"></i></t>
+															<t t-if="tl.status == 'done'"><i class="fa fa-check"></i></t>
+														</div>
+
+														<!-- Timeline card -->
+														<div class="timeline-card card border-0 rounded-3 ms-5">
+															<div class="card-body p-4">
+																<div class="d-flex justify-content-between align-items-center mb-2">
+																	<h6 class="fw-bold text-dark mb-0" t-esc="tl.name"/>
+																	<span class="timeline-badge" 
+																		t-attf-class="timeline-badge #{tl.status}">
+																		<t t-esc="tl.status.title()"/>
+																	</span>
+																</div>
+																<p class="text-muted small mb-2">
+																	<i class="fa fa-calendar me-1"></i>
+																	<t t-esc="tl.timeline_date and tl.timeline_date.strftime('%d %b %Y, %H:%M') or '-'"/>
+																</p>
+																<p class="text-secondary mb-0" t-esc="tl.description or 'Tidak ada deskripsi tambahan.'"/>
+															</div>
+														</div>
+													</div>
+												</t>
+											</div>
+										</t>
+
+										<t t-else="">
+											<div class="alert alert-light border text-center rounded-4 shadow-sm">
+												<i class="fa fa-clock text-muted me-2"></i> 
+												Belum ada aktivitas dalam linimasa proyek ini.
+											</div>
+										</t>
+									</div>
+									<div class="tab-pane fade" id="rantai" role="tabpanel" aria-labelledby="rantai-tab">
+										<p>Informasi blockchain dan transaksi token akan ditampilkan di sini.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+
+                    <!-- Right Column: Token Info -->
+                    <div class="col-lg-5">
+                        <t t-set="sold_tokens" t-value="resell.qty_token - resell.qty_token_available"/>
+                        <t t-set="sold_percent" t-value="(sold_tokens / resell.qty_token * 100) if resell.qty_token else 0"/>
+                        <div class="card bg-white rounded-4 border-1 p-2 mb-4">
+                            <div class="card-header bg-light">
+								<div class="progress mb-1 mt-1" style="height:6px;" role="progressbar" t-att-aria-valuenow="sold_percent" aria-valuemin="0" aria-valuemax="100">
+									<div class="progress-bar" t-att-style="'width:{}%'.format(sold_percent)"></div>
+								</div>
+								<div class="d-flex justify-content-between small">
+									<span><t t-esc="round(sold_percent,2)"/>%</span>
+									<span><t t-esc="resell.qty_token_available"/> / <t t-esc="resell.qty_token" /> token tersedia</span>
+								</div>
+							</div>
+                            <div class="card-body">
+                                <p class="small text-secondary mb-4">
+                                    <i class="fa fa-info-circle me-1"></i>
+                                    Dijual kembali oleh <strong><t t-esc="resell.investor_id.name"/></strong>.
+                                </p>
+
+                                <div class="financial-metrics mb-3">
+									<div class="row g-3 text-center text-md-start">
+										<div class="col-12 col-md-4">
+											<div class="p-3 bg-light rounded-3 h-100">
+												<small class="text-muted d-block mb-1">ERY</small>
+												<h4 class="fw-bold text-primary mb-0">
+													<t t-esc="property.expected_rental_yield"/>%
+												</h4>
+											</div>
+										</div>
+										<div class="col-12 col-md-4">
+											<div class="p-3 bg-light rounded-3 h-100">
+												<small class="text-muted d-block mb-1">ECA</small>
+												<h4 class="fw-bold text-success mb-0">
+													<t t-esc="property.expected_capital_appreciation"/>%
+												</h4>
+											</div>
+										</div>
+										<div class="col-12 col-md-4">
+											<div class="p-3 bg-light rounded-3 h-100">
+												<small class="text-muted d-block mb-1">IRR</small>
+												<h4 class="fw-bold text-warning mb-0">
+													<t t-esc="property.internal_rate_of_return"/>%
+												</h4>
+											</div>
+										</div>
+									</div>
+								</div>
+                                
+                                <div class="row text-center g-3">
+                                    <div class="col">
+                                        <div class="p-3 rounded-3 bg-light h-100">
+                                            <small class="text-muted d-block">Harga/Token</small>
+                                            <span class="fw-bold fs-5 text-primary"
+                                                t-esc="resell.price_per_token"
+                                                t-options="{'widget':'monetary','display_currency':property.currency_id}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="p-3 rounded-3 bg-light h-100">
+                                            <small class="text-muted d-block">Tersedia</small>
+                                            <span class="fw-bold fs-5 text-success" t-esc="resell.qty_token"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purchase Form (HTTP Controller) -->
+                        <form t-att-action="'/token/resell/buy'" method="post" class="needs-validation vit-token-form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="resell_id" t-att-value="resell.id"/>
+
+                            <div class="p-4 rounded-4 investment-form vit-token-wrapper" t-att-data-price-per-token="resell.price_per_token">
+                                <label class="form-label fw-semibold mb-2">Jumlah Token yang Ingin Dibeli</label>
+
+                                <div class="d-flex align-items-center gap-2 mb-3">
+                                    <input type="number" class="form-control form-control-lg vit-token-input"
+                                        min="1"
+                                        t-att-max="resell.qty_token"
+                                        value="1" name="qty_token" placeholder="Masukkan jumlah token..."/>
+                                </div>
+
+                                <!-- Quick Buttons -->
+                                <div class="d-flex flex-wrap gap-2 mb-4">
+                                    <t t-foreach="[5,10,25,100]" t-as="preset">
+                                        <button type="button"
+                                                class="btn btn-outline-primary flex-fill quick-btn"
+                                                t-att-data-value="preset"
+                                                t-att-disabled="'disabled' if resell.qty_token &lt; preset else None">
+                                            <t t-esc="preset"/>
+                                        </button>
+                                    </t>
+                                </div>
+
+                                <!-- Total Display -->
+                                <div class="alert alert-info text-center py-2 mb-4 rounded-3">
+                                    Total Pembelian: <strong class="vit-token-total">Rp 0</strong>
+                                </div>
+
+                                <!-- Submit -->
+                                <button type="submit" class="btn btn-primary w-100 btn-lg rounded-3">
+                                    Beli Sekarang
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
 </odoo>

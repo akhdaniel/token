@@ -20,3 +20,5 @@ from . import bank
 from . import document_type
 from . import property_document
 from . import token_owner
+from . import property_financial
+from . import property_timeline
