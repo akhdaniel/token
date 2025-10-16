@@ -152,11 +152,17 @@ class PropertyPortalOwner(CustomerPortal):
 					'cost_price': cost_price,
 					'sale_price_target': float(form_data.get('sale_price_target') or 0),
 					'expected_rental_yield': form_data.get('expected_rental_yield'),
+					'expected_capital_appreciation': float(form_data.get('expected_capital_appreciation') or 0),
+					'internal_rate_of_return': float(form_data.get('internal_rate_of_return') or 0),
 					'owner_id': partner.id,
 					'currency_id': user.company_id.currency_id.id,
 					'price_per_token': price_per_token,
 					'rent_type_id': int(form_data.get('rent_type_id')) if form_data.get('rent_type_id') else None,
-					# 'stage_id': data_stage.id,
+					'bedroom_count': float(form_data.get('bedroom_count') or 0),
+					'bathroom_count': float(form_data.get('bathroom_count') or 0),
+					'property_size': float(form_data.get('property_size') or 0),
+					'longitude': float(form_data.get('longitude') or 0),
+					'latitude': float(form_data.get('latitude') or 0),
 				})
 
 				return {
@@ -194,10 +200,17 @@ class PropertyPortalOwner(CustomerPortal):
 				'cost_price': cost_price,
 				'sale_price_target': form_data.get('sale_price_target'),
 				'expected_rental_yield': form_data.get('expected_rental_yield'),
+				'expected_capital_appreciation': float(form_data.get('expected_capital_appreciation') or 0),
+				'internal_rate_of_return': float(form_data.get('internal_rate_of_return') or 0),
 				'owner_id': partner.id,
 				'currency_id': user.company_id.currency_id.id,
 				'price_per_token': price_per_token,
 				'rent_type_id': int(form_data.get('rent_type_id')) if form_data.get('rent_type_id') else None,
+				'bedroom_count': float(form_data.get('bedroom_count') or 0),
+				'bathroom_count': float(form_data.get('bathroom_count') or 0),
+				'property_size': float(form_data.get('property_size') or 0),
+				'longitude': float(form_data.get('longitude') or 0),
+				'latitude': float(form_data.get('latitude') or 0),
 				'stage_id': data_stage.id,
 			})
 

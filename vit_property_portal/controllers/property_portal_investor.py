@@ -136,9 +136,16 @@ class PropertyPortalInvestor(http.Controller):
 		])
 
 		if not order_tokens:
+			summary = {
+				'total_investasi': 0,
+				'total_profit': 0,
+				'total_token': 0,
+				'total_token_profit': 0,
+				'total_saldo': 0,
+			}
 			return request.render('vit_property_portal.nilai_akun_table', {
 				'rows': [],
-				'summary': {},
+				'summary': summary,
 				'currency': user.currency_id,
 				'property_tokens_map': {},
 				'breadcrumbs': [
