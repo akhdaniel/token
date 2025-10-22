@@ -22,6 +22,7 @@ class TokenResellController(http.Controller):
 				'investor_id': investor.id,
 				'property_unit_id': int(property_id),
 				'qty_token': int(qty_token),
+				'qty_token_available': int(qty_token),
 				'price_per_token': float(price_per_token),
 				'stage_id': data_stage.id
 			})
@@ -74,7 +75,6 @@ class TokenResellController(http.Controller):
 		if request.httprequest.method == 'GET':
 			return request.redirect('/properties')
 
-
 		try:
 			qty_token = int(post.get('qty_token', 0))
 			resell_id = int(post.get('resell_id', resell_id))
@@ -102,7 +102,6 @@ class TokenResellController(http.Controller):
 		if qty_token > resell.qty_token:
 			return {'success': False, 'message': _("Jumlah token melebihi stok yang tersedia")}
 
-		# Buat record pembelian
 		with request.env.cr.savepoint():
 			tokens.sudo().write({'token_state': 'reserved'})
 			sale_order = SaleOrder.create({
@@ -115,7 +114,7 @@ class TokenResellController(http.Controller):
 				'product_uom_qty': 1,
 				'price_unit': prop.price_per_token,
 			} for token in tokens])
-			# Konfirmasi order
+			
 			sale_order.action_confirm()
 			invoices = sale_order._create_invoices()
 			invoices.write({'invoice_date': fields.Date.context_today(request.env.user)})

@@ -41,5 +41,11 @@ class PaymentTransaction(models.Model):
                     order.token_resell_id.sudo().write({
                         'qty_token_available': order.token_resell_id.qty_token - order.qty_token
                     })
+                    order.from_partner_id.sudo().write({
+                        'total_tokens': order.from_partner_id.total_tokens - order.qty_token
+                    })
+                    order.to_partner_id.sudo().write({
+                        'total_tokens': order.to_partner_id.total_tokens - order.qty_token
+                    })
 
         return res

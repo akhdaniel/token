@@ -41,6 +41,9 @@ class PropertyPortal(http.Controller):
 			('property_unit_id', '=', prop_id),
 			('status', '=', 'confirmed')
 		])
+		property_financial = request.env['vit.property_financial'].sudo().search([
+			('name', '=', prop_id),
+		])
 
 		# Kelompokkan per investor
 		investors_grouped = []
@@ -72,6 +75,7 @@ class PropertyPortal(http.Controller):
 		return request.render('vit_property_portal.portal_property_detail', {
 			'property': prop,
 			'investors': investors_sorted,
+			'property_financial': property_financial,
 			'total_token': total_token,
 			'breadcrumbs': [
 				('Properties', '/properties'),

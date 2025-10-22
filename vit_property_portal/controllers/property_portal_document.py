@@ -1,5 +1,9 @@
 from odoo import http
 from odoo.http import request
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+from google.oauth2.credentials import Credentials
+import base64, tempfile, os, json
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -73,5 +77,65 @@ class PropertyPortalDocument(http.Controller):
 
 			doc.write(vals)
 			return {'success': True}
+		except Exception as e:
+			return {'error': str(e)}
+
+	@http.route('/property/upload_document_to_drive', type='json', auth="user")
+	def upload_document_to_drive(self, property_unit_id, document_type_id, issue_date, date_expiry, file_name, document_file):
+		try:
+			creds_data = request.env['ir.config_parameter'].sudo().get_param('google_drive_credentials_json')
+			if not creds_data:
+				return {'error': 'Google Drive belum dikonfigurasi. Silakan hubungkan dulu.'}
+
+			creds = Credentials.from_authorized_user_info(json.loads(creds_data))
+			service = build('drive', 'v3', credentials=creds)
+
+			# Ambil data properti
+			property_unit = request.env['vit.property_unit'].sudo().browse(int(property_unit_id))
+
+			# === [1] Buat folder Google Drive jika belum ada ===
+			if not property_unit.google_drive_folder_id:
+				folder_metadata = {
+					'name': f"Property_{property_unit.name}",
+					'mimeType': 'application/vnd.google-apps.folder',
+				}
+				folder = service.files().create(body=folder_metadata, fields='id, webViewLink').execute()
+
+				property_unit.write({
+					'google_drive_folder_id': folder['id'],
+					'google_drive_folder_link': folder['webViewLink'],
+				})
+
+			# === [2] Simpan file sementara ===
+			temp_path = tempfile.mktemp(suffix=os.path.splitext(file_name)[1])
+			with open(temp_path, 'wb') as f:
+				f.write(base64.b64decode(document_file))
+
+			# === [3] Upload file ke folder milik unit ===
+			file_metadata = {
+				'name': file_name,
+				'parents': [property_unit.google_drive_folder_id],
+			}
+			media = MediaFileUpload(temp_path, resumable=True)
+			uploaded = service.files().create(body=file_metadata, media_body=media, fields='id, webViewLink').execute()
+
+			os.remove(temp_path)
+
+			# === [4] Simpan dokumen di database (tanpa link Drive) ===
+			doc = request.env['vit.property_document'].sudo().create({
+				'property_unit_id': property_unit.id,
+				'name': int(document_type_id),
+				'issue_date': issue_date or False,
+				'date_expiry': date_expiry or False,
+				'file_name': file_name,
+				'document_file': document_file,
+			})
+
+			return {
+				'success': True,
+				'message': 'Dokumen berhasil diunggah ke folder Google Drive unit ini.',
+				'folder_link': property_unit.google_drive_folder_link
+			}
+
 		except Exception as e:
 			return {'error': str(e)}

@@ -159,22 +159,17 @@
                                         <div class="col-md-6">
                                             <div id="sale_price_group" t-attf-style="display: #{property_unit and property_unit.is_sale and 'block' or 'none'};" class="mt-3">
                                                 <label for="sale_price" class="form-label fw-medium">Sale Price</label>
-                                                <input type="text" id="sale_price_display"
-                                                    class="form-control currency-input"
-                                                    t-att-value="property_unit and property_unit.sale_price or ''"/>
+                                                <input type="text" id="sale_price_display" class="form-control currency-input" t-att-value="property_unit and property_unit.sale_price or ''"/>
                                                 <input type="hidden" name="sale_price" id="sale_price"/>
 
                                                 <label for="sale_price_target" class="form-label fw-medium mt-2">Sale Price Target</label>
-                                                <input type="text" id="sale_price_target_display" class="form-control currency-input"
-                                                    t-att-value="property_unit and property_unit.sale_price_target or ''"/>
+                                                <input type="text" id="sale_price_target_display" class="form-control currency-input" t-att-value="property_unit and property_unit.sale_price_target or ''"/>
                                                 <input type="hidden" name="sale_price_target" id="sale_price_target"/>
                                             </div>
 
                                             <div id="rental_price_group" t-attf-style="display: #{property_unit and property_unit.is_rent and 'block' or 'none'};" class="mt-3">
                                                 <label for="rental_price" class="form-label fw-medium">Rental Price</label>
-                                                <input type="text" id="rental_price_display"
-                                                    class="form-control currency-input"
-                                                    t-att-value="property_unit and property_unit.rental_price or ''"/>
+                                                <input type="text" id="rental_price_display" class="form-control currency-input" t-att-value="property_unit and property_unit.rental_price or ''"/>
                                                 <input type="hidden" name="rental_price" id="rental_price"/>
 
                                                 <label for="rent_type_id" class="form-label fw-medium mt-2">Rental Type</label>
@@ -193,16 +188,11 @@
                                     <div class="row g-3 mb-4">
                                         <div class="col-md-6">
                                             <label for="total_tokens" class="form-label fw-medium">Total Token</label>
-                                            <input type="text" id="total_tokens" name="total_tokens"
-                                                class="form-control"
-                                                t-att-value="property_unit and property_unit.total_tokens or ''"
-                                                required="True"/>
+                                            <input type="text" id="total_tokens" name="total_tokens" class="form-control" t-att-value="property_unit and property_unit.total_tokens or ''" required="True"/>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="available_tokens" class="form-label fw-medium">Available Token</label>
-                                            <input type="text" id="available_tokens" name="available_tokens"
-                                                class="form-control"
-                                                t-att-value="property_unit and property_unit.available_tokens or ''" readonly="True"/>
+                                            <input type="text" id="available_tokens" name="available_tokens" class="form-control" t-att-value="property_unit and property_unit.available_tokens or ''" readonly="True"/>
                                         </div>
                                     </div>
                                     
@@ -212,8 +202,7 @@
                                             <input type="text" id="cost_price_display" name="cost_price"
                                                 class="form-control currency-input"
                                                 t-att-value="property_unit and property_unit.cost_price or ''"/>
-                                            <input type="hidden" name="cost_price" id="cost_price" 
-                                                t-att-value="property_unit and property_unit.cost_price or ''"/>
+                                            <input type="hidden" name="cost_price" id="cost_price" />
                                         </div>
                                         <div class="col-md-6">
                                             <label for="price_per_token" class="form-label fw-medium">Price Per Token</label>
@@ -278,14 +267,14 @@
                                     <div class="mb-4">
                                         <label for="address" class="form-label fw-medium">Full Address</label>
                                         <textarea id="address" name="address" class="form-control" rows="3" required="True">
-                                            <t t-esc="property_unit and property_unit.address or ''"/>
+                                            <t t-raw="property_unit and property_unit.address or ''"/>
                                         </textarea>
                                     </div>
                                     
                                     <div class="mb-4">
                                         <label for="description" class="form-label fw-medium">Property Description</label>
                                         <textarea id="description" name="description" class="form-control" rows="5">
-                                            <t t-esc="property_unit and property_unit.description or ''"/>
+                                            <t t-raw="property_unit and property_unit.description or ''"/>
                                         </textarea>
                                     </div>
                                     

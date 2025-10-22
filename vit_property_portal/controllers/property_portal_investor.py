@@ -14,7 +14,7 @@ class PropertyPortalInvestor(http.Controller):
 			('to_partner_id', '=', partner)
 		])
 
-		token_awal = sum(order_recs.mapped('qty_token'))
+		token_awal = user.partner_id.total_tokens
 		amount_awal = sum(order_recs.mapped('total_amount'))
 
 		profit_share = request.env['vit.property_profit_share'].sudo().search([
@@ -45,91 +45,11 @@ class PropertyPortalInvestor(http.Controller):
 		}
 		return request.render('vit_property_portal.portal_asset_overview', values)
 
-	# @http.route(['/investor/nilai_akun'], type='http', auth="user", website=True)
-	# def investor_nilai_akun(self, **kw):
-	# 	user = request.env.user
-	# 	investor = user.partner_id
-
-	# 	order_tokens = request.env['vit.order_token'].sudo().search([
-	# 		('to_partner_id', '=', investor.id),
-	# 		('status', '=', 'confirmed')
-	# 	])
-
-	# 	result_rows = []
-	# 	for order in order_tokens:
-	# 		profit_lines = request.env['vit.property_profit_share_line'].sudo().search([
-	# 			('profit_share_id.investor_id', '=', investor.id),
-	# 			('profit_share_id.property_unit_id', '=', order.property_unit_id.id)
-	# 		])
-	# 		total_profit = sum(profit_lines.mapped('amount'))
-	# 		total_token_profit = sum(profit_lines.mapped('token_count'))
-
-	# 		result_rows.append({
-	# 			'property_name': order.property_unit_id.name,
-	# 			'transaksi': order.name,
-	# 			'token': order.qty_token,
-	# 			'jumlah_investasi': order.total_amount,
-	# 			'profit': total_profit,
-	# 			'token_profit': total_token_profit,
-	# 		})
-
-	# 	total_investasi = sum(r['jumlah_investasi'] for r in result_rows)
-	# 	total_profit    = sum(r['profit'] for r in result_rows)
-
-	# 	summary = {
-	# 		'total_token': sum(r['token'] for r in result_rows),
-	# 		'total_investasi': sum(r['jumlah_investasi'] for r in result_rows),
-	# 		'total_profit': sum(r['profit'] for r in result_rows),
-	# 		'total_token_profit': sum(r['token_profit'] for r in result_rows),
-	# 		'total_saldo': total_investasi + total_profit, 
-	# 	}
-
-	# 	sale_order_ids = order_tokens.mapped('sale_order_id').ids
-	# 	token_product_ids = request.env['sale.order.line'].sudo().search([
-	# 		('order_id', 'in', sale_order_ids),
-	# 		('product_id.is_investment_token', '=', True),
-	# 	]).mapped('product_id').ids
-	# 	tokens = request.env['product.product'].sudo().search([
-	# 		('id', 'in', token_product_ids),
-	# 		('property_unit_id', 'in', order_tokens.mapped('property_unit_id').ids),
-	# 		('token_state', 'in', ['reserved', 'sold']),
-	# 	])
-	# 	property_tokens_map = {}
-	# 	for token in tokens:
-	# 		prop = token.property_unit_id
-	# 		if not prop:
-	# 			continue
-
-	# 		if prop.id not in property_tokens_map:
-	# 			tokens_per_property = tokens.filtered(lambda t: t.property_unit_id.id == prop.id)
-	# 			property_tokens_map[prop.id] = {
-	# 				'property_id': prop.id,
-	# 				'property_name': prop.name,
-	# 				'tokens': [],
-	# 				'total_token': len(tokens_per_property),
-	# 			}
-	# 		property_tokens_map[prop.id]['tokens'].append(token)
-
-	# 	return request.render('vit_property_portal.nilai_akun_table',  
-	# 		{
-	# 			'rows': result_rows, 
-	# 			'summary': summary,  
-	# 			'currency': user.currency_id,
-	# 			'property_tokens_map': property_tokens_map,
-	# 			'breadcrumbs': [
-	# 				('Portofolio', '/investor/ikhtisar'),
-	# 				('Ikhtisar Nilai Akun', False),   
-	# 			],
-	# 			'page_name': 'nilai_akun',
-	# 		}
-	# 	)
-
 	@http.route(['/investor/nilai_akun'], type='http', auth='user', website=True)
 	def investor_nilai_akun(self, **kw):
 		user = request.env.user
 		investor = user.partner_id
 
-		# 🔹 Ambil semua transaksi pembelian token investor
 		order_tokens = request.env['vit.order_token'].sudo().search([
 			('to_partner_id', '=', investor.id),
 			('status', '=', 'confirmed')
@@ -165,11 +85,19 @@ class PropertyPortalInvestor(http.Controller):
 			if not prop:
 				continue
 
+			token_resell = request.env['vit.token_resell'].sudo().search([
+				('investor_id', '=', investor.id),
+				('property_unit_id', '=', prop.id),
+			])
+			_logger.info("========================= token resell : %s", len(token_resell))
+
 			if prop.id not in property_data_map:
 				property_data_map[prop.id] = {
 					'property_name': prop.name,
 					'property_id': prop.id,
 					'transaksi': [],
+					'profit_share': [],
+					'token_resell': token_resell or [],
 					'total_token': 0,
 					'total_investasi': 0,
 					'total_profit': 0,
@@ -182,8 +110,6 @@ class PropertyPortalInvestor(http.Controller):
 				'jumlah_investasi': order.total_amount,
 			})
 
-			# Tambahkan transaksi
-			# property_data_map[prop.id]['transaksi'].append(order.name)
 			property_data_map[prop.id]['total_token'] += order.qty_token
 			property_data_map[prop.id]['total_investasi'] += order.total_amount
 
@@ -206,6 +132,11 @@ class PropertyPortalInvestor(http.Controller):
 
 			property_data_map[prop_id]['total_profit'] += line.amount
 			property_data_map[prop_id]['total_token_profit'] += line.token_count
+			property_data_map[prop_id]['profit_share'].append({
+				'name': line.name,
+				'amount': line.amount,
+				'token_count': line.token_count,
+			})
 
 		# ==============================
 		# 🔹 Generate property_tokens_map
@@ -245,12 +176,19 @@ class PropertyPortalInvestor(http.Controller):
 		total_token_awal = sum(r['total_token'] for r in rows)
 		total_token_profit = sum(r['total_token_profit'] for r in rows)
 
+		# summary = {
+		# 	'total_investasi': total_investasi,
+		# 	'total_profit': total_profit,
+		# 	'total_token': total_token_awal,
+		# 	'total_token_profit': total_token_profit,
+		# 	'total_saldo': total_investasi + total_profit,
+		# }
 		summary = {
-			'total_investasi': total_investasi,
-			'total_profit': total_profit,
-			'total_token': total_token_awal,
+			'total_investasi': investor.total_investment,
+			'total_profit': investor.total_dividend_received,
+			'total_token': investor.total_tokens,
 			'total_token_profit': total_token_profit,
-			'total_saldo': total_investasi + total_profit,
+			'total_saldo': investor.total_investment + investor.total_dividend_received,
 		}
 
 		# ==============================

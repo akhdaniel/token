@@ -23,14 +23,42 @@ publicWidget.registry.PropertyFormWidget = publicWidget.Widget.extend({
         this.salePriceGroup = this.$('#sale_price_group');
         this.rentPriceGroup = this.$('#rental_price_group');
 
+        this._initSummernote();
+
         this.$('.currency-input').each((_, el) => {
-            const raw = $(el).val().replace(/[^\d]/g, '');
-            $(el).val(this._formatIDR(raw));
+            let raw = $(el).val();
+            raw = raw.replace(/[^\d.,]/g, '');
+            if (raw.includes(',')) {
+                raw = raw.replace(/\./g, '').replace(',', '.');
+            }
+            const numericValue = parseFloat(raw) || 0;
+            const hiddenId = el.id.replace('_display', '');
+            this.$('#' + hiddenId).val(numericValue);
+            $(el).val(this._formatIDR(numericValue));
         });
 
         this._recalculatePricePerToken();
 
         return this._super(...arguments);
+    },
+
+    _initSummernote() {
+        const $desc = this.$('#description');
+        if ($desc.length && $.fn.summernote) {
+            $desc.summernote({
+                height: 250,
+                placeholder: 'Tulis deskripsi properti...',
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview']],
+                ],
+            });
+        } else {
+            console.warn('Summernote tidak ditemukan atau #description tidak ada di halaman.');
+        }
     },
 
     _onSaleRentChange(ev) {
@@ -60,6 +88,7 @@ publicWidget.registry.PropertyFormWidget = publicWidget.Widget.extend({
         const perToken = totalTokens > 0 ? (parseFloat(costRaw) / totalTokens) : 0;
         this.$('#price_per_token').val(perToken);
         this.$('#price_per_token_display').val(this._formatIDR(perToken));
+        this.$('#available_tokens').val(totalTokens);
     },
 
     /**
@@ -75,7 +104,9 @@ publicWidget.registry.PropertyFormWidget = publicWidget.Widget.extend({
 
         const formData = new FormData(this.$el[0]);
         const data = Object.fromEntries(formData.entries());
-
+        if (this.$('#description').length && $.fn.summernote) {
+            data['description'] = this.$('#description').summernote('code');
+        }
         this._prepareData(data);
         this._callRpc(data);
     },
@@ -89,7 +120,7 @@ publicWidget.registry.PropertyFormWidget = publicWidget.Widget.extend({
         data['is_rent'] = this.$el.find('#is_rent').is(':checked');
 
         ['sale_price', 'cost_price', 'rental_price', 'sale_price_target', 'expected_rental_yield'].forEach(key => {
-            data[key] = parseFloat(data[key]) || 0;
+            data[key] = parseFloat(String(data[key]).replace(/[^\d.-]/g, '')) || 0;
         });
 
         ['total_tokens', 'available_tokens'].forEach(key => {
@@ -103,14 +134,9 @@ publicWidget.registry.PropertyFormWidget = publicWidget.Widget.extend({
      */
     async _callRpc(data) {
         try {
-            console.log("_callRpc", data);
-            
             const result = await rpc('/api/property/save', { data });
-            console.log("_callRpc result : ", result);
-            
             this._handleRpcResult(result);
         } catch (error) {
-            console.error("RPC Error:", error);
             this._showAlert('danger', 'An unexpected error occurred. Please try again.');
         } finally {
             this.isSaving = false; 
@@ -125,8 +151,6 @@ publicWidget.registry.PropertyFormWidget = publicWidget.Widget.extend({
      */
     _handleRpcResult(result) {
         if (result.success) {
-            console.log("_handleRpcResult : ", result);
-
             this._showAlert('success', result.message);
             this.$el.find('input[name="id"]').val(result.property_id);
         } else {

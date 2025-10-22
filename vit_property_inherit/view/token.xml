@@ -52,6 +52,10 @@
 					<filter string="Token Type" name="group_by_token_type" context="{'group_by':'token_type'}"/>
 					<field name="token_type"/>
 				</xpath>
+				<xpath expr="//filter[@name='group_by_token_type']" position="after">
+					<filter string="Token Owner" name="group_by_token_owner_id" context="{'group_by':'token_owner_id'}"/>
+					<field name="token_owner_id"/>
+				</xpath>
 			</field>
 		</record>
 	</data>

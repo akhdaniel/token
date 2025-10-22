@@ -131,9 +131,7 @@
 										<button class="thumb-nav prev"><i class="fa fa-chevron-left"></i></button>
 										<div class="thumb-container d-flex overflow-hidden gap-2">
 											<t t-foreach="property.property_unit_image_ids[1:]" t-as="img">
-												<img t-att-src="'data:image/png;base64,%s' % img.image.decode()"
-													class="thumb-image rounded-3 shadow-sm"
-													alt="Property Thumbnail"/>
+												<img t-att-src="'data:image/png;base64,%s' % img.image.decode()" class="thumb-image rounded-3 shadow-sm" alt="Property Thumbnail"/>
 											</t>
 										</div>
 										<button class="thumb-nav next"><i class="fa fa-chevron-right"></i></button>
@@ -188,32 +186,32 @@
 								<ul class="nav nav-tabs justify-content-between flex-wrap" id="propertyTab" role="tablist">
 									<li class="nav-item flex-fill text-center" role="presentation">
 										<button class="nav-link active w-100" id="rincian-tab" data-bs-toggle="tab" data-bs-target="#rincian" type="button" role="tab">
-											<i class="fa fa-info-circle me-1"></i> Rincian
+											Overview
 										</button>
 									</li>
 									<li class="nav-item flex-fill text-center" role="presentation">
 										<button class="nav-link w-100" id="keuangan-tab" data-bs-toggle="tab" data-bs-target="#keuangan" type="button" role="tab">
-											<i class="fa fa-chart-line me-1"></i> Keuangan
+											Keuangan
 										</button>
 									</li>
 									<li class="nav-item flex-fill text-center" role="presentation">
 										<button class="nav-link w-100" id="dokumen-tab" data-bs-toggle="tab" data-bs-target="#dokumen" type="button" role="tab">
-											<i class="fa fa-file-alt me-1"></i> Dokumen
+											Dokumen
 										</button>
 									</li>
 									<li class="nav-item flex-fill text-center" role="presentation">
 										<button class="nav-link w-100" id="pasar-tab" data-bs-toggle="tab" data-bs-target="#pasar" type="button" role="tab">
-											<i class="fa fa-store me-1"></i> Pasar
+											Pasar
 										</button>
 									</li>
 									<li class="nav-item flex-fill text-center" role="presentation">
 										<button class="nav-link w-100" id="linimasa-tab" data-bs-toggle="tab" data-bs-target="#linimasa" type="button" role="tab">
-											<i class="fa fa-stream me-1"></i> Linimasa
+											Linimasa
 										</button>
 									</li>
 									<li class="nav-item flex-fill text-center" role="presentation">
 										<button class="nav-link w-100" id="rantai-tab" data-bs-toggle="tab" data-bs-target="#rantai" type="button" role="tab">
-											<i class="fa fa-link me-1"></i> Rantai Blok
+											Rantai Blok
 										</button>
 									</li>
 								</ul>
@@ -230,7 +228,7 @@
 												t-att-data-lon="property.longitude"
 												t-att-data-name="property.name"
 												t-att-data-address="property.address"
-												style="height: 350px; border-radius: 10px; overflow: hidden;">
+												style="height: 350px; overflow: hidden;">
 											</div>
 										</t>
 
@@ -242,10 +240,81 @@
 										</t>
 									</div>
 									<div class="tab-pane fade" id="keuangan" role="tabpanel" aria-labelledby="keuangan-tab">
-										<p>Data performa keuangan properti (ROI, pendapatan sewa, dsb.) akan ditampilkan di sini.</p>
+										<h5>Nilai Asset</h5>
+										<div class="list-group list-group-flush mb-4">
+											<t t-foreach="property_financial" t-as="pf">
+												<div class="list-group-item px-0 py-3 border-bottom">
+													<div class="d-flex justify-content-between align-items-center mb-2">
+														<div class="d-flex align-items-center">
+															<div>
+																<div class="fw-semibold">Total Investment : <t t-esc="pf['total_investment']"/></div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="list-group-item px-0 py-3 border-bottom">
+													<div class="d-flex justify-content-between align-items-center mb-2">
+														<div class="d-flex align-items-center">
+															<div>
+																<div class="fw-semibold">Property Upgrade : <t t-esc="pf['property_upgrade']"/></div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="list-group-item px-0 py-3 border-bottom">
+													<div class="d-flex justify-content-between align-items-center mb-2">
+														<div class="d-flex align-items-center">
+															<div>
+																<div class="fw-semibold">Notaris Fee : <t t-esc="pf['notaris_fee']"/></div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="list-group-item px-0 py-3 border-bottom">
+													<div class="d-flex justify-content-between align-items-center mb-2">
+														<div class="d-flex align-items-center">
+															<div>
+																<div class="fw-semibold">Platform Fee : <t t-esc="pf['platform_fee']"/></div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</t>
+										</div>
+										<h5>Pengembalian Tahunan</h5>
+										<div class="list-group list-group-flush">
+											<div class="list-group-item px-0 py-3 border-bottom">
+												<div class="d-flex justify-content-between align-items-center mb-2">
+													<div class="d-flex align-items-center">
+														<div>
+															<div class="fw-semibold">Proyeksi hasil sewa tahunan : <t t-esc="property.expected_rental_yield"/></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="list-group-item px-0 py-3 border-bottom">
+												<div class="d-flex justify-content-between align-items-center mb-2">
+													<div class="d-flex align-items-center">
+														<div>
+															<div class="fw-semibold">Proyeksi apresiasi modal tahunan : <t t-esc="property.expected_capital_appreciation"/></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="list-group-item px-0 py-3 border-bottom">
+												<div class="d-flex justify-content-between align-items-center mb-2">
+													<div class="d-flex align-items-center">
+														<div>
+															<div class="fw-semibold">Total pengembalian tahunan : <t t-esc="property.internal_rate_of_return"/></div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 									<div class="tab-pane fade" id="dokumen" role="tabpanel" aria-labelledby="dokumen-tab">
-										<p>Dokumen legalitas properti seperti sertifikat, IMB, dan perjanjian akan ditampilkan di sini.</p>
+										<h5>Link dokumen google drive</h5>
+										
 									</div>
 									<div class="tab-pane fade" id="pasar" role="tabpanel" aria-labelledby="pasar-tab">
 										<p>Informasi pasar dan harga kompetitor di area sekitar akan ditampilkan di sini.</p>
@@ -287,9 +356,9 @@
 										</t>
 
 										<t t-else="">
-											<div class="alert alert-info border text-center rounded-2 shadow-sm">
+											<div class="alert alert-info border text-center rounded-2">
 												<i class="fa fa-clock text-muted me-2"></i> 
-												Belum ada aktivitas dalam linimasa proyek ini.
+												Belum ada aktivitas dalam linimasa property ini.
 											</div>
 										</t>
 									</div>
@@ -407,21 +476,21 @@
 								<div class="row g-3 mb-3 text-center">
 									<div class="col-4">
 										<div class="metric-badge">
-											<i class="fa fa-chart-line-o text-primary mb-1"></i>
+											<!-- <i class="fa fa-chart text-primary mb-1"></i> -->
 											<div class="fw-bold"><t t-esc="property.expected_rental_yield"/>%</div>
 											<small class="text-muted">ERY</small>
 										</div>
 									</div>
 									<div class="col-4">
 										<div class="metric-badge">
-											<i class="fa fa-building text-success mb-1"></i>
+											<!-- <i class="fa fa-building text-success mb-1"></i> -->
 											<div class="fw-bold"><t t-esc="property.expected_capital_appreciation"/>%</div>
 											<small class="text-muted">ECA</small>
 										</div>
 									</div>
 									<div class="col-4">
 										<div class="metric-badge">
-											<i class="fa fa-coins-o text-warning mb-1"></i>
+											<!-- <i class="fa fa-coins text-warning mb-1"></i> -->
 											<div class="fw-bold"><t t-esc="property.internal_rate_of_return"/>%</div>
 											<small class="text-muted">IRR</small>
 										</div>
@@ -461,14 +530,6 @@
 									value="1"
 									id="tokenInput"
 									placeholder="Masukkan jumlah token..."/>
-
-								<!-- Quick Buttons -->
-								<!-- <div class="d-flex flex-wrap gap-2 mb-4">
-									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="5">5</button>
-									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="10">10</button>
-									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="25">25</button>
-									<button type="button" class="btn btn-outline-primary flex-fill quick-btn" data-value="100">100</button>
-								</div> -->
 
 								<t t-set="is_sold_out" t-value="property.available_tokens == 0 and sold_percent == 100"/>
 

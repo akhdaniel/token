@@ -10,7 +10,7 @@
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-div.investment-form {
+div .investment-form {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
@@ -88,10 +88,10 @@ div.investment-form {
 
 .main-image-wrapper {
     position: relative;
-    z-index: 2; /* Pastikan ini di atas property-info-card */
-    border-bottom-left-radius: 1rem;  /* pastikan radius bawah aktif */
+    z-index: 2; 
+    border-bottom-left-radius: 1rem;  
     border-bottom-right-radius: 1rem;
-    overflow: hidden; /* agar gambar tetap mengikuti radius */
+    overflow: hidden; 
 }
 
 .main-image-wrapper > .ribbon-wrapper {
@@ -106,8 +106,8 @@ div.investment-form {
 
 .property-info-card {
     position: relative;
-    z-index: 1; /* di bawah main-image-wrapper */
-    margin-top: -20px; /* tarik ke atas agar menyatu */
+    z-index: 1; 
+    margin-top: -20px; 
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     background: #fff;
@@ -147,9 +147,9 @@ div.investment-form {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff; /* padat, tidak transparan */
+  background-color: #fff; 
   font-size: 15px;
-  z-index: 100; /* pastikan di atas garis */
+  z-index: 100; 
   transition: all 0.3s ease;
   box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.08);
   position: relative;
@@ -220,12 +220,11 @@ div.investment-form {
 
 .investment-summary {
     background: #fff;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    /* backdrop-filter: blur(10px);
+    transition: all 0.3s ease; */
+    box-shadow: 0 0 16px rgba(0,0,0,0.15);
 }
 
-/* Circular Progress */
 .circular-chart {
     display: block;
     margin: 10px auto;

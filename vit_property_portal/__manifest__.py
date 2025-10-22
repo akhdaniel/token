@@ -32,6 +32,11 @@
 	],
 	"assets": {
 		'web.assets_frontend': [
+			'vit_property_portal/static/lib/summernote/font/summernote.ttf',
+			'vit_property_portal/static/lib/summernote/font/summernote.woff',
+			'vit_property_portal/static/lib/summernote/font/summernote.woff2',
+			'vit_property_portal/static/lib/summernote/summernote-bs5.min.js',
+			'vit_property_portal/static/lib/summernote/summernote-bs5.min.css',
 			'vit_property_portal/static/src/js/count_token.js',
 			'vit_property_portal/static/src/js/property_calculator.js',
 			'vit_property_portal/static/src/js/yield_calculator.js',
